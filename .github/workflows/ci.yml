@@ -1,0 +1,30 @@
+name: CI
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install uv
+      - run: uv sync --locked --extra adk --extra dev
+      - run: uv run --frozen ruff check . && uv run --frozen ruff format --check .
+      - run: uv run --frozen pytest -q
+      - run: uv run --frozen python -m build
+      - run: uv run --frozen agent-reliability demo --output runs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-experiment-report
+          path: runs/
+      - run: docker build -t agent-reliability-harness .
+      - name: Smoke test container
+        run: |
+          docker run -d --name harness -p 8080:8080 agent-reliability-harness
+          trap 'docker logs harness; docker rm -f harness' EXIT
+          curl --fail --retry 15 --retry-delay 1 --retry-connrefused http://localhost:8080/

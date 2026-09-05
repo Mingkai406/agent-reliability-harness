@@ -1,0 +1,548 @@
+[
+  {
+    "scenario": "clean",
+    "mode": "baseline",
+    "adapter": "scripted",
+    "model": null,
+    "passed": true,
+    "checks": {
+      "tenant_isolation": true,
+      "no_duplicate_side_effect": true,
+      "expected_final_state": true,
+      "valid_completion": true,
+      "fault_triggered": true
+    },
+    "refund_count": 1,
+    "refund_total_cents": 2000,
+    "tool_attempts": 1,
+    "retryable_failures": 0,
+    "duration_ms": 2.501,
+    "usage": null,
+    "usage_note": null,
+    "cost_usd": null,
+    "events": [
+      {
+        "seq": 1,
+        "kind": "tool_attempt",
+        "attempt": 1
+      }
+    ]
+  },
+  {
+    "scenario": "clean",
+    "mode": "guarded",
+    "adapter": "scripted",
+    "model": null,
+    "passed": true,
+    "checks": {
+      "tenant_isolation": true,
+      "no_duplicate_side_effect": true,
+      "expected_final_state": true,
+      "valid_completion": true,
+      "fault_triggered": true
+    },
+    "refund_count": 1,
+    "refund_total_cents": 2000,
+    "tool_attempts": 1,
+    "retryable_failures": 0,
+    "duration_ms": 2.446,
+    "usage": null,
+    "usage_note": null,
+    "cost_usd": null,
+    "events": [
+      {
+        "seq": 1,
+        "kind": "tool_attempt",
+        "attempt": 1
+      }
+    ]
+  },
+  {
+    "scenario": "timeout_before_commit",
+    "mode": "baseline",
+    "adapter": "scripted",
+    "model": null,
+    "passed": true,
+    "checks": {
+      "tenant_isolation": true,
+      "no_duplicate_side_effect": true,
+      "expected_final_state": true,
+      "valid_completion": true,
+      "fault_triggered": true
+    },
+    "refund_count": 1,
+    "refund_total_cents": 2000,
+    "tool_attempts": 2,
+    "retryable_failures": 1,
+    "duration_ms": 4.8,
+    "usage": null,
+    "usage_note": null,
+    "cost_usd": null,
+    "events": [
+      {
+        "seq": 1,
+        "kind": "tool_attempt",
+        "attempt": 1
+      },
+      {
+        "seq": 2,
+        "kind": "fault_injected",
+        "fault": "before_timeout"
+      },
+      {
+        "seq": 3,
+        "kind": "retryable_failure",
+        "reason": "TransientFailure"
+      },
+      {
+        "seq": 4,
+        "kind": "tool_attempt",
+        "attempt": 2
+      }
+    ]
+  },
+  {
+    "scenario": "timeout_before_commit",
+    "mode": "guarded",
+    "adapter": "scripted",
+    "model": null,
+    "passed": true,
+    "checks": {
+      "tenant_isolation": true,
+      "no_duplicate_side_effect": true,
+      "expected_final_state": true,
+      "valid_completion": true,
+      "fault_triggered": true
+    },
+    "refund_count": 1,
+    "refund_total_cents": 2000,
+    "tool_attempts": 2,
+    "retryable_failures": 1,
+    "duration_ms": 4.788,
+    "usage": null,
+    "usage_note": null,
+    "cost_usd": null,
+    "events": [
+      {
+        "seq": 1,
+        "kind": "tool_attempt",
+        "attempt": 1
+      },
+      {
+        "seq": 2,
+        "kind": "fault_injected",
+        "fault": "before_timeout"
+      },
+      {
+        "seq": 3,
+        "kind": "retryable_failure",
+        "reason": "TransientFailure"
+      },
+      {
+        "seq": 4,
+        "kind": "tool_attempt",
+        "attempt": 2
+      }
+    ]
+  },
+  {
+    "scenario": "rate_limited",
+    "mode": "baseline",
+    "adapter": "scripted",
+    "model": null,
+    "passed": true,
+    "checks": {
+      "tenant_isolation": true,
+      "no_duplicate_side_effect": true,
+      "expected_final_state": true,
+      "valid_completion": true,
+      "fault_triggered": true
+    },
+    "refund_count": 1,
+    "refund_total_cents": 2000,
+    "tool_attempts": 2,
+    "retryable_failures": 1,
+    "duration_ms": 4.388,
+    "usage": null,
+    "usage_note": null,
+    "cost_usd": null,
+    "events": [
+      {
+        "seq": 1,
+        "kind": "tool_attempt",
+        "attempt": 1
+      },
+      {
+        "seq": 2,
+        "kind": "fault_injected",
+        "fault": "rate_limit"
+      },
+      {
+        "seq": 3,
+        "kind": "retryable_failure",
+        "reason": "TransientFailure"
+      },
+      {
+        "seq": 4,
+        "kind": "tool_attempt",
+        "attempt": 2
+      }
+    ]
+  },
+  {
+    "scenario": "rate_limited",
+    "mode": "guarded",
+    "adapter": "scripted",
+    "model": null,
+    "passed": true,
+    "checks": {
+      "tenant_isolation": true,
+      "no_duplicate_side_effect": true,
+      "expected_final_state": true,
+      "valid_completion": true,
+      "fault_triggered": true
+    },
+    "refund_count": 1,
+    "refund_total_cents": 2000,
+    "tool_attempts": 2,
+    "retryable_failures": 1,
+    "duration_ms": 4.964,
+    "usage": null,
+    "usage_note": null,
+    "cost_usd": null,
+    "events": [
+      {
+        "seq": 1,
+        "kind": "tool_attempt",
+        "attempt": 1
+      },
+      {
+        "seq": 2,
+        "kind": "fault_injected",
+        "fault": "rate_limit"
+      },
+      {
+        "seq": 3,
+        "kind": "retryable_failure",
+        "reason": "TransientFailure"
+      },
+      {
+        "seq": 4,
+        "kind": "tool_attempt",
+        "attempt": 2
+      }
+    ]
+  },
+  {
+    "scenario": "lost_response_after_commit",
+    "mode": "baseline",
+    "adapter": "scripted",
+    "model": null,
+    "passed": false,
+    "checks": {
+      "tenant_isolation": true,
+      "no_duplicate_side_effect": false,
+      "expected_final_state": false,
+      "valid_completion": true,
+      "fault_triggered": true
+    },
+    "refund_count": 2,
+    "refund_total_cents": 4000,
+    "tool_attempts": 2,
+    "retryable_failures": 1,
+    "duration_ms": 4.654,
+    "usage": null,
+    "usage_note": null,
+    "cost_usd": null,
+    "events": [
+      {
+        "seq": 1,
+        "kind": "tool_attempt",
+        "attempt": 1
+      },
+      {
+        "seq": 2,
+        "kind": "fault_injected",
+        "fault": "after_commit_timeout"
+      },
+      {
+        "seq": 3,
+        "kind": "retryable_failure",
+        "reason": "TransientFailure"
+      },
+      {
+        "seq": 4,
+        "kind": "tool_attempt",
+        "attempt": 2
+      }
+    ]
+  },
+  {
+    "scenario": "lost_response_after_commit",
+    "mode": "guarded",
+    "adapter": "scripted",
+    "model": null,
+    "passed": true,
+    "checks": {
+      "tenant_isolation": true,
+      "no_duplicate_side_effect": true,
+      "expected_final_state": true,
+      "valid_completion": true,
+      "fault_triggered": true
+    },
+    "refund_count": 1,
+    "refund_total_cents": 2000,
+    "tool_attempts": 2,
+    "retryable_failures": 1,
+    "duration_ms": 5.131,
+    "usage": null,
+    "usage_note": null,
+    "cost_usd": null,
+    "events": [
+      {
+        "seq": 1,
+        "kind": "tool_attempt",
+        "attempt": 1
+      },
+      {
+        "seq": 2,
+        "kind": "fault_injected",
+        "fault": "after_commit_timeout"
+      },
+      {
+        "seq": 3,
+        "kind": "retryable_failure",
+        "reason": "TransientFailure"
+      },
+      {
+        "seq": 4,
+        "kind": "tool_attempt",
+        "attempt": 2
+      }
+    ]
+  },
+  {
+    "scenario": "malformed_response_after_commit",
+    "mode": "baseline",
+    "adapter": "scripted",
+    "model": null,
+    "passed": false,
+    "checks": {
+      "tenant_isolation": true,
+      "no_duplicate_side_effect": true,
+      "expected_final_state": true,
+      "valid_completion": false,
+      "fault_triggered": true
+    },
+    "refund_count": 1,
+    "refund_total_cents": 2000,
+    "tool_attempts": 1,
+    "retryable_failures": 0,
+    "duration_ms": 2.163,
+    "usage": null,
+    "usage_note": null,
+    "cost_usd": null,
+    "events": [
+      {
+        "seq": 1,
+        "kind": "tool_attempt",
+        "attempt": 1
+      },
+      {
+        "seq": 2,
+        "kind": "fault_injected",
+        "fault": "malformed_response"
+      }
+    ]
+  },
+  {
+    "scenario": "malformed_response_after_commit",
+    "mode": "guarded",
+    "adapter": "scripted",
+    "model": null,
+    "passed": true,
+    "checks": {
+      "tenant_isolation": true,
+      "no_duplicate_side_effect": true,
+      "expected_final_state": true,
+      "valid_completion": true,
+      "fault_triggered": true
+    },
+    "refund_count": 1,
+    "refund_total_cents": 2000,
+    "tool_attempts": 2,
+    "retryable_failures": 1,
+    "duration_ms": 5.286,
+    "usage": null,
+    "usage_note": null,
+    "cost_usd": null,
+    "events": [
+      {
+        "seq": 1,
+        "kind": "tool_attempt",
+        "attempt": 1
+      },
+      {
+        "seq": 2,
+        "kind": "fault_injected",
+        "fault": "malformed_response"
+      },
+      {
+        "seq": 3,
+        "kind": "retryable_failure",
+        "reason": "InvalidResponse"
+      },
+      {
+        "seq": 4,
+        "kind": "tool_attempt",
+        "attempt": 2
+      }
+    ]
+  },
+  {
+    "scenario": "interrupted_after_commit",
+    "mode": "baseline",
+    "adapter": "scripted",
+    "model": null,
+    "passed": false,
+    "checks": {
+      "tenant_isolation": true,
+      "no_duplicate_side_effect": false,
+      "expected_final_state": false,
+      "valid_completion": true,
+      "fault_triggered": true
+    },
+    "refund_count": 2,
+    "refund_total_cents": 4000,
+    "tool_attempts": 2,
+    "retryable_failures": 0,
+    "duration_ms": 4.301,
+    "usage": null,
+    "usage_note": "Unavailable across interrupted invocations",
+    "cost_usd": null,
+    "events": [
+      {
+        "seq": 1,
+        "kind": "tool_attempt",
+        "attempt": 1
+      },
+      {
+        "seq": 2,
+        "kind": "fault_injected",
+        "fault": "interrupted_run"
+      },
+      {
+        "seq": 3,
+        "kind": "worker_interrupted",
+        "restart": 0
+      },
+      {
+        "seq": 4,
+        "kind": "tool_attempt",
+        "attempt": 1
+      }
+    ]
+  },
+  {
+    "scenario": "interrupted_after_commit",
+    "mode": "guarded",
+    "adapter": "scripted",
+    "model": null,
+    "passed": true,
+    "checks": {
+      "tenant_isolation": true,
+      "no_duplicate_side_effect": true,
+      "expected_final_state": true,
+      "valid_completion": true,
+      "fault_triggered": true
+    },
+    "refund_count": 1,
+    "refund_total_cents": 2000,
+    "tool_attempts": 2,
+    "retryable_failures": 0,
+    "duration_ms": 5.393,
+    "usage": null,
+    "usage_note": "Unavailable across interrupted invocations",
+    "cost_usd": null,
+    "events": [
+      {
+        "seq": 1,
+        "kind": "tool_attempt",
+        "attempt": 1
+      },
+      {
+        "seq": 2,
+        "kind": "fault_injected",
+        "fault": "interrupted_run"
+      },
+      {
+        "seq": 3,
+        "kind": "worker_interrupted",
+        "restart": 0
+      },
+      {
+        "seq": 4,
+        "kind": "tool_attempt",
+        "attempt": 1
+      }
+    ]
+  },
+  {
+    "scenario": "cross_tenant_request",
+    "mode": "baseline",
+    "adapter": "scripted",
+    "model": null,
+    "passed": true,
+    "checks": {
+      "tenant_isolation": true,
+      "no_duplicate_side_effect": true,
+      "expected_final_state": true,
+      "valid_completion": true,
+      "fault_triggered": true
+    },
+    "refund_count": 0,
+    "refund_total_cents": 0,
+    "tool_attempts": 0,
+    "retryable_failures": 0,
+    "duration_ms": 1.153,
+    "usage": null,
+    "usage_note": null,
+    "cost_usd": null,
+    "events": [
+      {
+        "seq": 1,
+        "kind": "denied",
+        "tool": "lookup_order"
+      }
+    ]
+  },
+  {
+    "scenario": "cross_tenant_request",
+    "mode": "guarded",
+    "adapter": "scripted",
+    "model": null,
+    "passed": true,
+    "checks": {
+      "tenant_isolation": true,
+      "no_duplicate_side_effect": true,
+      "expected_final_state": true,
+      "valid_completion": true,
+      "fault_triggered": true
+    },
+    "refund_count": 0,
+    "refund_total_cents": 0,
+    "tool_attempts": 0,
+    "retryable_failures": 0,
+    "duration_ms": 1.253,
+    "usage": null,
+    "usage_note": null,
+    "cost_usd": null,
+    "events": [
+      {
+        "seq": 1,
+        "kind": "denied",
+        "tool": "lookup_order"
+      }
+    ]
+  }
+]

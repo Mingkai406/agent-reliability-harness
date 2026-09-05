@@ -1,0 +1,77 @@
+{
+  "config": {
+    "scenarios": [
+      {
+        "name": "clean",
+        "fault": "none",
+        "actor": "tenant-a",
+        "order": "order-a",
+        "amount_cents": 2000,
+        "expected": "refunded"
+      },
+      {
+        "name": "timeout_before_commit",
+        "fault": "before_timeout",
+        "actor": "tenant-a",
+        "order": "order-a",
+        "amount_cents": 2000,
+        "expected": "refunded"
+      },
+      {
+        "name": "rate_limited",
+        "fault": "rate_limit",
+        "actor": "tenant-a",
+        "order": "order-a",
+        "amount_cents": 2000,
+        "expected": "refunded"
+      },
+      {
+        "name": "lost_response_after_commit",
+        "fault": "after_commit_timeout",
+        "actor": "tenant-a",
+        "order": "order-a",
+        "amount_cents": 2000,
+        "expected": "refunded"
+      },
+      {
+        "name": "malformed_response_after_commit",
+        "fault": "malformed_response",
+        "actor": "tenant-a",
+        "order": "order-a",
+        "amount_cents": 2000,
+        "expected": "refunded"
+      },
+      {
+        "name": "interrupted_after_commit",
+        "fault": "interrupted_run",
+        "actor": "tenant-a",
+        "order": "order-a",
+        "amount_cents": 2000,
+        "expected": "refunded"
+      },
+      {
+        "name": "cross_tenant_request",
+        "fault": "none",
+        "actor": "tenant-a",
+        "order": "order-b",
+        "amount_cents": 2000,
+        "expected": "denied"
+      }
+    ],
+    "adapter": "scripted",
+    "model": null,
+    "max_tool_attempts": 3,
+    "max_restarts": 1,
+    "max_llm_calls_per_invocation": 8,
+    "adk_timeout_seconds": 60
+  },
+  "config_sha256": "f12faf350044fa4cc770b27caa29f48f8c1019d31b4e19ce6c09719c710d3e6f",
+  "python": "3.12.13",
+  "packages": {
+    "agent-reliability-harness": "0.1.0",
+    "google-adk": "2.8.0",
+    "opentelemetry-sdk": "1.42.1"
+  },
+  "measurement": "synthetic scripted controls",
+  "limitations": "Seven synthetic scenarios; no production claims. Cost unmeasured."
+}
