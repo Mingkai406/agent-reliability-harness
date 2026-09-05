@@ -100,6 +100,27 @@ async def test_adk_loop_budget_stops_agent_without_duplicate_refunds(tmp_path):
         provider.shutdown()
 
 
+class FailingProviderModel(BaseLlm):
+    model: str = "offline-error-double"
+
+    async def generate_content_async(self, llm_request, stream=False):
+        raise RuntimeError("synthetic-sensitive-provider-detail")
+        yield  # Keep the provider interface an async generator.
+
+
+async def test_provider_error_details_are_not_written_to_traces(tmp_path):
+    store = Store(tmp_path / "state.sqlite")
+    trace = tmp_path / "trace.jsonl"
+    provider = provider_for(trace)
+    gateway = Gateway(store, SCENARIOS[0], "guarded", provider.get_tracer("test"))
+    try:
+        with pytest.raises(RuntimeError):
+            await run_adk(gateway, FailingProviderModel())
+    finally:
+        provider.shutdown()
+    assert "synthetic-sensitive-provider-detail" not in trace.read_text()
+
+
 class LyingModel(BaseLlm):
     model: str = "offline-lying-double"
 

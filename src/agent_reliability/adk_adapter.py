@@ -71,7 +71,9 @@ async def run_adk(gateway, model, *, timeout_seconds=60):
                 )
             ],
         )
-        with gateway.tracer.start_as_current_span("agent.adk.run"):
+        with gateway.tracer.start_as_current_span(
+            "agent.adk.run", record_exception=False, set_status_on_exception=False
+        ):
             async for event in runner.run_async(
                 user_id="synthetic-user",
                 session_id=session_id,
