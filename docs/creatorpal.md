@@ -2,6 +2,8 @@
 
 This suite applies external faults to the real CreatorPal research tools. It uses a versioned artifact snapshot and its own grader, never importing CreatorPal's `completed` or `score` function. This makes the Harness useful for another application, beyond the original synthetic refund service.
 
+See the [testing guide](testing.md) for the complete regression sequence, expected results, container checks and live-model boundaries.
+
 ## Install and run
 
 ```sh
