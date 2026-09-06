@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "kv-lost-ack",
+      "adapter": "kv",
+      "faults": [{"tool": "save", "phase": "after", "kind": "lost_ack"}],
+      "expected": "completed"
+    }
+  ]
+}

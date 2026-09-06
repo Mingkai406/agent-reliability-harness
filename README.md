@@ -1,195 +1,224 @@
 # Agent Reliability Harness
 
+**Verify the outcome. Not just the answer.**
+
 [![CI](https://github.com/Mingkai406/agent-reliability-harness/actions/workflows/ci.yml/badge.svg)](https://github.com/Mingkai406/agent-reliability-harness/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/python-3.11%2B-3776AB)](pyproject.toml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-**If an agent retries a tool call after a timeout, did the refund happen twice?**
+A reusable fault-injection and state-verification framework for tool-using applications.
+Test whether an agent's work **actually committed correctly** when a tool times out, a reply
+is malformed, an acknowledgment disappears, or execution stops between steps.
 
-A small, runnable fault-injection lab for tool-using agents. It compares retry-only execution
-with validated, idempotent execution, then grades the **actual database state** rather than
-trusting the agent's claim of success. Built with Python, Google ADK, SQLite, and OpenTelemetry.
+**Python · Google ADK integration · SQLite · OpenTelemetry · Docker · GitHub Actions**
 
-This is an independent engineering project using synthetic orders and research fixtures. It contains no V.O.I.C.E.
-code, participant data, payment integration, or clinical evaluation.
+[Quickstart](#run-your-first-experiment) · [Results](examples/showcase/report.md) ·
+[Bring your own agent](docs/adapters.md) · [Architecture](docs/architecture.md) ·
+[Testing](docs/testing.md)
 
-## CreatorPal integration
+![Generated experiment report with application filters, state checks and separate outcome counts](docs/assets/report-preview.png)
 
-The second application adapter tests actual research tools: retrieval, rules lookup, restricted Python analytics and report submission. Eight scenarios cover timeouts, malformed responses, interrupted execution, lost acknowledgments and false completion. An independent snapshot grader validates committed artifacts and citations. **[Install, run and understand the boundaries](docs/creatorpal.md)** · **[Offline example](examples/creatorpal/report.md)** · **[Testing guide and acceptance criteria](docs/testing.md)**
+## What it does
+
+- **Inject reproducible faults.** Configure tool, before/after boundary, failure kind, occurrence
+  and repetition in JSON. A durable fault journal tracks injections across worker restarts.
+- **Check the real result.** Application-specific oracles inspect database records, files,
+  citations and receipts independently of an agent's success message.
+- **Exercise recovery.** Test retries, idempotent writes, checkpoint recovery and the gap between
+  a committed side effect and its acknowledgment. The application owns its recovery policy.
+- **Keep the evidence.** Save configuration and source fingerprints, state snapshots,
+  fault events, OpenTelemetry traces, JSON results and a filterable HTML report.
+- **Connect another application.** Implement three adapter methods and register a local plugin.
+  The runner and fault engine remain unchanged.
+
+## Three applications, one experiment contract
+
+| Application | Real execution boundary | Independently verified outcome |
+|---|---|---|
+| **Refund service** | Authorized writes to a transactional SQLite service | One refund, correct amount, tenant scope and a receipt matching committed state |
+| **CreatorPal research agent** | Real ADK Runner, retrieval, rules lookup, restricted Python analytics and report submission | One committed report, valid evidence references, required sources, analysis and matching receipt |
+| **Artifact workflow** | Retrieve records → build summary → commit artifact → export file | Correct aggregate, one database commit, matching file bytes and a durable checkpoint |
+
+The refund baseline deliberately omits operation keys and response validation. CreatorPal
+includes a model double that falsely claims completion. These negative controls test whether
+the grader detects a specific failure; they are not successful tasks.
+
+## Run your first experiment
+
+Python 3.11+; development and ADK integration are tested with Python 3.12.
+From a clone of this repository:
 
 ```sh
-pip install -e '.[adk,dev]'
-pip install -r integration/creatorpal-requirements.txt
-agent-reliability creatorpal
-```
-
-The offline control passes eight expected scenarios: six completed research tasks and two correctly rejected failures. This is implementation verification with deterministic model doubles, not a live LLM reliability benchmark. The original refund experiment follows below.
-
-## Verification and live-model status
-
-[CI](https://github.com/Mingkai406/agent-reliability-harness/actions/workflows/ci.yml) runs 53 tests with the pinned CreatorPal integration, both offline experiment suites, package builds and a container smoke test. The [testing guide](docs/testing.md) provides exact commands, expected failures and artifact inspection steps. CreatorPal's 8/8 result is an offline control; the live refund runner is available separately, and live CreatorPal quality comparisons run in that application's CLI.
-
-## Run it without a model key
-
-Python 3.11+; development and ADK integration tested on Python 3.12.
-
-```bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -e .
-agent-reliability demo
+agent-reliability run
 ```
 
-The command writes `runs/run-<id>/index.html`, a Markdown report, machine-readable results,
-a configuration manifest, and per-case SQLite state and OpenTelemetry traces.
-Open the generated `index.html` in a browser. An example report is in
-[`examples/scripted-report.md`](examples/scripted-report.md).
+Open the printed `runs/suite-<id>/index.html`. The **core profile runs 24 cases across the refund
+and artifact applications**, without model credentials or optional application dependencies.
+Filter by application or unexpected outcome; expand a case to inspect its invariant checks.
 
-### What the experiment shows
+For all three applications, install the pinned CreatorPal integration:
 
-| Scenario | Retry-only baseline | Guarded execution | Failure being tested |
-|---|---|---|---|
-| Clean run | Pass | Pass | Control |
-| Timeout before commit | Pass | Pass | Safe transient retry |
-| Rate limit | Pass | Pass | Bounded retry |
-| Lost response after commit | Fail: two refunds | Pass: one refund | Ambiguous outcome |
-| Malformed response after commit | Fail: invalid receipt | Pass: valid receipt | Response contract |
-| Interrupted after commit | Fail: two refunds | Pass: one refund | Resume before checkpoint |
-| Cross-tenant request | Pass: denied | Pass: denied | Identity boundary |
+```sh
+pip install -e '.[adk]'
+pip install -r integration/creatorpal-requirements.txt
+agent-reliability run --profile full
+```
 
-These **4/7 vs. 7/7 results are deterministic scripted controls**, not measured Gemini
-performance or a production reliability estimate. Each case starts with fresh state. The
-baseline intentionally omits operation keys and receipt validation; both modes enforce
-authorization. This comparison tests the combined controls, not each control's causal effect.
+This uses CreatorPal's real tools and ADK Runner with deterministic model doubles. It makes
+**no live model calls**. Missing optional dependencies produce an error; they are not silently
+counted as covered applications.
 
-## Architecture
+## Read the results correctly
+
+The committed [full example](examples/showcase/report.md) contains:
+
+| Application | Cases matching expectation | Completed tasks | Safe rejections | Detected negative controls |
+|---|---:|---:|---:|---:|
+| Refund service | 14/14 | 9 | 2 | 3 |
+| Artifact workflow | 10/10 | 9 | 1 | 0 |
+| CreatorPal | 8/8 | 6 | 1 | 1 |
+| **Total** | **32/32** | **24** | **4** | **4** |
+
+A case passes only when **its observed outcome matches its declared expectation and every
+scheduled injection fires**. Negative controls must also fail exactly the named invariant
+checks. An adapter exception or an unreached fault cannot pass as a detected negative control.
+
+These are deterministic engineering controls, not a 100% model-reliability claim. Durations
+measure local execution; model usage and cost remain unmeasured. See the
+[manifest](examples/showcase/manifest.json) and [machine-readable results](examples/showcase/results.json).
+
+## Configure the failure, preserve the oracle
+
+Save this as `suite.json`:
+
+```json
+{
+  "schema_version": 1,
+  "cases": [{
+    "id": "artifact-lost-ack",
+    "adapter": "artifact",
+    "faults": [{
+      "tool": "commit_artifact",
+      "phase": "after",
+      "kind": "lost_ack",
+      "occurrence": 1,
+      "repeat": 1
+    }],
+    "expected": "completed"
+  }]
+}
+```
+
+```sh
+agent-reliability run --suite suite.json
+```
+
+The artifact commits, its acknowledgment is lost, and the workflow retries. The grader then
+requires one committed artifact and a matching exported file. Change the schedule without
+changing the success criteria. See the complete [core](examples/suites/core.json) and
+[full](examples/suites/full.json) configurations.
+
+| Before a tool | After a tool |
+|---|---|
+| Timeout, rate limit, controlled interruption, permanent error | Lost acknowledgment, malformed response, controlled interruption |
+
+Faults are injected at instrumented boundaries. A rate-limit case raises a synthetic retryable
+failure; it does not emulate a provider's HTTP quota policy.
+
+## Bring your own agent
+
+The adapter separates application execution from independent assessment:
+
+```python
+class ApplicationAdapter:
+    def validate(self, case): ...
+    async def execute(self, case, directory, faults, tracer): ...
+    def assess(self, case, execution): ...
+```
+
+An executable fourth example demonstrates external registration without editing the framework:
+
+```sh
+PYTHONPATH=examples agent-reliability run \
+  --plugin kv=custom_adapter:create_adapter \
+  --suite examples/suites/custom.json
+```
+
+It performs an actual idempotent SQLite write and retries a lost acknowledgment. Replace its
+tool boundary and state oracle with your own. The [adapter guide](docs/adapters.md) explains
+sync/async integration, error translation, configuration validation and negative controls.
+
+## How execution becomes evidence
 
 ```mermaid
 flowchart LR
-    S[Scenario and run manifest] --> A[Scripted client or Google ADK agent]
-    A --> G[Tool gateway: scope, retry budget, receipt validation]
-    G --> F[One-shot fault injection]
-    F --> D[(SQLite service: refunds and operation journal)]
-    A --> C[(Completion checkpoint)]
-    D --> E[State-based grader]
-    A --> E
-    G --> T[OpenTelemetry JSONL spans]
-    E --> R[HTML, Markdown and JSON report]
+    S[Versioned suite] --> R[Experiment runner]
+    R --> A[Application adapter]
+    A --> T[Agent and real tools]
+    F[Shared durable fault engine] --> T
+    T --> D[(Committed state and artifacts)]
+    D --> G[Independent state oracle]
+    G --> O[HTML / JSON / Markdown]
+    R --> M[Configuration and source fingerprints]
+    A --> E[OpenTelemetry traces]
 ```
 
-- **Agent:** the ADK `LlmAgent` discovers and calls `lookup_order` and `issue_refund` through
-  the real `Runner`. The offline demo uses a deterministic client over the same boundary.
-- **Authority:** the host binds tenant identity, order, amount, and operation key. These are
-  never permissions that a model can grant itself. Tool arguments cannot expand the task.
-- **Durability:** one SQLite transaction commits the side effect and operation receipt.
-  Repeated requests with the same key return that receipt. Reusing a key with changed
-  arguments is rejected. Concurrent balance checks run inside the transaction.
-- **Recovery:** after a simulated interruption, a fresh client opens the same service state.
-  The operation journal closes the gap between a successful refund and the agent checkpoint.
-  ADK conversation history is in memory and is not restored; the business request is resumed.
-- **Evaluation:** a pass requires the intended final state, at most one refund, tenant
-  isolation, a receipt matching a real refund, and execution of the requested fault.
-- **Observability:** local OpenTelemetry spans link a case to agent/tool execution. The
-  event log records injected faults, attempts, denials, and interruptions. No remote exporter
-  is configured. Live inference itself sends synthetic task content to the selected provider.
+The harness measures controls; it does not supply a production workflow scheduler. SQLite
+transactions provide the local service guarantees in these examples. A real external API needs
+its own idempotency or reconciliation contract. The artifact application reconciles a file from
+committed database content; it does not claim an atomic transaction across SQLite and a filesystem.
 
-The transaction guarantee belongs to the **simulated service**. A local journal alone cannot
-make an arbitrary external payment API exactly-once; that API needs its own idempotency
-contract or reconciliation protocol. The single operation key is scoped to one task database.
+## Verify restart recovery
 
-## Exercise the real ADK adapter
+```sh
+agent-reliability artifact-worker --directory runs/recovery
+# Exits 75 after the database commit, before file export and completion checkpoint.
 
-```bash
-pip install -e ".[adk]"
-export GOOGLE_API_KEY="your-key"
-agent-reliability evaluate --model YOUR_GEMINI_MODEL --output runs/adk
+agent-reliability artifact-worker --directory runs/recovery
+# A fresh process exports the committed content and returns the original artifact digest.
 ```
 
-Alternatively configure Vertex AI authentication following the
-[official ADK Python quickstart](https://adk.dev/get-started/python/), set
-`GOOGLE_GENAI_USE_VERTEXAI=true`, and provide your project and location.
-Use a model available in your account; there is no implicit model or provider selection.
+Tests also forcibly kill a child process between database commit and file export, then verify
+recovery in another process. Further checks cover concurrent scheduling, corrupted snapshots,
+retry exhaustion, missing injections, changed task bindings and external plugin execution.
 
-`evaluate` runs 14 cases with actual model inference and may incur provider charges. Each
-invocation allows at most 8 model calls, has a 60-second timeout, and allows one restart after
-the designated interruption. Each tool invocation allows 3 attempts. Provider errors produce
-failed case records, not manufactured successes. Interruptions can consume additional tokens.
+## Development and deployment
 
-Results identify the model, package versions, configuration hash, token usage when returned
-by ADK, and end-to-end duration. Cost is left `null`; usage across interrupted invocations is
-also `null` rather than an incomplete total. Raw provider error messages are not persisted.
-Run the same scenarios separately for another model to compare artifacts. One live trial is
-insufficient to rank models: repeat trials and report variability before drawing conclusions.
-
-**Current evidence:** ADK tool calling is integration-tested with an offline model double.
-No live Gemini/Vertex model benchmark is claimed in the committed results.
-
-## Verify process recovery
-
-```bash
-agent-reliability worker --db runs/resume.sqlite \
-  --scenario interrupted_after_commit --mode guarded
-# Exits 75 after the service commit and before the completion checkpoint.
-
-agent-reliability worker --db runs/resume.sqlite \
-  --scenario interrupted_after_commit --mode guarded
-# A new process returns the original receipt; exactly one refund exists.
+```sh
+uv sync --locked --extra adk --extra dev
+uv pip install --python .venv/bin/python -r integration/creatorpal-requirements.txt
+uv run --no-sync pytest -q
+uv run --no-sync ruff check .
+uv run --no-sync ruff format --check .
+uv run --no-sync python -m build
 ```
 
-The fault marker is durable and injected once. Reusing the database with a different scenario
-or mode is rejected. This is a controlled interruption test, not a power-loss or SIGKILL test.
+CI runs the tests, the full 32-case profile, the original application suites, package builds and
+an HTTP smoke test of the container. Generated run evidence is uploaded as a CI artifact.
 
-## Development
-
-```bash
-pip install -e ".[adk,dev]"
-ruff check .
-ruff format --check .
-pytest -q
-python -m build
-```
-
-Tests cover the scenario matrix, duplicate concurrent requests, atomic balance enforcement,
-cross-tenant access, changed operation payloads, retry exhaustion, forged completions,
-subprocess recovery, span parentage, and the real ADK tool loop with offline model doubles.
-CI runs these without API keys and uploads a fresh synthetic report.
-
-For the committed dependency versions, use `uv sync --locked --extra adk --extra dev`,
-then prefix the development commands with `uv run --frozen`. The `uv.lock` file records the
-resolved environment; the initial integration run used Google ADK 2.8.0 and OpenTelemetry 1.42.1.
-
-## Container and Cloud Run
-
-```bash
+```sh
 docker build -t agent-reliability-harness .
 docker run --rm -p 8080:8080 agent-reliability-harness
 ```
 
-This container generates and serves a **static synthetic demonstration**. It exposes no live
-model execution endpoint and needs no API keys. See the [Cloud Run deployment recipe](docs/cloud-run.md).
-Cloud deployment is a separate step; a recipe is not evidence of a deployed service. SQLite
-files here are local experiment artifacts, not durable state shared by Cloud Run instances.
+The container serves the **core report across two applications** at `http://localhost:8080`.
+It exposes no model-execution API. The [Cloud Run recipe](docs/cloud-run.md) describes optional
+hosting; no cloud deployment or large-scale distributed performance is claimed.
 
-## Relationship to other projects
+## Further reading
 
-| Project | Its focus | This project's narrower question |
-|---|---|---|
-| [Google ADK](https://github.com/google/adk-python) | Building and running agents | Does an ADK tool workflow preserve business invariants during failures? |
-| [Inspect AI](https://github.com/UKGovernmentBEIS/inspect_ai) | Extensible model and agent evaluation | Can a small state oracle detect duplicate side effects and false completion? |
-| [τ-bench](https://github.com/sierra-research/tau2-bench) | Stateful agents in realistic service domains | What happens at the commit/acknowledgement boundary under injected failures? |
-| [AgentOps Bench](https://github.com/kunwarshivam/agentops-bench) | Agent recovery under tool and state faults | A compact ADK example with transactional receipts and reproducible local artifacts |
+- [Architecture and guarantee boundaries](docs/architecture.md)
+- [Adapter authoring and fault configuration](docs/adapters.md)
+- [Tests, expected outcomes and live-model validation](docs/testing.md)
+- [Refund baseline, guarded execution and optional live ADK runner](docs/refunds.md)
+- [CreatorPal integration and snapshot contract](docs/creatorpal.md)
 
-Fault injection, idempotency, and state-based evaluation are established techniques. This
-project claims an inspectable implementation and tested failure cases, not a new benchmark
-standard or a research novelty. It is a single-agent tool-execution lab, not a multi-agent framework.
+The original `demo`, `evaluate`, `worker`, `creatorpal` and `serve-demo` commands remain available.
+Only `evaluate --model ...` deliberately runs live inference; model benchmarking is a separate
+validation step. This repository uses synthetic fixtures and contains no V.O.I.C.E. participant
+data or payment-provider integration.
 
-## Next experiments
-
-- Run repeated live-model trials and compare success, retries, tokens, and latency.
-- Add ablations separating idempotency, response validation, and completion checkpoints.
-- Introduce a real HTTP service with its own operation keys and reconciliation endpoint.
-- Extend the scenario set to stale reads, cancellation races, and multi-agent contention.
-
-These are future work, not implemented results.
-
-## License
-
-MIT. See [LICENSE](LICENSE).
+MIT · [License](LICENSE)

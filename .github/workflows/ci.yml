@@ -21,6 +21,7 @@ jobs:
       - run: uv run --no-sync python -m build
       - run: uv run --no-sync agent-reliability demo --output runs
       - run: uv run --no-sync agent-reliability creatorpal --output runs
+      - run: uv run --no-sync agent-reliability run --profile full --output runs
       - uses: actions/upload-artifact@v4
         with:
           name: synthetic-experiment-report
@@ -30,4 +31,5 @@ jobs:
         run: |
           docker run -d --name harness -p 8080:8080 agent-reliability-harness
           trap 'docker logs harness; docker rm -f harness' EXIT
-          curl --fail --retry 15 --retry-delay 1 --retry-all-errors --max-time 5 http://localhost:8080/
+          curl --fail --retry 15 --retry-delay 1 --retry-all-errors --max-time 5 http://localhost:8080/ -o /tmp/report.html
+          python -c 'from pathlib import Path; s = Path("/tmp/report.html").read_text(); assert "24/24" in s and "artifact" in s and "refund" in s'

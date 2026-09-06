@@ -1,84 +1,89 @@
-# Testing the Agent Reliability Harness
+# Testing and interpreting the evidence
 
-The Harness contains two application suites. The refund suite checks its SQLite service directly; the CreatorPal suite injects external tool faults and grades versioned application snapshots. Run commands from the Harness repository root.
+Run from the repository root. The engineering checks below need no model credentials.
 
-## 1. Install the pinned integration and run tests
+## Full checks
 
 ```sh
 uv sync --locked --extra adk --extra dev
 uv pip install --python .venv/bin/python -r integration/creatorpal-requirements.txt
 uv run --no-sync python -c 'import creatorpal_agent'
+uv run --no-sync ruff check .
+uv run --no-sync ruff format --check .
 uv run --no-sync pytest -q
+uv run --no-sync python -m build
+uv run --no-sync agent-reliability run --profile full --output runs
 ```
 
-The expected full suite has 53 passing tests: 39 existing refund/ADK checks and 14 CreatorPal integration/grader checks. The explicit import ensures the optional application is installed. Without it, pytest can skip the CreatorPal module; a skipped module does not establish integration coverage. Use `--no-sync` after installing the separate pinned application, or reinstall it after rebuilding the environment.
+The explicit import prevents optional integration tests from silently skipping. Use `--no-sync`
+after installing the separately pinned application, or reinstall it after a dependency sync.
 
-## 2. Run the two fault experiments
+The full profile has 32 cases: **24 completed tasks, 4 safe rejections and 4 detected negative
+controls**. All 32 match expectations in the committed example. The core profile has 24 cases:
+18 completions, 3 safe rejections and 3 detected controls.
 
-```sh
-uv run --no-sync agent-reliability demo --output runs/refund
-uv run --no-sync agent-reliability creatorpal --output runs/creatorpal
-```
+## Regression coverage
 
-Expected results:
+- Refund concurrency, authorization, conflicting payloads and bounded retries.
+- Real ADK tool loops with offline doubles, false completion and sanitized provider errors.
+- CreatorPal recovery, citations, source requirements, analysis and atomic commit checks.
+- Durable shared fault scheduling across concurrent calls and fresh engine instances.
+- Invalid configuration, missed/partial schedules, exact negative controls and plugin loading.
+- Real artifact files, independent numeric/content/receipt checks and corrupted outputs.
+- Separate-process resume before/after commit and after export, with one committed result.
+- A real child-process SIGKILL between database commit and file export, then reconciliation.
 
-| Suite | Expected outcome | What it establishes |
-|---|---|---|
-| Refund | Baseline 4/7, guarded 7/7 | The intentionally incomplete baseline fails ambiguous-outcome cases; combined controls prevent duplicate/invalid refunds in these fixtures |
-| CreatorPal | 8/8 scenarios pass; 6 tasks complete | Recovery works in six cases and two expected failures are rejected without a report |
+Use `pytest -q tests/test_framework.py` for the reusable framework. The original
+`test_reliability.py`, `test_adk.py` and `test_creatorpal.py` retain compatibility coverage.
+ADK dependency deprecation/experimental-feature warnings can appear; they do not replace checks.
 
-The baseline's three failed scenarios are intentional controls. The refund command exits successfully when the guarded cases pass. CreatorPal's analytics-timeout and false-completion cases should **not** become completed research tasks. Counting all eight as successful task completions would be an evaluation error.
+## Inspect the evidence
 
-Both commands print the report path. For CreatorPal, inspect `report.md`, `suite-results.json` and `suite-manifest.json`, then inspect a case's `state-snapshot.json`, `result.json` and `traces.jsonl`. For refunds, open `index.html` and inspect the per-case SQLite state and trace files. All fixtures are synthetic.
+Expand a case in the generated HTML report, then read:
 
-## 3. Inspect recovery and negative controls
+1. `result.json`: expected/observed outcome, invariant checks, fault coverage and error type.
+2. `snapshot.json`: exported final application state.
+3. `faults.sqlite`: injection events and matching-call counters.
+4. `traces.jsonl`: case/tool/fault spans. CreatorPal also saves its own trace and task/corpus/skill
+   manifest in `application/`.
+5. Suite `manifest.json`: full configuration and source fingerprints.
 
-```sh
-uv run --no-sync pytest -q tests/test_creatorpal.py
-```
+A passing case must match the declared outcome and cover the full fault schedule. Negative
+controls must fail exactly the named checks. Generic exceptions do not substitute for state
+violations. Safe rejection is separate from task completion.
 
-The suite should reject corrupted report counts, task IDs, cross-community citations, absent rules, absent analysis, duplicate commit events and forged receipts. The tests change the artifact and, where appropriate, recompute its receipt digest, so a stale hash alone is not the only rejection mechanism.
-
-Look for the scheduled `harness_fault` event and a valid final state. A scenario should not pass merely because no exception escaped. For a lost report acknowledgment, the result must remain one report with a matching receipt. For an execution failure, the expected error must actually have been observed and no report may be committed.
-
-CreatorPal also tests a real process exiting immediately after its report-and-audit transaction, then restarting against that database. To reproduce that specific test, use the [CreatorPal test instructions](https://github.com/Mingkai406/CreatorPal/blob/main/doc/agent/testing.md) and select `test_restart_after_process_dies_after_commit` from `tests_agent/test_research.py`. Harness interruption hooks simulate an interruption at a specific tool boundary; they are not claims about a distributed worker outage.
-
-## 4. Verify the container demo
-
-With Docker running:
+## Container and wheel
 
 ```sh
 docker build -t agent-reliability-harness .
 docker run --rm -p 8080:8080 agent-reliability-harness
 ```
 
-Open `http://localhost:8080/` to view the synthetic refund report. Stop the foreground container when finished. GitHub CI performs this smoke test and requires a successful HTTP response. The container serves the original refund demo; it does not expose a public CreatorPal agent-execution endpoint. CreatorPal's separate analytics container is tested in that repository.
+At `http://localhost:8080/`, the container serves a 24-case core report. It exposes no live
+model-execution endpoint. CI checks HTTP access and uploads generated experiment directories.
+Install the wheel in a fresh environment and run `agent-reliability run` to verify the core
+package works independently, including its packaged HTML template.
 
-## 5. Test real models after configuration
+## Existing commands and live models
 
-These commands have different scopes:
-
-| Command | Model behavior |
+| Command | Scope |
 |---|---|
-| `agent-reliability demo` | Scripted refund control; no model calls |
-| `agent-reliability creatorpal` | Real ADK Runner with deterministic doubles; no live inference |
-| `agent-reliability evaluate --model MODEL_ID` | Live model on the refund fault suite |
-| CreatorPal's `creatorpal-agent compare --adapter adk ...` | Live research-task quality and policy comparison |
+| `run` / `run --profile full` | Shared framework; core/full offline profiles |
+| `run --suite FILE --plugin NAME=MODULE:FACTORY` | Explicit local integration |
+| `serve` | Generate and serve a framework report |
+| `artifact-worker` | One resumable invocation; controlled interruption exits 75 |
+| `demo` / `serve-demo` | Original refund-only scripted report |
+| `creatorpal` | Original CreatorPal offline fault report |
+| `evaluate --model MODEL_ID` | Separate live ADK refund experiment |
 
-The CreatorPal fault CLI currently accepts `scripted` or `offline-adk`; it does not accept a live model ID. A live CreatorPal fault benchmark would require extending that adapter and defining how nondeterministic model failures are scored. Do not label the current 8/8 control as a live-model fault benchmark.
+The legacy refund report has baseline 4/7 and guarded 7/7. Its three baseline failures are
+intentional. Legacy CreatorPal reports 8/8 expected scenarios with 6 completed tasks. The new
+report explicitly separates its false-completion control from safe rejection. Its original
+analytics-timeout injection also remains; the generic profile uses an explicit permanent
+analytics error, with its own configuration and results.
 
-Once credentials and an accessible Gemini model are configured in your shell, the existing refund live suite can be run deliberately:
-
-```sh
-uv run --no-sync agent-reliability evaluate --model "$FAST_MODEL" --output runs/refund-live
-```
-
-This invokes a provider for 14 cases (seven scenarios times two modes), allows multiple calls per task and may incur charges. Do not expect the live numbers to exactly equal the scripted control; record the actual model, failures, configuration and usage. A passing control does not predict a production reliability rate.
-
-For CreatorPal, first run one live task, then a small policy pilot, then a frozen real-data evaluation with repeated trials. The [CreatorPal testing guide](https://github.com/Mingkai406/CreatorPal/blob/main/doc/agent/testing.md) includes commands, metric interpretation and a human-review rubric.
-
-## 6. Reproduce a future failure
-
-Keep the Git commits for both repositories, the pinned integration requirement, scenario manifests and all result artifacts. Describe the fault schedule and expected outcome before rerunning. If the state contract changes, update the external grader and its negative controls together, repin the tested application commit and run the complete CI suite. When only the model changes, preserve task/corpus/skill versions and use fresh task state.
-
-GitHub CI is credential-free. Its uploaded `synthetic-experiment-report` artifact contains both suites' offline results, making later regressions inspectable without exposing provider secrets or private research data.
+Live model validation is deferred. After configuration, `evaluate --model "$FAST_MODEL"`
+deliberately invokes a provider on the refund suite and can incur charges. CreatorPal's own
+`creatorpal-agent compare --adapter adk` evaluates research quality and model/skill policies.
+The shared built-in matrix does not yet offer live-model comparison. Use repeated trials and
+report variability before claiming real success, cost or latency improvements.

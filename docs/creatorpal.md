@@ -1,5 +1,11 @@
 # CreatorPal reliability adapter
 
+For the reusable framework, run `agent-reliability run --profile full` after installation.
+It uses the shared fault engine and unified HTML report across three applications. The
+CreatorPal cases produce six completed tasks, one safe rejection and one detected
+false-completion control. See [adapter authoring](adapters.md) for the actual plugin contract.
+The original `creatorpal` command and its application-specific report are documented below.
+
 This suite applies external faults to the real CreatorPal research tools. It uses a versioned artifact snapshot and its own grader, never importing CreatorPal's `completed` or `score` function. This makes the Harness useful for another application, beyond the original synthetic refund service.
 
 See the [testing guide](testing.md) for the complete regression sequence, expected results, container checks and live-model boundaries.

@@ -1,0 +1,1410 @@
+[
+  {
+    "id": "refund-baseline-clean",
+    "adapter": "refund",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "tenant_scope": true,
+      "one_refund": true,
+      "authorized_amount": true,
+      "receipt_matches_state": true
+    },
+    "receipt": {
+      "status": "refunded",
+      "refund_id": "d4de4eb5-2fa7-40ce-ae71-a4328eedcde4",
+      "order_id": "order-a",
+      "amount_cents": 2000
+    },
+    "measurement": "scripted tools",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [],
+    "fault_events": [],
+    "fault_coverage": true,
+    "duration_ms": 5.02,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "refund-baseline-timeout",
+    "adapter": "refund",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "tenant_scope": true,
+      "one_refund": true,
+      "authorized_amount": true,
+      "receipt_matches_state": true
+    },
+    "receipt": {
+      "status": "refunded",
+      "refund_id": "65113b12-0b5f-443a-90fe-9b4254ace3e1",
+      "order_id": "order-a",
+      "amount_cents": 2000
+    },
+    "measurement": "scripted tools",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "issue_refund",
+        "phase": "before",
+        "kind": "timeout",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "issue_refund",
+        "phase": "before",
+        "kind": "timeout",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 7.069,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "refund-baseline-rate-limit",
+    "adapter": "refund",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "tenant_scope": true,
+      "one_refund": true,
+      "authorized_amount": true,
+      "receipt_matches_state": true
+    },
+    "receipt": {
+      "status": "refunded",
+      "refund_id": "1e12df06-c580-4524-b97d-71148874fd26",
+      "order_id": "order-a",
+      "amount_cents": 2000
+    },
+    "measurement": "scripted tools",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "issue_refund",
+        "phase": "before",
+        "kind": "rate_limit",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "issue_refund",
+        "phase": "before",
+        "kind": "rate_limit",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 7.498,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "refund-baseline-lost-ack",
+    "adapter": "refund",
+    "expected": "violation",
+    "observed": "violation",
+    "scenario_passed": true,
+    "task_completed": false,
+    "checks": {
+      "tenant_scope": true,
+      "one_refund": false,
+      "authorized_amount": false,
+      "receipt_matches_state": true
+    },
+    "receipt": {
+      "status": "refunded",
+      "refund_id": "02f4ae97-f2cf-4168-8baf-a1ec081dbc21",
+      "order_id": "order-a",
+      "amount_cents": 2000
+    },
+    "measurement": "scripted tools",
+    "error_type": null,
+    "expected_failed_checks": [
+      "one_refund",
+      "authorized_amount"
+    ],
+    "faults": [
+      {
+        "tool": "issue_refund",
+        "phase": "after",
+        "kind": "lost_ack",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "issue_refund",
+        "phase": "after",
+        "kind": "lost_ack",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 7.465,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "refund-baseline-malformed",
+    "adapter": "refund",
+    "expected": "violation",
+    "observed": "violation",
+    "scenario_passed": true,
+    "task_completed": false,
+    "checks": {
+      "tenant_scope": true,
+      "one_refund": true,
+      "authorized_amount": true,
+      "receipt_matches_state": false
+    },
+    "receipt": {
+      "harness_invalid_response": true
+    },
+    "measurement": "scripted tools",
+    "error_type": null,
+    "expected_failed_checks": [
+      "receipt_matches_state"
+    ],
+    "faults": [
+      {
+        "tool": "issue_refund",
+        "phase": "after",
+        "kind": "malformed",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "issue_refund",
+        "phase": "after",
+        "kind": "malformed",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 4.462,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "refund-baseline-restart",
+    "adapter": "refund",
+    "expected": "violation",
+    "observed": "violation",
+    "scenario_passed": true,
+    "task_completed": false,
+    "checks": {
+      "tenant_scope": true,
+      "one_refund": false,
+      "authorized_amount": false,
+      "receipt_matches_state": true
+    },
+    "receipt": {
+      "status": "refunded",
+      "refund_id": "da50913d-748f-4dca-8e7c-0786e73b02a1",
+      "order_id": "order-a",
+      "amount_cents": 2000
+    },
+    "measurement": "scripted tools",
+    "error_type": null,
+    "expected_failed_checks": [
+      "one_refund",
+      "authorized_amount"
+    ],
+    "faults": [
+      {
+        "tool": "issue_refund",
+        "phase": "after",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "issue_refund",
+        "phase": "after",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 7.153,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "refund-baseline-tenant-denial",
+    "adapter": "refund",
+    "expected": "rejected",
+    "observed": "rejected",
+    "scenario_passed": true,
+    "task_completed": false,
+    "checks": {
+      "no_side_effect": true,
+      "explicit_denial": true
+    },
+    "receipt": {
+      "status": "denied",
+      "error": "Order unavailable to this actor"
+    },
+    "measurement": "scripted tools",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [],
+    "fault_events": [],
+    "fault_coverage": true,
+    "duration_ms": 3.495,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "refund-guarded-clean",
+    "adapter": "refund",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "tenant_scope": true,
+      "one_refund": true,
+      "authorized_amount": true,
+      "receipt_matches_state": true
+    },
+    "receipt": {
+      "status": "refunded",
+      "refund_id": "6872107c-2115-42b1-ac2d-fbd019c8fa5b",
+      "order_id": "order-a",
+      "amount_cents": 2000
+    },
+    "measurement": "scripted tools",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [],
+    "fault_events": [],
+    "fault_coverage": true,
+    "duration_ms": 4.316,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "refund-guarded-timeout",
+    "adapter": "refund",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "tenant_scope": true,
+      "one_refund": true,
+      "authorized_amount": true,
+      "receipt_matches_state": true
+    },
+    "receipt": {
+      "status": "refunded",
+      "refund_id": "4930f0a2-4b54-46aa-b519-61ade445ce2a",
+      "order_id": "order-a",
+      "amount_cents": 2000
+    },
+    "measurement": "scripted tools",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "issue_refund",
+        "phase": "before",
+        "kind": "timeout",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "issue_refund",
+        "phase": "before",
+        "kind": "timeout",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 7.628,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "refund-guarded-rate-limit",
+    "adapter": "refund",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "tenant_scope": true,
+      "one_refund": true,
+      "authorized_amount": true,
+      "receipt_matches_state": true
+    },
+    "receipt": {
+      "status": "refunded",
+      "refund_id": "3d73ec8d-7027-4a2c-98c7-9c715c31176a",
+      "order_id": "order-a",
+      "amount_cents": 2000
+    },
+    "measurement": "scripted tools",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "issue_refund",
+        "phase": "before",
+        "kind": "rate_limit",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "issue_refund",
+        "phase": "before",
+        "kind": "rate_limit",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 7.948,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "refund-guarded-lost-ack",
+    "adapter": "refund",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "tenant_scope": true,
+      "one_refund": true,
+      "authorized_amount": true,
+      "receipt_matches_state": true
+    },
+    "receipt": {
+      "status": "refunded",
+      "refund_id": "bfedd0bb-83c5-4af7-9c25-b97074423492",
+      "order_id": "order-a",
+      "amount_cents": 2000
+    },
+    "measurement": "scripted tools",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "issue_refund",
+        "phase": "after",
+        "kind": "lost_ack",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "issue_refund",
+        "phase": "after",
+        "kind": "lost_ack",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 7.946,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "refund-guarded-malformed",
+    "adapter": "refund",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "tenant_scope": true,
+      "one_refund": true,
+      "authorized_amount": true,
+      "receipt_matches_state": true
+    },
+    "receipt": {
+      "status": "refunded",
+      "refund_id": "633a645b-a45f-4d54-b249-0dec7f81b934",
+      "order_id": "order-a",
+      "amount_cents": 2000
+    },
+    "measurement": "scripted tools",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "issue_refund",
+        "phase": "after",
+        "kind": "malformed",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "issue_refund",
+        "phase": "after",
+        "kind": "malformed",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 7.378,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "refund-guarded-restart",
+    "adapter": "refund",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "tenant_scope": true,
+      "one_refund": true,
+      "authorized_amount": true,
+      "receipt_matches_state": true
+    },
+    "receipt": {
+      "status": "refunded",
+      "refund_id": "6308145b-a651-4156-ac3a-645f8f6cf3cf",
+      "order_id": "order-a",
+      "amount_cents": 2000
+    },
+    "measurement": "scripted tools",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "issue_refund",
+        "phase": "after",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "issue_refund",
+        "phase": "after",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 6.955,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "refund-guarded-tenant-denial",
+    "adapter": "refund",
+    "expected": "rejected",
+    "observed": "rejected",
+    "scenario_passed": true,
+    "task_completed": false,
+    "checks": {
+      "no_side_effect": true,
+      "explicit_denial": true
+    },
+    "receipt": {
+      "status": "denied",
+      "error": "Order unavailable to this actor"
+    },
+    "measurement": "scripted tools",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [],
+    "fault_events": [],
+    "fault_coverage": true,
+    "duration_ms": 3.149,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "artifact-clean",
+    "adapter": "artifact",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_artifact": true,
+      "source_records": true,
+      "correct_aggregate": true,
+      "matching_file": true,
+      "single_commit": true,
+      "matching_receipt": true,
+      "completion_checkpoint": true
+    },
+    "receipt": {
+      "status": "complete",
+      "sha256": "65da3bcf86aecd8032158b9bf913581019537987b705b7992414bd751c43c61c"
+    },
+    "measurement": "scripted tools",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [],
+    "fault_events": [],
+    "fault_coverage": true,
+    "duration_ms": 5.373,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "artifact-retrieval-timeout",
+    "adapter": "artifact",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_artifact": true,
+      "source_records": true,
+      "correct_aggregate": true,
+      "matching_file": true,
+      "single_commit": true,
+      "matching_receipt": true,
+      "completion_checkpoint": true
+    },
+    "receipt": {
+      "status": "complete",
+      "sha256": "65da3bcf86aecd8032158b9bf913581019537987b705b7992414bd751c43c61c"
+    },
+    "measurement": "scripted tools",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "retrieve_records",
+        "phase": "before",
+        "kind": "timeout",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "retrieve_records",
+        "phase": "before",
+        "kind": "timeout",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 7.063,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "artifact-rate-limit",
+    "adapter": "artifact",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_artifact": true,
+      "source_records": true,
+      "correct_aggregate": true,
+      "matching_file": true,
+      "single_commit": true,
+      "matching_receipt": true,
+      "completion_checkpoint": true
+    },
+    "receipt": {
+      "status": "complete",
+      "sha256": "65da3bcf86aecd8032158b9bf913581019537987b705b7992414bd751c43c61c"
+    },
+    "measurement": "scripted tools",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "retrieve_records",
+        "phase": "before",
+        "kind": "rate_limit",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "retrieve_records",
+        "phase": "before",
+        "kind": "rate_limit",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 8.489,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "artifact-malformed-data",
+    "adapter": "artifact",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_artifact": true,
+      "source_records": true,
+      "correct_aggregate": true,
+      "matching_file": true,
+      "single_commit": true,
+      "matching_receipt": true,
+      "completion_checkpoint": true
+    },
+    "receipt": {
+      "status": "complete",
+      "sha256": "65da3bcf86aecd8032158b9bf913581019537987b705b7992414bd751c43c61c"
+    },
+    "measurement": "scripted tools",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "retrieve_records",
+        "phase": "after",
+        "kind": "malformed",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "retrieve_records",
+        "phase": "after",
+        "kind": "malformed",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 7.274,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "artifact-malformed-build",
+    "adapter": "artifact",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_artifact": true,
+      "source_records": true,
+      "correct_aggregate": true,
+      "matching_file": true,
+      "single_commit": true,
+      "matching_receipt": true,
+      "completion_checkpoint": true
+    },
+    "receipt": {
+      "status": "complete",
+      "sha256": "65da3bcf86aecd8032158b9bf913581019537987b705b7992414bd751c43c61c"
+    },
+    "measurement": "scripted tools",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "build_artifact",
+        "phase": "after",
+        "kind": "malformed",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "build_artifact",
+        "phase": "after",
+        "kind": "malformed",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 7.851,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "artifact-lost-ack",
+    "adapter": "artifact",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_artifact": true,
+      "source_records": true,
+      "correct_aggregate": true,
+      "matching_file": true,
+      "single_commit": true,
+      "matching_receipt": true,
+      "completion_checkpoint": true
+    },
+    "receipt": {
+      "status": "complete",
+      "sha256": "65da3bcf86aecd8032158b9bf913581019537987b705b7992414bd751c43c61c"
+    },
+    "measurement": "scripted tools",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "commit_artifact",
+        "phase": "after",
+        "kind": "lost_ack",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "commit_artifact",
+        "phase": "after",
+        "kind": "lost_ack",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 7.532,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "artifact-restart-before-commit",
+    "adapter": "artifact",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_artifact": true,
+      "source_records": true,
+      "correct_aggregate": true,
+      "matching_file": true,
+      "single_commit": true,
+      "matching_receipt": true,
+      "completion_checkpoint": true
+    },
+    "receipt": {
+      "status": "complete",
+      "sha256": "65da3bcf86aecd8032158b9bf913581019537987b705b7992414bd751c43c61c"
+    },
+    "measurement": "scripted tools",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "commit_artifact",
+        "phase": "before",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "commit_artifact",
+        "phase": "before",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 8.256,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "artifact-restart-after-commit",
+    "adapter": "artifact",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_artifact": true,
+      "source_records": true,
+      "correct_aggregate": true,
+      "matching_file": true,
+      "single_commit": true,
+      "matching_receipt": true,
+      "completion_checkpoint": true
+    },
+    "receipt": {
+      "status": "complete",
+      "sha256": "65da3bcf86aecd8032158b9bf913581019537987b705b7992414bd751c43c61c"
+    },
+    "measurement": "scripted tools",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "commit_artifact",
+        "phase": "after",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "commit_artifact",
+        "phase": "after",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 8.101,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "artifact-restart-after-export",
+    "adapter": "artifact",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_artifact": true,
+      "source_records": true,
+      "correct_aggregate": true,
+      "matching_file": true,
+      "single_commit": true,
+      "matching_receipt": true,
+      "completion_checkpoint": true
+    },
+    "receipt": {
+      "status": "complete",
+      "sha256": "65da3bcf86aecd8032158b9bf913581019537987b705b7992414bd751c43c61c"
+    },
+    "measurement": "scripted tools",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "export_artifact",
+        "phase": "after",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "export_artifact",
+        "phase": "after",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 9.547,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "artifact-retry-exhaustion",
+    "adapter": "artifact",
+    "expected": "rejected",
+    "observed": "rejected",
+    "scenario_passed": true,
+    "task_completed": false,
+    "checks": {
+      "contract": true,
+      "no_committed_artifact": true,
+      "no_export": true,
+      "no_completion_checkpoint": true,
+      "explicit_rejection": true
+    },
+    "receipt": {
+      "status": "failed"
+    },
+    "measurement": "scripted tools",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "retrieve_records",
+        "phase": "before",
+        "kind": "timeout",
+        "occurrence": 1,
+        "repeat": 3
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "retrieve_records",
+        "phase": "before",
+        "kind": "timeout",
+        "occurrence": 1,
+        "repeat": 3,
+        "rule": 0
+      },
+      {
+        "tool": "retrieve_records",
+        "phase": "before",
+        "kind": "timeout",
+        "occurrence": 2,
+        "repeat": 3,
+        "rule": 0
+      },
+      {
+        "tool": "retrieve_records",
+        "phase": "before",
+        "kind": "timeout",
+        "occurrence": 3,
+        "repeat": 3,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 6.597,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "creatorpal-clean",
+    "adapter": "creatorpal",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_report": true,
+      "task_scope": true,
+      "recommendation_count": true,
+      "unique_communities": true,
+      "citations": true,
+      "required_sources": true,
+      "analysis": true,
+      "single_commit": true,
+      "receipt": true
+    },
+    "receipt": {
+      "status": "complete",
+      "task_id": "harness-audience",
+      "report_sha256": "496330832a51325bdda2b4e3ccf64c39dee2a0fe50813716964bc0cb7dfdd765"
+    },
+    "measurement": "ADK Runner + offline model double",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [],
+    "fault_events": [],
+    "fault_coverage": true,
+    "duration_ms": 515.81,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "creatorpal-retrieval-timeout",
+    "adapter": "creatorpal",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_report": true,
+      "task_scope": true,
+      "recommendation_count": true,
+      "unique_communities": true,
+      "citations": true,
+      "required_sources": true,
+      "analysis": true,
+      "single_commit": true,
+      "receipt": true
+    },
+    "receipt": {
+      "status": "complete",
+      "task_id": "harness-audience",
+      "report_sha256": "496330832a51325bdda2b4e3ccf64c39dee2a0fe50813716964bc0cb7dfdd765"
+    },
+    "measurement": "ADK Runner + offline model double",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "search_communities",
+        "phase": "before",
+        "kind": "timeout",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "search_communities",
+        "phase": "before",
+        "kind": "timeout",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 56.81,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "creatorpal-malformed-retrieval",
+    "adapter": "creatorpal",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_report": true,
+      "task_scope": true,
+      "recommendation_count": true,
+      "unique_communities": true,
+      "citations": true,
+      "required_sources": true,
+      "analysis": true,
+      "single_commit": true,
+      "receipt": true
+    },
+    "receipt": {
+      "status": "complete",
+      "task_id": "harness-audience",
+      "report_sha256": "496330832a51325bdda2b4e3ccf64c39dee2a0fe50813716964bc0cb7dfdd765"
+    },
+    "measurement": "ADK Runner + offline model double",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "search_communities",
+        "phase": "after",
+        "kind": "malformed",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "search_communities",
+        "phase": "after",
+        "kind": "malformed",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 59.96,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "creatorpal-analytics-failure",
+    "adapter": "creatorpal",
+    "expected": "rejected",
+    "observed": "rejected",
+    "scenario_passed": true,
+    "task_completed": false,
+    "checks": {
+      "no_report": true,
+      "explicit_execution_failure": true,
+      "no_false_completion": true
+    },
+    "receipt": {
+      "status": "failed",
+      "error_type": "AnalysisFailed"
+    },
+    "measurement": "ADK Runner + offline model double",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "run_analysis",
+        "phase": "before",
+        "kind": "permanent_error",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "run_analysis",
+        "phase": "before",
+        "kind": "permanent_error",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 27.007,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "creatorpal-restart-before-publish",
+    "adapter": "creatorpal",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_report": true,
+      "task_scope": true,
+      "recommendation_count": true,
+      "unique_communities": true,
+      "citations": true,
+      "required_sources": true,
+      "analysis": true,
+      "single_commit": true,
+      "receipt": true
+    },
+    "receipt": {
+      "status": "complete",
+      "task_id": "harness-audience",
+      "report_sha256": "496330832a51325bdda2b4e3ccf64c39dee2a0fe50813716964bc0cb7dfdd765"
+    },
+    "measurement": "ADK Runner + offline model double",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "publish_report",
+        "phase": "before",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "publish_report",
+        "phase": "before",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 71.862,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "creatorpal-lost-ack",
+    "adapter": "creatorpal",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_report": true,
+      "task_scope": true,
+      "recommendation_count": true,
+      "unique_communities": true,
+      "citations": true,
+      "required_sources": true,
+      "analysis": true,
+      "single_commit": true,
+      "receipt": true
+    },
+    "receipt": {
+      "status": "complete",
+      "task_id": "harness-audience",
+      "report_sha256": "496330832a51325bdda2b4e3ccf64c39dee2a0fe50813716964bc0cb7dfdd765"
+    },
+    "measurement": "ADK Runner + offline model double",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "publish_report",
+        "phase": "after",
+        "kind": "lost_ack",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "publish_report",
+        "phase": "after",
+        "kind": "lost_ack",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 57.186,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "creatorpal-restart-after-publish",
+    "adapter": "creatorpal",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_report": true,
+      "task_scope": true,
+      "recommendation_count": true,
+      "unique_communities": true,
+      "citations": true,
+      "required_sources": true,
+      "analysis": true,
+      "single_commit": true,
+      "receipt": true
+    },
+    "receipt": {
+      "status": "complete",
+      "task_id": "harness-audience",
+      "report_sha256": "496330832a51325bdda2b4e3ccf64c39dee2a0fe50813716964bc0cb7dfdd765"
+    },
+    "measurement": "ADK Runner + offline model double",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "publish_report",
+        "phase": "after",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "publish_report",
+        "phase": "after",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 55.801,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "creatorpal-false-completion",
+    "adapter": "creatorpal",
+    "expected": "violation",
+    "observed": "violation",
+    "scenario_passed": true,
+    "task_completed": false,
+    "checks": {
+      "contract": true,
+      "one_report": false
+    },
+    "receipt": {
+      "status": "complete",
+      "task_id": "harness-audience",
+      "report_sha256": "invented-without-publish"
+    },
+    "measurement": "ADK Runner + offline model double",
+    "error_type": null,
+    "expected_failed_checks": [
+      "one_report"
+    ],
+    "faults": [],
+    "fault_events": [],
+    "fault_coverage": true,
+    "duration_ms": 10.408,
+    "usage": null,
+    "cost_usd": null
+  }
+]

@@ -4,6 +4,9 @@ This recipe deploys the static demonstration server only. It does not provision 
 endpoint, a persistent database, or a production agent service. Deployment requires your
 Google Cloud account, billing, enabled build/run APIs, and appropriate IAM permissions.
 
+The default image runs `agent-reliability serve`: a 24-case core report across the refund
+and artifact applications. It requires no model credentials or CreatorPal dependency.
+
 From the repository root, after selecting your own project:
 
 ```bash

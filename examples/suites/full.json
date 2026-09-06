@@ -1,0 +1,537 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "refund-baseline-clean",
+      "adapter": "refund",
+      "config": {
+        "mode": "baseline",
+        "order": "order-a"
+      },
+      "faults": [],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "refund-baseline-timeout",
+      "adapter": "refund",
+      "config": {
+        "mode": "baseline",
+        "order": "order-a"
+      },
+      "faults": [
+        {
+          "tool": "issue_refund",
+          "phase": "before",
+          "kind": "timeout",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "refund-baseline-rate-limit",
+      "adapter": "refund",
+      "config": {
+        "mode": "baseline",
+        "order": "order-a"
+      },
+      "faults": [
+        {
+          "tool": "issue_refund",
+          "phase": "before",
+          "kind": "rate_limit",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "refund-baseline-lost-ack",
+      "adapter": "refund",
+      "config": {
+        "mode": "baseline",
+        "order": "order-a"
+      },
+      "faults": [
+        {
+          "tool": "issue_refund",
+          "phase": "after",
+          "kind": "lost_ack",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "violation",
+      "expected_failed_checks": [
+        "one_refund",
+        "authorized_amount"
+      ]
+    },
+    {
+      "id": "refund-baseline-malformed",
+      "adapter": "refund",
+      "config": {
+        "mode": "baseline",
+        "order": "order-a"
+      },
+      "faults": [
+        {
+          "tool": "issue_refund",
+          "phase": "after",
+          "kind": "malformed",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "violation",
+      "expected_failed_checks": [
+        "receipt_matches_state"
+      ]
+    },
+    {
+      "id": "refund-baseline-restart",
+      "adapter": "refund",
+      "config": {
+        "mode": "baseline",
+        "order": "order-a"
+      },
+      "faults": [
+        {
+          "tool": "issue_refund",
+          "phase": "after",
+          "kind": "interrupt",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "violation",
+      "expected_failed_checks": [
+        "one_refund",
+        "authorized_amount"
+      ]
+    },
+    {
+      "id": "refund-baseline-tenant-denial",
+      "adapter": "refund",
+      "config": {
+        "mode": "baseline",
+        "order": "order-b"
+      },
+      "faults": [],
+      "expected": "rejected",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "refund-guarded-clean",
+      "adapter": "refund",
+      "config": {
+        "mode": "guarded",
+        "order": "order-a"
+      },
+      "faults": [],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "refund-guarded-timeout",
+      "adapter": "refund",
+      "config": {
+        "mode": "guarded",
+        "order": "order-a"
+      },
+      "faults": [
+        {
+          "tool": "issue_refund",
+          "phase": "before",
+          "kind": "timeout",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "refund-guarded-rate-limit",
+      "adapter": "refund",
+      "config": {
+        "mode": "guarded",
+        "order": "order-a"
+      },
+      "faults": [
+        {
+          "tool": "issue_refund",
+          "phase": "before",
+          "kind": "rate_limit",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "refund-guarded-lost-ack",
+      "adapter": "refund",
+      "config": {
+        "mode": "guarded",
+        "order": "order-a"
+      },
+      "faults": [
+        {
+          "tool": "issue_refund",
+          "phase": "after",
+          "kind": "lost_ack",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "refund-guarded-malformed",
+      "adapter": "refund",
+      "config": {
+        "mode": "guarded",
+        "order": "order-a"
+      },
+      "faults": [
+        {
+          "tool": "issue_refund",
+          "phase": "after",
+          "kind": "malformed",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "refund-guarded-restart",
+      "adapter": "refund",
+      "config": {
+        "mode": "guarded",
+        "order": "order-a"
+      },
+      "faults": [
+        {
+          "tool": "issue_refund",
+          "phase": "after",
+          "kind": "interrupt",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "refund-guarded-tenant-denial",
+      "adapter": "refund",
+      "config": {
+        "mode": "guarded",
+        "order": "order-b"
+      },
+      "faults": [],
+      "expected": "rejected",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "artifact-clean",
+      "adapter": "artifact",
+      "config": {},
+      "faults": [],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "artifact-retrieval-timeout",
+      "adapter": "artifact",
+      "config": {},
+      "faults": [
+        {
+          "tool": "retrieve_records",
+          "phase": "before",
+          "kind": "timeout",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "artifact-rate-limit",
+      "adapter": "artifact",
+      "config": {},
+      "faults": [
+        {
+          "tool": "retrieve_records",
+          "phase": "before",
+          "kind": "rate_limit",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "artifact-malformed-data",
+      "adapter": "artifact",
+      "config": {},
+      "faults": [
+        {
+          "tool": "retrieve_records",
+          "phase": "after",
+          "kind": "malformed",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "artifact-malformed-build",
+      "adapter": "artifact",
+      "config": {},
+      "faults": [
+        {
+          "tool": "build_artifact",
+          "phase": "after",
+          "kind": "malformed",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "artifact-lost-ack",
+      "adapter": "artifact",
+      "config": {},
+      "faults": [
+        {
+          "tool": "commit_artifact",
+          "phase": "after",
+          "kind": "lost_ack",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "artifact-restart-before-commit",
+      "adapter": "artifact",
+      "config": {},
+      "faults": [
+        {
+          "tool": "commit_artifact",
+          "phase": "before",
+          "kind": "interrupt",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "artifact-restart-after-commit",
+      "adapter": "artifact",
+      "config": {},
+      "faults": [
+        {
+          "tool": "commit_artifact",
+          "phase": "after",
+          "kind": "interrupt",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "artifact-restart-after-export",
+      "adapter": "artifact",
+      "config": {},
+      "faults": [
+        {
+          "tool": "export_artifact",
+          "phase": "after",
+          "kind": "interrupt",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "artifact-retry-exhaustion",
+      "adapter": "artifact",
+      "config": {},
+      "faults": [
+        {
+          "tool": "retrieve_records",
+          "phase": "before",
+          "kind": "timeout",
+          "occurrence": 1,
+          "repeat": 3
+        }
+      ],
+      "expected": "rejected",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "creatorpal-clean",
+      "adapter": "creatorpal",
+      "config": {
+        "driver": "offline-adk",
+        "model_behavior": "normal"
+      },
+      "faults": [],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "creatorpal-retrieval-timeout",
+      "adapter": "creatorpal",
+      "config": {
+        "driver": "offline-adk",
+        "model_behavior": "normal"
+      },
+      "faults": [
+        {
+          "tool": "search_communities",
+          "phase": "before",
+          "kind": "timeout",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "creatorpal-malformed-retrieval",
+      "adapter": "creatorpal",
+      "config": {
+        "driver": "offline-adk",
+        "model_behavior": "normal"
+      },
+      "faults": [
+        {
+          "tool": "search_communities",
+          "phase": "after",
+          "kind": "malformed",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "creatorpal-analytics-failure",
+      "adapter": "creatorpal",
+      "config": {
+        "driver": "offline-adk",
+        "model_behavior": "normal"
+      },
+      "faults": [
+        {
+          "tool": "run_analysis",
+          "phase": "before",
+          "kind": "permanent_error",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "rejected",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "creatorpal-restart-before-publish",
+      "adapter": "creatorpal",
+      "config": {
+        "driver": "offline-adk",
+        "model_behavior": "normal"
+      },
+      "faults": [
+        {
+          "tool": "publish_report",
+          "phase": "before",
+          "kind": "interrupt",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "creatorpal-lost-ack",
+      "adapter": "creatorpal",
+      "config": {
+        "driver": "offline-adk",
+        "model_behavior": "normal"
+      },
+      "faults": [
+        {
+          "tool": "publish_report",
+          "phase": "after",
+          "kind": "lost_ack",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "creatorpal-restart-after-publish",
+      "adapter": "creatorpal",
+      "config": {
+        "driver": "offline-adk",
+        "model_behavior": "normal"
+      },
+      "faults": [
+        {
+          "tool": "publish_report",
+          "phase": "after",
+          "kind": "interrupt",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "creatorpal-false-completion",
+      "adapter": "creatorpal",
+      "config": {
+        "driver": "offline-adk",
+        "model_behavior": "false_completion"
+      },
+      "faults": [],
+      "expected": "violation",
+      "expected_failed_checks": [
+        "one_report"
+      ]
+    }
+  ]
+}

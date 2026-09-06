@@ -1,5 +1,6 @@
 import time
 
+from .faults import InterruptedFault, PermanentFault, RetryableFault
 from .store import Conflict, Denied
 
 
@@ -22,11 +23,12 @@ class Gateway:
     Identity and the authorized business operation are bound outside the model's arguments.
     """
 
-    def __init__(self, store, scenario, mode, tracer, max_attempts=3, backoff=0.001):
+    def __init__(self, store, scenario, mode, tracer, max_attempts=3, backoff=0.001, faults=None):
         if mode not in {"baseline", "guarded"}:
             raise ValueError("unknown mode")
         self.store, self.scenario, self.mode = store, scenario, mode
         self.tracer, self.max_attempts, self.backoff = tracer, max_attempts, backoff
+        self.faults = faults
 
     def lookup_order(self, order_id: str) -> dict:
         with self.tracer.start_as_current_span("tool.lookup_order"):
@@ -68,6 +70,18 @@ class Gateway:
 
     def _invoke(self, order_id, amount_cents):
         self.store.order(self.scenario.actor, order_id)  # auth before injecting a fault
+        if self.faults is not None:
+            try:
+                self.faults.apply("issue_refund", "before")
+                key = "authorized-refund" if self.mode == "guarded" else None
+                result = self.store.refund(self.scenario.actor, order_id, amount_cents, key)
+                return self.faults.apply("issue_refund", "after", result)
+            except RetryableFault as exc:
+                raise TransientFailure(str(exc)) from None
+            except InterruptedFault:
+                raise InterruptedRun("Controlled interruption at tool boundary") from None
+            except PermanentFault:
+                raise ValueError("Injected permanent service failure") from None
         inject = self.scenario.fault != "none" and self.store.consume_fault()
         fault = self.scenario.fault if inject else "none"
         if inject:
