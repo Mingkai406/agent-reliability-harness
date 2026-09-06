@@ -41,6 +41,7 @@ that explain each verdict.
 |---|---|---|
 | **Refund service** | Authorized writes to a transactional SQLite service | One refund, correct amount, tenant scope and a receipt matching committed state |
 | **CreatorPal research agent** | Real ADK Runner, retrieval, rules lookup, restricted Python analytics and report submission | One committed report, valid evidence references, required sources, analysis and matching receipt |
+| **LangGraph workflow** | Real `StateGraph`, node retry policies and disk-backed `SqliteSaver` checkpoints | Resume without repeating completed nodes; one committed artifact, matching file and valid receipt |
 | **Artifact workflow** | Retrieve records → build summary → commit artifact → export file | Correct aggregate, one database commit, matching file bytes and a durable checkpoint |
 
 The refund baseline deliberately omits operation keys and response validation. CreatorPal
@@ -72,8 +73,7 @@ agent-reliability run --profile full
 ```
 
 This runs CreatorPal's ADK tools with deterministic model doubles and a real LangGraph
-workflow with deterministic nodes. It makes
-**no live model calls**. Missing optional dependencies produce an error; they are not silently
+workflow with deterministic nodes. It makes **no live model calls**. Missing optional dependencies produce an error; they are not silently
 counted as covered applications.
 
 ## Test LangGraph checkpoint recovery
@@ -124,7 +124,6 @@ The committed [full example](examples/showcase/report.md) contains:
 | Application | Cases matching expectation | Completed tasks | Safe rejections | Detected negative controls |
 |---|---:|---:|---:|---:|
 | Refund service | 14/14 | 9 | 2 | 3 |
-| **LangGraph workflow** | Real `StateGraph`, node retry policies and disk-backed `SqliteSaver` checkpoints | Resume without repeating completed nodes; one committed artifact, matching file and valid receipt |
 | Artifact workflow | 10/10 | 9 | 1 | 0 |
 | CreatorPal | 8/8 | 6 | 1 | 1 |
 | LangGraph | 10/10 | 7 | 2 | 1 |
