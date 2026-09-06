@@ -1,0 +1,485 @@
+[
+  {
+    "id": "langgraph-clean",
+    "adapter": "langgraph",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_artifact": true,
+      "source_records": true,
+      "correct_aggregate": true,
+      "matching_file": true,
+      "single_commit": true,
+      "matching_receipt": true,
+      "completion_checkpoint": true,
+      "persisted_graph_checkpoint": true,
+      "graph_finished": true,
+      "graph_receipt_matches": true
+    },
+    "receipt": {
+      "status": "complete",
+      "sha256": "65da3bcf86aecd8032158b9bf913581019537987b705b7992414bd751c43c61c"
+    },
+    "measurement": "LangGraph + deterministic nodes; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [],
+    "fault_events": [],
+    "fault_coverage": true,
+    "duration_ms": 18.222,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "langgraph-retrieval-timeout",
+    "adapter": "langgraph",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_artifact": true,
+      "source_records": true,
+      "correct_aggregate": true,
+      "matching_file": true,
+      "single_commit": true,
+      "matching_receipt": true,
+      "completion_checkpoint": true,
+      "persisted_graph_checkpoint": true,
+      "graph_finished": true,
+      "graph_receipt_matches": true
+    },
+    "receipt": {
+      "status": "complete",
+      "sha256": "65da3bcf86aecd8032158b9bf913581019537987b705b7992414bd751c43c61c"
+    },
+    "measurement": "LangGraph + deterministic nodes; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "retrieve_records",
+        "phase": "before",
+        "kind": "timeout",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "retrieve_records",
+        "phase": "before",
+        "kind": "timeout",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 19.121,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "langgraph-malformed-build",
+    "adapter": "langgraph",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_artifact": true,
+      "source_records": true,
+      "correct_aggregate": true,
+      "matching_file": true,
+      "single_commit": true,
+      "matching_receipt": true,
+      "completion_checkpoint": true,
+      "persisted_graph_checkpoint": true,
+      "graph_finished": true,
+      "graph_receipt_matches": true
+    },
+    "receipt": {
+      "status": "complete",
+      "sha256": "65da3bcf86aecd8032158b9bf913581019537987b705b7992414bd751c43c61c"
+    },
+    "measurement": "LangGraph + deterministic nodes; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "build_artifact",
+        "phase": "after",
+        "kind": "malformed",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "build_artifact",
+        "phase": "after",
+        "kind": "malformed",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 18.405,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "langgraph-lost-ack",
+    "adapter": "langgraph",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_artifact": true,
+      "source_records": true,
+      "correct_aggregate": true,
+      "matching_file": true,
+      "single_commit": true,
+      "matching_receipt": true,
+      "completion_checkpoint": true,
+      "persisted_graph_checkpoint": true,
+      "graph_finished": true,
+      "graph_receipt_matches": true
+    },
+    "receipt": {
+      "status": "complete",
+      "sha256": "65da3bcf86aecd8032158b9bf913581019537987b705b7992414bd751c43c61c"
+    },
+    "measurement": "LangGraph + deterministic nodes; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "commit_artifact",
+        "phase": "after",
+        "kind": "lost_ack",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "commit_artifact",
+        "phase": "after",
+        "kind": "lost_ack",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 27.874,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "langgraph-restart-before-commit",
+    "adapter": "langgraph",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_artifact": true,
+      "source_records": true,
+      "correct_aggregate": true,
+      "matching_file": true,
+      "single_commit": true,
+      "matching_receipt": true,
+      "completion_checkpoint": true,
+      "persisted_graph_checkpoint": true,
+      "graph_finished": true,
+      "graph_receipt_matches": true
+    },
+    "receipt": {
+      "status": "complete",
+      "sha256": "65da3bcf86aecd8032158b9bf913581019537987b705b7992414bd751c43c61c"
+    },
+    "measurement": "LangGraph + deterministic nodes; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "commit_artifact",
+        "phase": "before",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "commit_artifact",
+        "phase": "before",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 27.676,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "langgraph-restart-after-commit",
+    "adapter": "langgraph",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_artifact": true,
+      "source_records": true,
+      "correct_aggregate": true,
+      "matching_file": true,
+      "single_commit": true,
+      "matching_receipt": true,
+      "completion_checkpoint": true,
+      "persisted_graph_checkpoint": true,
+      "graph_finished": true,
+      "graph_receipt_matches": true
+    },
+    "receipt": {
+      "status": "complete",
+      "sha256": "65da3bcf86aecd8032158b9bf913581019537987b705b7992414bd751c43c61c"
+    },
+    "measurement": "LangGraph + deterministic nodes; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "commit_artifact",
+        "phase": "after",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "commit_artifact",
+        "phase": "after",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 25.549,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "langgraph-restart-after-export",
+    "adapter": "langgraph",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_artifact": true,
+      "source_records": true,
+      "correct_aggregate": true,
+      "matching_file": true,
+      "single_commit": true,
+      "matching_receipt": true,
+      "completion_checkpoint": true,
+      "persisted_graph_checkpoint": true,
+      "graph_finished": true,
+      "graph_receipt_matches": true
+    },
+    "receipt": {
+      "status": "complete",
+      "sha256": "65da3bcf86aecd8032158b9bf913581019537987b705b7992414bd751c43c61c"
+    },
+    "measurement": "LangGraph + deterministic nodes; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "export_artifact",
+        "phase": "after",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "export_artifact",
+        "phase": "after",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 19.915,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "langgraph-retry-exhaustion",
+    "adapter": "langgraph",
+    "expected": "rejected",
+    "observed": "rejected",
+    "scenario_passed": true,
+    "task_completed": false,
+    "checks": {
+      "contract": true,
+      "no_committed_artifact": true,
+      "no_export": true,
+      "no_completion_checkpoint": true,
+      "explicit_rejection": true,
+      "persisted_graph_checkpoint": true
+    },
+    "receipt": {
+      "status": "failed"
+    },
+    "measurement": "LangGraph + deterministic nodes; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "retrieve_records",
+        "phase": "before",
+        "kind": "timeout",
+        "occurrence": 1,
+        "repeat": 3
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "retrieve_records",
+        "phase": "before",
+        "kind": "timeout",
+        "occurrence": 1,
+        "repeat": 3,
+        "rule": 0
+      },
+      {
+        "tool": "retrieve_records",
+        "phase": "before",
+        "kind": "timeout",
+        "occurrence": 2,
+        "repeat": 3,
+        "rule": 0
+      },
+      {
+        "tool": "retrieve_records",
+        "phase": "before",
+        "kind": "timeout",
+        "occurrence": 3,
+        "repeat": 3,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 18.603,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "langgraph-permanent-failure",
+    "adapter": "langgraph",
+    "expected": "rejected",
+    "observed": "rejected",
+    "scenario_passed": true,
+    "task_completed": false,
+    "checks": {
+      "contract": true,
+      "no_committed_artifact": true,
+      "no_export": true,
+      "no_completion_checkpoint": true,
+      "explicit_rejection": true,
+      "persisted_graph_checkpoint": true
+    },
+    "receipt": {
+      "status": "failed"
+    },
+    "measurement": "LangGraph + deterministic nodes; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "retrieve_records",
+        "phase": "before",
+        "kind": "permanent_error",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "retrieve_records",
+        "phase": "before",
+        "kind": "permanent_error",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 10.202,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "langgraph-invalid-receipt",
+    "adapter": "langgraph",
+    "expected": "violation",
+    "observed": "violation",
+    "scenario_passed": true,
+    "task_completed": false,
+    "checks": {
+      "contract": true,
+      "one_artifact": true,
+      "source_records": true,
+      "correct_aggregate": true,
+      "matching_file": true,
+      "single_commit": true,
+      "matching_receipt": false,
+      "completion_checkpoint": false,
+      "persisted_graph_checkpoint": true,
+      "graph_finished": true,
+      "graph_receipt_matches": true
+    },
+    "receipt": {
+      "status": "complete",
+      "sha256": "incorrect"
+    },
+    "measurement": "LangGraph + deterministic nodes; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [
+      "matching_receipt",
+      "completion_checkpoint"
+    ],
+    "faults": [],
+    "fault_events": [],
+    "fault_coverage": true,
+    "duration_ms": 14.924,
+    "usage": null,
+    "cost_usd": null
+  }
+]

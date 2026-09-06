@@ -6,14 +6,18 @@
 [![Python](https://img.shields.io/badge/python-3.11%2B-3776AB)](pyproject.toml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-A reusable fault-injection and state-verification framework for tool-using applications.
-Test whether an agent's work **actually committed correctly** when a tool times out, a reply
-is malformed, an acknowledgment disappears, or execution stops between steps.
+A reusable reliability testing framework for **Google ADK, LangGraph, and custom tool-using
+applications**. Inject failures at real tool boundaries, resume interrupted execution, and
+check committed state independently of the application's completion message.
 
-**Python · Google ADK integration · SQLite · OpenTelemetry · Docker · GitHub Actions**
+**Can a completed graph still return the wrong receipt? Can a restarted agent write twice?**
+The included controls make those failures reproducible, with database snapshots and traces
+that explain each verdict.
+
+**Google ADK · LangGraph · SQLite checkpoints · OpenTelemetry · GitHub Actions**
 
 [Quickstart](#run-your-first-experiment) · [Results](examples/showcase/report.md) ·
-[Bring your own agent](docs/adapters.md) · [Architecture](docs/architecture.md) ·
+[LangGraph quickstart](#test-langgraph-checkpoint-recovery) · [Bring your own agent](docs/adapters.md) · [Architecture](docs/architecture.md) ·
 [Testing](docs/testing.md)
 
 ![Generated experiment report with application filters, state checks and separate outcome counts](docs/assets/report-preview.png)
@@ -31,7 +35,7 @@ is malformed, an acknowledgment disappears, or execution stops between steps.
 - **Connect another application.** Implement three adapter methods and register a local plugin.
   The runner and fault engine remain unchanged.
 
-## Three applications, one experiment contract
+## Four integrations, one experiment contract
 
 | Application | Real execution boundary | Independently verified outcome |
 |---|---|---|
@@ -59,28 +63,72 @@ Open the printed `runs/suite-<id>/index.html`. The **core profile runs 24 cases 
 and artifact applications**, without model credentials or optional application dependencies.
 Filter by application or unexpected outcome; expand a case to inspect its invariant checks.
 
-For all three applications, install the pinned CreatorPal integration:
+For all four integrations, install both framework extras and the pinned CreatorPal integration:
 
 ```sh
-pip install -e '.[adk]'
+pip install -e '.[adk,langgraph]'
 pip install -r integration/creatorpal-requirements.txt
 agent-reliability run --profile full
 ```
 
-This uses CreatorPal's real tools and ADK Runner with deterministic model doubles. It makes
+This runs CreatorPal's ADK tools with deterministic model doubles and a real LangGraph
+workflow with deterministic nodes. It makes
 **no live model calls**. Missing optional dependencies produce an error; they are not silently
 counted as covered applications.
 
+## Test LangGraph checkpoint recovery
+
+```sh
+pip install -e '.[langgraph]'
+agent-reliability run --profile langgraph
+```
+
+Run **10 LangGraph scenarios without a model key**. The workflow retrieves records, builds a
+summary, commits it and exports a file. LangGraph owns node retries and graph checkpoints;
+the application owns idempotent writes; the harness checks the outcome independently.
+
+```mermaid
+flowchart LR
+    R[Retrieve records] --> B[Build summary] --> C[Commit artifact] --> E[Export file] --> F[Return receipt]
+    CP[(LangGraph SQLite checkpoints)] -. restore graph state .-> C
+    C --> DB[(Business database)]
+    DB --> V[Independent state checks]
+    E --> V
+    F --> V
+```
+
+**Try a restart across two processes:**
+
+```sh
+agent-reliability langgraph-worker --directory runs/graph-recovery
+# Exits 75 after the database commit, before LangGraph checkpoints the node result.
+
+agent-reliability langgraph-worker --directory runs/graph-recovery
+# Resumes the pending node; returns one committed artifact and a matching exported file.
+```
+
+The regression suite also forcibly kills a worker in that commit/checkpoint gap. A fresh
+process resumes from the persisted checkpoint, replays the commit safely and skips completed
+retrieval work. A deliberately incorrect receipt proves that a finished graph alone cannot
+pass the oracle. See the [integration guide](docs/langgraph.md) and
+[recorded LangGraph report](examples/langgraph/report.md).
+
 ## Read the results correctly
+
+The regression suite passes **94 tests**, including separate-process checkpoint recovery and
+forced termination after a business commit. The scenario counts below describe controlled
+experiments, separately from the unit and integration test count.
 
 The committed [full example](examples/showcase/report.md) contains:
 
 | Application | Cases matching expectation | Completed tasks | Safe rejections | Detected negative controls |
 |---|---:|---:|---:|---:|
 | Refund service | 14/14 | 9 | 2 | 3 |
+| **LangGraph workflow** | Real `StateGraph`, node retry policies and disk-backed `SqliteSaver` checkpoints | Resume without repeating completed nodes; one committed artifact, matching file and valid receipt |
 | Artifact workflow | 10/10 | 9 | 1 | 0 |
 | CreatorPal | 8/8 | 6 | 1 | 1 |
-| **Total** | **32/32** | **24** | **4** | **4** |
+| LangGraph | 10/10 | 7 | 2 | 1 |
+| **Total** | **42/42** | **31** | **6** | **5** |
 
 A case passes only when **its observed outcome matches its declared expectation and every
 scheduled injection fires**. Negative controls must also fail exactly the named invariant
@@ -188,7 +236,7 @@ retry exhaustion, missing injections, changed task bindings and external plugin 
 ## Development and deployment
 
 ```sh
-uv sync --locked --extra adk --extra dev
+uv sync --locked --extra adk --extra langgraph --extra dev
 uv pip install --python .venv/bin/python -r integration/creatorpal-requirements.txt
 uv run --no-sync pytest -q
 uv run --no-sync ruff check .
@@ -196,7 +244,7 @@ uv run --no-sync ruff format --check .
 uv run --no-sync python -m build
 ```
 
-CI runs the tests, the full 32-case profile, the original application suites, package builds and
+CI runs the tests, the full 42-case profile, the original application suites, package builds and
 an HTTP smoke test of the container. Generated run evidence is uploaded as a CI artifact.
 
 ```sh
@@ -211,6 +259,7 @@ hosting; no cloud deployment or large-scale distributed performance is claimed.
 ## Further reading
 
 - [Architecture and guarantee boundaries](docs/architecture.md)
+- [LangGraph checkpoints, retries and restart recovery](docs/langgraph.md)
 - [Adapter authoring and fault configuration](docs/adapters.md)
 - [Tests, expected outcomes and live-model validation](docs/testing.md)
 - [Refund baseline, guarded execution and optional live ADK runner](docs/refunds.md)

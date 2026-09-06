@@ -6,6 +6,7 @@ from .artifacts import ArtifactStore, assess_artifacts, run_workflow
 from .contracts import Assessment, Execution
 from .creatorpal import false_completion_model, grade_snapshot
 from .faults import InterruptedFault, PermanentFault, RetryableFault
+from .langgraph_adapter import LangGraphAdapter
 from .runtime import Gateway, InterruptedRun, run_scripted
 from .scenarios import Scenario
 from .store import Store
@@ -178,4 +179,9 @@ class CreatorPalAdapter:
         return Assessment(False, False, grade["checks"])
 
 
-BUILTINS = {"refund": RefundAdapter, "artifact": ArtifactAdapter, "creatorpal": CreatorPalAdapter}
+BUILTINS = {
+    "refund": RefundAdapter,
+    "artifact": ArtifactAdapter,
+    "creatorpal": CreatorPalAdapter,
+    "langgraph": LangGraphAdapter,
+}

@@ -532,6 +532,173 @@
       "expected_failed_checks": [
         "one_report"
       ]
+    },
+    {
+      "id": "langgraph-clean",
+      "adapter": "langgraph",
+      "config": {
+        "mode": "normal"
+      },
+      "faults": [],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "langgraph-retrieval-timeout",
+      "adapter": "langgraph",
+      "config": {
+        "mode": "normal"
+      },
+      "faults": [
+        {
+          "tool": "retrieve_records",
+          "phase": "before",
+          "kind": "timeout",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "langgraph-malformed-build",
+      "adapter": "langgraph",
+      "config": {
+        "mode": "normal"
+      },
+      "faults": [
+        {
+          "tool": "build_artifact",
+          "phase": "after",
+          "kind": "malformed",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "langgraph-lost-ack",
+      "adapter": "langgraph",
+      "config": {
+        "mode": "normal"
+      },
+      "faults": [
+        {
+          "tool": "commit_artifact",
+          "phase": "after",
+          "kind": "lost_ack",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "langgraph-restart-before-commit",
+      "adapter": "langgraph",
+      "config": {
+        "mode": "normal"
+      },
+      "faults": [
+        {
+          "tool": "commit_artifact",
+          "phase": "before",
+          "kind": "interrupt",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "langgraph-restart-after-commit",
+      "adapter": "langgraph",
+      "config": {
+        "mode": "normal"
+      },
+      "faults": [
+        {
+          "tool": "commit_artifact",
+          "phase": "after",
+          "kind": "interrupt",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "langgraph-restart-after-export",
+      "adapter": "langgraph",
+      "config": {
+        "mode": "normal"
+      },
+      "faults": [
+        {
+          "tool": "export_artifact",
+          "phase": "after",
+          "kind": "interrupt",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "completed",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "langgraph-retry-exhaustion",
+      "adapter": "langgraph",
+      "config": {
+        "mode": "normal"
+      },
+      "faults": [
+        {
+          "tool": "retrieve_records",
+          "phase": "before",
+          "kind": "timeout",
+          "occurrence": 1,
+          "repeat": 3
+        }
+      ],
+      "expected": "rejected",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "langgraph-permanent-failure",
+      "adapter": "langgraph",
+      "config": {
+        "mode": "normal"
+      },
+      "faults": [
+        {
+          "tool": "retrieve_records",
+          "phase": "before",
+          "kind": "permanent_error",
+          "occurrence": 1,
+          "repeat": 1
+        }
+      ],
+      "expected": "rejected",
+      "expected_failed_checks": []
+    },
+    {
+      "id": "langgraph-invalid-receipt",
+      "adapter": "langgraph",
+      "config": {
+        "mode": "invalid_receipt"
+      },
+      "faults": [],
+      "expected": "violation",
+      "expected_failed_checks": [
+        "matching_receipt",
+        "completion_checkpoint"
+      ]
     }
   ]
 }

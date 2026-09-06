@@ -2,7 +2,7 @@
 
 The reusable runner is `suite.run_matrix`. A `Case` describes an application, validated
 configuration, fault schedule, expected outcome and (for a negative control) expected failing
-checks. The core and full profiles use the same runner, fault engine and report schema.
+checks. The core, LangGraph and full profiles use the same runner, fault engine and report schema.
 
 ## Responsibilities
 
@@ -16,6 +16,8 @@ checks. The core and full profiles use the same runner, fault engine and report 
 
 All built-in matrix adapters execute offline. Refund and artifact drivers are deterministic
 tool programs. CreatorPal uses a real ADK tool loop with a deterministic `BaseLlm` double.
+LangGraph uses a real `StateGraph` with deterministic nodes, native retry policies and a
+persistent SQLite checkpointer. See [checkpoint and business-state boundaries](langgraph.md).
 The legacy refund `evaluate` runner is the separate live-inference entry point.
 
 ## Fault scheduling

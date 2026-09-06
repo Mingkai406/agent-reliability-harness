@@ -10,6 +10,10 @@ PYTHONPATH=examples agent-reliability run \
   --suite examples/suites/custom.json
 ```
 
+For a framework integration example, see [LangGraphAdapter](../src/agent_reliability/langgraph_adapter.py).
+It wraps individual graph nodes with the same fault engine, lets LangGraph own retries and
+checkpoints, and exports both business state and graph state for independent assessment.
+
 ## Three methods
 
 **`validate(case)`** rejects unsupported configuration and unknown boundaries before any

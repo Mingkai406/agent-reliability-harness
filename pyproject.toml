@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "agent-reliability-harness"
-version = "0.3.0"
+version = "0.4.0"
 description = "Reusable fault injection and state verification for tool-using applications"
 requires-python = ">=3.11"
 license = "MIT"
@@ -13,6 +13,10 @@ dependencies = ["opentelemetry-sdk>=1.36,<2"]
 [project.optional-dependencies]
 adk = ["google-adk>=2.8,<3"]
 dev = ["pytest>=8,<10", "pytest-asyncio>=1,<2", "ruff>=0.12,<1", "build>=1,<2"]
+langgraph = [
+    "langgraph>=1,<2",
+    "langgraph-checkpoint-sqlite>=3,<4",
+]
 
 [project.scripts]
 agent-reliability = "agent_reliability.cli:main"
