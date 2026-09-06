@@ -38,6 +38,29 @@ def worker(args):
 def main():
     parser = argparse.ArgumentParser(description="State-based agent fault-injection experiments")
     commands = parser.add_subparsers(dest="command", required=True)
+    for name in ("run", "serve"):
+        sub = commands.add_parser(name, help="Run a reusable application reliability suite")
+        selection = sub.add_mutually_exclusive_group()
+        selection.add_argument("--profile", choices=["core", "full"], default="core")
+        selection.add_argument("--suite", type=Path, help="Versioned JSON suite configuration")
+        sub.add_argument(
+            "--plugin",
+            action="append",
+            default=[],
+            help="Trusted installed adapter: name=module:factory",
+        )
+        sub.add_argument(
+            "--output",
+            type=Path,
+            default=Path("/tmp/harness-demo") if name == "serve" else Path("runs"),
+        )
+        if name == "serve":
+            sub.add_argument("--port", type=int, default=int(os.environ.get("PORT", "8080")))
+    artifact_worker = commands.add_parser(
+        "artifact-worker", help="One resumable artifact worker invocation"
+    )
+    artifact_worker.add_argument("--directory", type=Path, required=True)
+    artifact_worker.add_argument("--case-id", default="artifact-restart-after-commit")
     for name in ("demo", "evaluate"):
         sub = commands.add_parser(name)
         sub.add_argument("--output", type=Path, default=Path("runs"))
@@ -54,6 +77,54 @@ def main():
     server.add_argument("--output", type=Path, default=Path("/tmp/harness-demo"))
     server.add_argument("--port", type=int, default=int(os.environ.get("PORT", "8080")))
     args = parser.parse_args()
+    if args.command in {"run", "serve"}:
+        from .catalog import builtin_suite
+        from .suite import load_suite, registry_with_plugins, run_matrix
+
+        try:
+            cases = load_suite(args.suite) if args.suite else builtin_suite(args.profile)
+            registry = registry_with_plugins(args.plugin)
+            root, results = asyncio.run(run_matrix(args.output, cases, registry))
+        except (ValueError, TypeError, KeyError, ImportError, AttributeError, OSError) as exc:
+            parser.error(str(exc))
+        passed = sum(r["scenario_passed"] for r in results)
+        print(f"Report: {root / 'index.html'}", flush=True)
+        print(
+            f"Expected outcomes: {passed}/{len(results)}; "
+            f"completed tasks: {sum(r['task_completed'] for r in results)}",
+            flush=True,
+        )
+        if args.command == "serve":
+            handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(root))
+            with http.server.ThreadingHTTPServer(("0.0.0.0", args.port), handler) as httpd:
+                print(f"Serving offline report on port {args.port}", flush=True)
+                httpd.serve_forever()
+        return 0 if passed == len(results) else 1
+    if args.command == "artifact-worker":
+        from .artifacts import ArtifactStore, assess_artifacts, run_workflow
+        from .catalog import builtin_suite
+        from .faults import FaultEngine, InterruptedFault
+
+        case = next(
+            (c for c in builtin_suite() if c.adapter == "artifact" and c.id == args.case_id), None
+        )
+        if case is None:
+            parser.error("Unknown artifact case ID; see examples/suites/core.json")
+        store = ArtifactStore(args.directory)
+        store.bind(case.to_dict())
+        provider = provider_for(args.directory / "traces.jsonl")
+        try:
+            tracer = provider.get_tracer("artifact-worker")
+            faults = FaultEngine(args.directory / "faults.sqlite", case.faults, tracer)
+            receipt = run_workflow(store, faults, tracer)
+            print(json.dumps(receipt))
+            assessment = assess_artifacts(store.snapshot(), receipt)
+            return 0 if assessment.completed and faults.covered() else 1
+        except InterruptedFault:
+            print(json.dumps({"status": "interrupted", "resume": "Run the same command again"}))
+            return 75
+        finally:
+            provider.shutdown()
     if args.command == "creatorpal":
         try:
             import creatorpal_agent  # noqa: F401
