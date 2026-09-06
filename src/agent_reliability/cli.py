@@ -43,6 +43,9 @@ def main():
         sub.add_argument("--output", type=Path, default=Path("runs"))
         if name == "evaluate":
             sub.add_argument("--model", required=True, help="Explicit ADK/Gemini model identifier")
+    app = commands.add_parser("creatorpal", help="Inject faults into CreatorPal's actual tools")
+    app.add_argument("--output", type=Path, default=Path("runs"))
+    app.add_argument("--adapter", choices=["scripted", "offline-adk"], default="offline-adk")
     process = commands.add_parser("worker", help="One resumable synthetic worker invocation")
     process.add_argument("--db", type=Path, required=True)
     process.add_argument("--scenario", choices=[s.name for s in SCENARIOS], required=True)
@@ -51,6 +54,17 @@ def main():
     server.add_argument("--output", type=Path, default=Path("/tmp/harness-demo"))
     server.add_argument("--port", type=int, default=int(os.environ.get("PORT", "8080")))
     args = parser.parse_args()
+    if args.command == "creatorpal":
+        try:
+            import creatorpal_agent  # noqa: F401
+
+            from .creatorpal import run_creatorpal_suite
+        except ImportError:
+            parser.error("Install CreatorPal's agent package and the ADK extra; see README")
+        root, results = asyncio.run(run_creatorpal_suite(args.output, adapter=args.adapter))
+        print(f"Report: {root / 'report.md'}")
+        print(f"Scenarios passed: {sum(r['scenario_passed'] for r in results)}/{len(results)}")
+        return 0 if all(r["scenario_passed"] for r in results) else 1
     if args.command == "worker":
         return worker(args)
     adapter = "adk" if args.command == "evaluate" else "scripted"

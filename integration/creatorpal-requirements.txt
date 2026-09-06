@@ -1,0 +1,2 @@
+# Pin the independently versioned application tested by this Harness release.
+creatorpal-agent[adk] @ git+https://github.com/Mingkai406/CreatorPal.git@c6852e5300c409e48d0fa9c3d0e471bad07f3811

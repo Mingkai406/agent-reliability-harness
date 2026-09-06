@@ -1,0 +1,185 @@
+[
+  {
+    "scenario": "clean",
+    "adapter": "offline-adk",
+    "expected": "complete_once",
+    "fault_observed": true,
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_report": true,
+      "task_scope": true,
+      "recommendation_count": true,
+      "unique_communities": true,
+      "citations": true,
+      "required_sources": true,
+      "analysis": true,
+      "single_commit": true,
+      "receipt": true
+    },
+    "receipt": {
+      "status": "complete",
+      "task_id": "harness-audience",
+      "report_sha256": "496330832a51325bdda2b4e3ccf64c39dee2a0fe50813716964bc0cb7dfdd765"
+    }
+  },
+  {
+    "scenario": "retrieval_timeout",
+    "adapter": "offline-adk",
+    "expected": "complete_once",
+    "fault_observed": true,
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_report": true,
+      "task_scope": true,
+      "recommendation_count": true,
+      "unique_communities": true,
+      "citations": true,
+      "required_sources": true,
+      "analysis": true,
+      "single_commit": true,
+      "receipt": true
+    },
+    "receipt": {
+      "status": "complete",
+      "task_id": "harness-audience",
+      "report_sha256": "496330832a51325bdda2b4e3ccf64c39dee2a0fe50813716964bc0cb7dfdd765"
+    }
+  },
+  {
+    "scenario": "malformed_retrieval",
+    "adapter": "offline-adk",
+    "expected": "complete_once",
+    "fault_observed": true,
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_report": true,
+      "task_scope": true,
+      "recommendation_count": true,
+      "unique_communities": true,
+      "citations": true,
+      "required_sources": true,
+      "analysis": true,
+      "single_commit": true,
+      "receipt": true
+    },
+    "receipt": {
+      "status": "complete",
+      "task_id": "harness-audience",
+      "report_sha256": "496330832a51325bdda2b4e3ccf64c39dee2a0fe50813716964bc0cb7dfdd765"
+    }
+  },
+  {
+    "scenario": "analytics_timeout",
+    "adapter": "offline-adk",
+    "expected": "reject_without_report",
+    "fault_observed": true,
+    "scenario_passed": true,
+    "task_completed": false,
+    "checks": {
+      "contract": true,
+      "one_report": false
+    },
+    "receipt": {
+      "status": "failed",
+      "error_type": "AnalysisFailed"
+    }
+  },
+  {
+    "scenario": "interrupted_before_publish",
+    "adapter": "offline-adk",
+    "expected": "complete_once",
+    "fault_observed": true,
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_report": true,
+      "task_scope": true,
+      "recommendation_count": true,
+      "unique_communities": true,
+      "citations": true,
+      "required_sources": true,
+      "analysis": true,
+      "single_commit": true,
+      "receipt": true
+    },
+    "receipt": {
+      "status": "complete",
+      "task_id": "harness-audience",
+      "report_sha256": "496330832a51325bdda2b4e3ccf64c39dee2a0fe50813716964bc0cb7dfdd765"
+    }
+  },
+  {
+    "scenario": "lost_report_ack",
+    "adapter": "offline-adk",
+    "expected": "complete_once",
+    "fault_observed": true,
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_report": true,
+      "task_scope": true,
+      "recommendation_count": true,
+      "unique_communities": true,
+      "citations": true,
+      "required_sources": true,
+      "analysis": true,
+      "single_commit": true,
+      "receipt": true
+    },
+    "receipt": {
+      "status": "complete",
+      "task_id": "harness-audience",
+      "report_sha256": "496330832a51325bdda2b4e3ccf64c39dee2a0fe50813716964bc0cb7dfdd765"
+    }
+  },
+  {
+    "scenario": "interrupted_after_publish",
+    "adapter": "offline-adk",
+    "expected": "complete_once",
+    "fault_observed": true,
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_report": true,
+      "task_scope": true,
+      "recommendation_count": true,
+      "unique_communities": true,
+      "citations": true,
+      "required_sources": true,
+      "analysis": true,
+      "single_commit": true,
+      "receipt": true
+    },
+    "receipt": {
+      "status": "complete",
+      "task_id": "harness-audience",
+      "report_sha256": "496330832a51325bdda2b4e3ccf64c39dee2a0fe50813716964bc0cb7dfdd765"
+    }
+  },
+  {
+    "scenario": "false_completion",
+    "adapter": "offline-adk",
+    "expected": "reject_without_report",
+    "fault_observed": true,
+    "scenario_passed": true,
+    "task_completed": false,
+    "checks": {
+      "contract": true,
+      "one_report": false
+    },
+    "receipt": {
+      "status": "complete",
+      "task_id": "harness-audience",
+      "report_sha256": "invented-without-publish"
+    }
+  }
+]

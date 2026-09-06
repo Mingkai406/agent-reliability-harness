@@ -14,10 +14,13 @@ jobs:
           python-version: '3.12'
       - run: pip install uv
       - run: uv sync --locked --extra adk --extra dev
-      - run: uv run --frozen ruff check . && uv run --frozen ruff format --check .
-      - run: uv run --frozen pytest -q
-      - run: uv run --frozen python -m build
-      - run: uv run --frozen agent-reliability demo --output runs
+      - run: uv pip install --python .venv/bin/python -r integration/creatorpal-requirements.txt
+      - run: uv run --no-sync python -c 'import creatorpal_agent'
+      - run: uv run --no-sync ruff check . && uv run --no-sync ruff format --check .
+      - run: uv run --no-sync pytest -q
+      - run: uv run --no-sync python -m build
+      - run: uv run --no-sync agent-reliability demo --output runs
+      - run: uv run --no-sync agent-reliability creatorpal --output runs
       - uses: actions/upload-artifact@v4
         with:
           name: synthetic-experiment-report

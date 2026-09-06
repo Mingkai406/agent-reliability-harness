@@ -8,8 +8,24 @@ A small, runnable fault-injection lab for tool-using agents. It compares retry-o
 with validated, idempotent execution, then grades the **actual database state** rather than
 trusting the agent's claim of success. Built with Python, Google ADK, SQLite, and OpenTelemetry.
 
-This is an independent engineering project using synthetic orders. It contains no V.O.I.C.E.
+This is an independent engineering project using synthetic orders and research fixtures. It contains no V.O.I.C.E.
 code, participant data, payment integration, or clinical evaluation.
+
+## CreatorPal integration
+
+The second application adapter tests actual research tools: retrieval, rules lookup, restricted Python analytics and report submission. Eight scenarios cover timeouts, malformed responses, interrupted execution, lost acknowledgments and false completion. An independent snapshot grader validates committed artifacts and citations. **[Install, run and understand the boundaries](docs/creatorpal.md)** · **[Offline example](examples/creatorpal/report.md)** · **[Testing guide and acceptance criteria](docs/testing.md)**
+
+```sh
+pip install -e '.[adk,dev]'
+pip install -r integration/creatorpal-requirements.txt
+agent-reliability creatorpal
+```
+
+The offline control passes eight expected scenarios: six completed research tasks and two correctly rejected failures. This is implementation verification with deterministic model doubles, not a live LLM reliability benchmark. The original refund experiment follows below.
+
+## Verification and live-model status
+
+[CI](https://github.com/Mingkai406/agent-reliability-harness/actions/workflows/ci.yml) runs 53 tests with the pinned CreatorPal integration, both offline experiment suites, package builds and a container smoke test. The [testing guide](docs/testing.md) provides exact commands, expected failures and artifact inspection steps. CreatorPal's 8/8 result is an offline control; the live refund runner is available separately, and live CreatorPal quality comparisons run in that application's CLI.
 
 ## Run it without a model key
 
