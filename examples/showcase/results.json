@@ -14,7 +14,7 @@
     },
     "receipt": {
       "status": "refunded",
-      "refund_id": "d4de4eb5-2fa7-40ce-ae71-a4328eedcde4",
+      "refund_id": "120307a5-2755-433b-8daf-f0559ff46343",
       "order_id": "order-a",
       "amount_cents": 2000
     },
@@ -24,7 +24,7 @@
     "faults": [],
     "fault_events": [],
     "fault_coverage": true,
-    "duration_ms": 5.02,
+    "duration_ms": 4.669,
     "usage": null,
     "cost_usd": null
   },
@@ -43,7 +43,7 @@
     },
     "receipt": {
       "status": "refunded",
-      "refund_id": "65113b12-0b5f-443a-90fe-9b4254ace3e1",
+      "refund_id": "d70d06ab-310f-499d-95d2-42263f0d9820",
       "order_id": "order-a",
       "amount_cents": 2000
     },
@@ -70,7 +70,7 @@
       }
     ],
     "fault_coverage": true,
-    "duration_ms": 7.069,
+    "duration_ms": 8.674,
     "usage": null,
     "cost_usd": null
   },
@@ -89,7 +89,7 @@
     },
     "receipt": {
       "status": "refunded",
-      "refund_id": "1e12df06-c580-4524-b97d-71148874fd26",
+      "refund_id": "efb3d8da-c9b0-4220-ab99-1403458ec226",
       "order_id": "order-a",
       "amount_cents": 2000
     },
@@ -116,7 +116,7 @@
       }
     ],
     "fault_coverage": true,
-    "duration_ms": 7.498,
+    "duration_ms": 8.319,
     "usage": null,
     "cost_usd": null
   },
@@ -135,7 +135,7 @@
     },
     "receipt": {
       "status": "refunded",
-      "refund_id": "02f4ae97-f2cf-4168-8baf-a1ec081dbc21",
+      "refund_id": "b8084782-1a5f-46ad-bec1-d6659440a31e",
       "order_id": "order-a",
       "amount_cents": 2000
     },
@@ -165,7 +165,7 @@
       }
     ],
     "fault_coverage": true,
-    "duration_ms": 7.465,
+    "duration_ms": 8.385,
     "usage": null,
     "cost_usd": null
   },
@@ -210,7 +210,7 @@
       }
     ],
     "fault_coverage": true,
-    "duration_ms": 4.462,
+    "duration_ms": 5.514,
     "usage": null,
     "cost_usd": null
   },
@@ -229,7 +229,7 @@
     },
     "receipt": {
       "status": "refunded",
-      "refund_id": "da50913d-748f-4dca-8e7c-0786e73b02a1",
+      "refund_id": "2f1f8126-3fdb-4da0-9690-10d2559ee20f",
       "order_id": "order-a",
       "amount_cents": 2000
     },
@@ -259,7 +259,7 @@
       }
     ],
     "fault_coverage": true,
-    "duration_ms": 7.153,
+    "duration_ms": 8.937,
     "usage": null,
     "cost_usd": null
   },
@@ -284,7 +284,7 @@
     "faults": [],
     "fault_events": [],
     "fault_coverage": true,
-    "duration_ms": 3.495,
+    "duration_ms": 3.919,
     "usage": null,
     "cost_usd": null
   },
@@ -303,7 +303,7 @@
     },
     "receipt": {
       "status": "refunded",
-      "refund_id": "6872107c-2115-42b1-ac2d-fbd019c8fa5b",
+      "refund_id": "daa0edfd-58d1-4dd2-8004-278852dc5fc9",
       "order_id": "order-a",
       "amount_cents": 2000
     },
@@ -313,7 +313,7 @@
     "faults": [],
     "fault_events": [],
     "fault_coverage": true,
-    "duration_ms": 4.316,
+    "duration_ms": 5.117,
     "usage": null,
     "cost_usd": null
   },
@@ -332,7 +332,7 @@
     },
     "receipt": {
       "status": "refunded",
-      "refund_id": "4930f0a2-4b54-46aa-b519-61ade445ce2a",
+      "refund_id": "b277906e-158c-4588-b8ec-4461130fb713",
       "order_id": "order-a",
       "amount_cents": 2000
     },
@@ -359,7 +359,7 @@
       }
     ],
     "fault_coverage": true,
-    "duration_ms": 7.628,
+    "duration_ms": 8.712,
     "usage": null,
     "cost_usd": null
   },
@@ -378,7 +378,7 @@
     },
     "receipt": {
       "status": "refunded",
-      "refund_id": "3d73ec8d-7027-4a2c-98c7-9c715c31176a",
+      "refund_id": "42bef57b-60c8-4cb0-9a01-f122fe1078eb",
       "order_id": "order-a",
       "amount_cents": 2000
     },
@@ -405,7 +405,7 @@
       }
     ],
     "fault_coverage": true,
-    "duration_ms": 7.948,
+    "duration_ms": 8.097,
     "usage": null,
     "cost_usd": null
   },
@@ -424,7 +424,7 @@
     },
     "receipt": {
       "status": "refunded",
-      "refund_id": "bfedd0bb-83c5-4af7-9c25-b97074423492",
+      "refund_id": "b15659d2-8417-4a52-b975-9a754fabc301",
       "order_id": "order-a",
       "amount_cents": 2000
     },
@@ -451,7 +451,7 @@
       }
     ],
     "fault_coverage": true,
-    "duration_ms": 7.946,
+    "duration_ms": 8.544,
     "usage": null,
     "cost_usd": null
   },
@@ -470,7 +470,7 @@
     },
     "receipt": {
       "status": "refunded",
-      "refund_id": "633a645b-a45f-4d54-b249-0dec7f81b934",
+      "refund_id": "d8a3d6e1-123b-479c-9f31-2fa03ee30f24",
       "order_id": "order-a",
       "amount_cents": 2000
     },
@@ -497,7 +497,7 @@
       }
     ],
     "fault_coverage": true,
-    "duration_ms": 7.378,
+    "duration_ms": 8.195,
     "usage": null,
     "cost_usd": null
   },
@@ -516,7 +516,7 @@
     },
     "receipt": {
       "status": "refunded",
-      "refund_id": "6308145b-a651-4156-ac3a-645f8f6cf3cf",
+      "refund_id": "f652c39e-b30f-4b1f-b630-879566ea1f8e",
       "order_id": "order-a",
       "amount_cents": 2000
     },
@@ -543,7 +543,7 @@
       }
     ],
     "fault_coverage": true,
-    "duration_ms": 6.955,
+    "duration_ms": 7.429,
     "usage": null,
     "cost_usd": null
   },
@@ -568,7 +568,7 @@
     "faults": [],
     "fault_events": [],
     "fault_coverage": true,
-    "duration_ms": 3.149,
+    "duration_ms": 3.704,
     "usage": null,
     "cost_usd": null
   },
@@ -599,7 +599,7 @@
     "faults": [],
     "fault_events": [],
     "fault_coverage": true,
-    "duration_ms": 5.373,
+    "duration_ms": 6.532,
     "usage": null,
     "cost_usd": null
   },
@@ -647,7 +647,7 @@
       }
     ],
     "fault_coverage": true,
-    "duration_ms": 7.063,
+    "duration_ms": 8.702,
     "usage": null,
     "cost_usd": null
   },
@@ -695,7 +695,7 @@
       }
     ],
     "fault_coverage": true,
-    "duration_ms": 8.489,
+    "duration_ms": 8.876,
     "usage": null,
     "cost_usd": null
   },
@@ -743,7 +743,7 @@
       }
     ],
     "fault_coverage": true,
-    "duration_ms": 7.274,
+    "duration_ms": 8.093,
     "usage": null,
     "cost_usd": null
   },
@@ -791,7 +791,7 @@
       }
     ],
     "fault_coverage": true,
-    "duration_ms": 7.851,
+    "duration_ms": 8.815,
     "usage": null,
     "cost_usd": null
   },
@@ -839,7 +839,7 @@
       }
     ],
     "fault_coverage": true,
-    "duration_ms": 7.532,
+    "duration_ms": 9.93,
     "usage": null,
     "cost_usd": null
   },
@@ -887,7 +887,7 @@
       }
     ],
     "fault_coverage": true,
-    "duration_ms": 8.256,
+    "duration_ms": 9.234,
     "usage": null,
     "cost_usd": null
   },
@@ -935,7 +935,7 @@
       }
     ],
     "fault_coverage": true,
-    "duration_ms": 8.101,
+    "duration_ms": 8.969,
     "usage": null,
     "cost_usd": null
   },
@@ -983,7 +983,7 @@
       }
     ],
     "fault_coverage": true,
-    "duration_ms": 9.547,
+    "duration_ms": 10.861,
     "usage": null,
     "cost_usd": null
   },
@@ -1043,7 +1043,7 @@
       }
     ],
     "fault_coverage": true,
-    "duration_ms": 6.597,
+    "duration_ms": 7.41,
     "usage": null,
     "cost_usd": null
   },
@@ -1077,7 +1077,7 @@
     "faults": [],
     "fault_events": [],
     "fault_coverage": true,
-    "duration_ms": 515.81,
+    "duration_ms": 608.797,
     "usage": null,
     "cost_usd": null
   },
@@ -1128,7 +1128,7 @@
       }
     ],
     "fault_coverage": true,
-    "duration_ms": 56.81,
+    "duration_ms": 66.158,
     "usage": null,
     "cost_usd": null
   },
@@ -1179,7 +1179,7 @@
       }
     ],
     "fault_coverage": true,
-    "duration_ms": 59.96,
+    "duration_ms": 62.384,
     "usage": null,
     "cost_usd": null
   },
@@ -1222,7 +1222,7 @@
       }
     ],
     "fault_coverage": true,
-    "duration_ms": 27.007,
+    "duration_ms": 27.433,
     "usage": null,
     "cost_usd": null
   },
@@ -1273,7 +1273,7 @@
       }
     ],
     "fault_coverage": true,
-    "duration_ms": 71.862,
+    "duration_ms": 77.566,
     "usage": null,
     "cost_usd": null
   },
@@ -1324,7 +1324,7 @@
       }
     ],
     "fault_coverage": true,
-    "duration_ms": 57.186,
+    "duration_ms": 66.005,
     "usage": null,
     "cost_usd": null
   },
@@ -1375,7 +1375,7 @@
       }
     ],
     "fault_coverage": true,
-    "duration_ms": 55.801,
+    "duration_ms": 63.902,
     "usage": null,
     "cost_usd": null
   },
@@ -1403,7 +1403,490 @@
     "faults": [],
     "fault_events": [],
     "fault_coverage": true,
-    "duration_ms": 10.408,
+    "duration_ms": 14.243,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "langgraph-clean",
+    "adapter": "langgraph",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_artifact": true,
+      "source_records": true,
+      "correct_aggregate": true,
+      "matching_file": true,
+      "single_commit": true,
+      "matching_receipt": true,
+      "completion_checkpoint": true,
+      "persisted_graph_checkpoint": true,
+      "graph_finished": true,
+      "graph_receipt_matches": true
+    },
+    "receipt": {
+      "status": "complete",
+      "sha256": "65da3bcf86aecd8032158b9bf913581019537987b705b7992414bd751c43c61c"
+    },
+    "measurement": "LangGraph + deterministic nodes; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [],
+    "fault_events": [],
+    "fault_coverage": true,
+    "duration_ms": 18.363,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "langgraph-retrieval-timeout",
+    "adapter": "langgraph",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_artifact": true,
+      "source_records": true,
+      "correct_aggregate": true,
+      "matching_file": true,
+      "single_commit": true,
+      "matching_receipt": true,
+      "completion_checkpoint": true,
+      "persisted_graph_checkpoint": true,
+      "graph_finished": true,
+      "graph_receipt_matches": true
+    },
+    "receipt": {
+      "status": "complete",
+      "sha256": "65da3bcf86aecd8032158b9bf913581019537987b705b7992414bd751c43c61c"
+    },
+    "measurement": "LangGraph + deterministic nodes; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "retrieve_records",
+        "phase": "before",
+        "kind": "timeout",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "retrieve_records",
+        "phase": "before",
+        "kind": "timeout",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 18.617,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "langgraph-malformed-build",
+    "adapter": "langgraph",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_artifact": true,
+      "source_records": true,
+      "correct_aggregate": true,
+      "matching_file": true,
+      "single_commit": true,
+      "matching_receipt": true,
+      "completion_checkpoint": true,
+      "persisted_graph_checkpoint": true,
+      "graph_finished": true,
+      "graph_receipt_matches": true
+    },
+    "receipt": {
+      "status": "complete",
+      "sha256": "65da3bcf86aecd8032158b9bf913581019537987b705b7992414bd751c43c61c"
+    },
+    "measurement": "LangGraph + deterministic nodes; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "build_artifact",
+        "phase": "after",
+        "kind": "malformed",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "build_artifact",
+        "phase": "after",
+        "kind": "malformed",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 17.616,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "langgraph-lost-ack",
+    "adapter": "langgraph",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_artifact": true,
+      "source_records": true,
+      "correct_aggregate": true,
+      "matching_file": true,
+      "single_commit": true,
+      "matching_receipt": true,
+      "completion_checkpoint": true,
+      "persisted_graph_checkpoint": true,
+      "graph_finished": true,
+      "graph_receipt_matches": true
+    },
+    "receipt": {
+      "status": "complete",
+      "sha256": "65da3bcf86aecd8032158b9bf913581019537987b705b7992414bd751c43c61c"
+    },
+    "measurement": "LangGraph + deterministic nodes; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "commit_artifact",
+        "phase": "after",
+        "kind": "lost_ack",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "commit_artifact",
+        "phase": "after",
+        "kind": "lost_ack",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 17.883,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "langgraph-restart-before-commit",
+    "adapter": "langgraph",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_artifact": true,
+      "source_records": true,
+      "correct_aggregate": true,
+      "matching_file": true,
+      "single_commit": true,
+      "matching_receipt": true,
+      "completion_checkpoint": true,
+      "persisted_graph_checkpoint": true,
+      "graph_finished": true,
+      "graph_receipt_matches": true
+    },
+    "receipt": {
+      "status": "complete",
+      "sha256": "65da3bcf86aecd8032158b9bf913581019537987b705b7992414bd751c43c61c"
+    },
+    "measurement": "LangGraph + deterministic nodes; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "commit_artifact",
+        "phase": "before",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "commit_artifact",
+        "phase": "before",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 19.812,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "langgraph-restart-after-commit",
+    "adapter": "langgraph",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_artifact": true,
+      "source_records": true,
+      "correct_aggregate": true,
+      "matching_file": true,
+      "single_commit": true,
+      "matching_receipt": true,
+      "completion_checkpoint": true,
+      "persisted_graph_checkpoint": true,
+      "graph_finished": true,
+      "graph_receipt_matches": true
+    },
+    "receipt": {
+      "status": "complete",
+      "sha256": "65da3bcf86aecd8032158b9bf913581019537987b705b7992414bd751c43c61c"
+    },
+    "measurement": "LangGraph + deterministic nodes; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "commit_artifact",
+        "phase": "after",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "commit_artifact",
+        "phase": "after",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 17.356,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "langgraph-restart-after-export",
+    "adapter": "langgraph",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "contract": true,
+      "one_artifact": true,
+      "source_records": true,
+      "correct_aggregate": true,
+      "matching_file": true,
+      "single_commit": true,
+      "matching_receipt": true,
+      "completion_checkpoint": true,
+      "persisted_graph_checkpoint": true,
+      "graph_finished": true,
+      "graph_receipt_matches": true
+    },
+    "receipt": {
+      "status": "complete",
+      "sha256": "65da3bcf86aecd8032158b9bf913581019537987b705b7992414bd751c43c61c"
+    },
+    "measurement": "LangGraph + deterministic nodes; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "export_artifact",
+        "phase": "after",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "export_artifact",
+        "phase": "after",
+        "kind": "interrupt",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 18.443,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "langgraph-retry-exhaustion",
+    "adapter": "langgraph",
+    "expected": "rejected",
+    "observed": "rejected",
+    "scenario_passed": true,
+    "task_completed": false,
+    "checks": {
+      "contract": true,
+      "no_committed_artifact": true,
+      "no_export": true,
+      "no_completion_checkpoint": true,
+      "explicit_rejection": true,
+      "persisted_graph_checkpoint": true
+    },
+    "receipt": {
+      "status": "failed"
+    },
+    "measurement": "LangGraph + deterministic nodes; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "retrieve_records",
+        "phase": "before",
+        "kind": "timeout",
+        "occurrence": 1,
+        "repeat": 3
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "retrieve_records",
+        "phase": "before",
+        "kind": "timeout",
+        "occurrence": 1,
+        "repeat": 3,
+        "rule": 0
+      },
+      {
+        "tool": "retrieve_records",
+        "phase": "before",
+        "kind": "timeout",
+        "occurrence": 2,
+        "repeat": 3,
+        "rule": 0
+      },
+      {
+        "tool": "retrieve_records",
+        "phase": "before",
+        "kind": "timeout",
+        "occurrence": 3,
+        "repeat": 3,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 16.663,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "langgraph-permanent-failure",
+    "adapter": "langgraph",
+    "expected": "rejected",
+    "observed": "rejected",
+    "scenario_passed": true,
+    "task_completed": false,
+    "checks": {
+      "contract": true,
+      "no_committed_artifact": true,
+      "no_export": true,
+      "no_completion_checkpoint": true,
+      "explicit_rejection": true,
+      "persisted_graph_checkpoint": true
+    },
+    "receipt": {
+      "status": "failed"
+    },
+    "measurement": "LangGraph + deterministic nodes; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "retrieve_records",
+        "phase": "before",
+        "kind": "permanent_error",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "retrieve_records",
+        "phase": "before",
+        "kind": "permanent_error",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 9.531,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "langgraph-invalid-receipt",
+    "adapter": "langgraph",
+    "expected": "violation",
+    "observed": "violation",
+    "scenario_passed": true,
+    "task_completed": false,
+    "checks": {
+      "contract": true,
+      "one_artifact": true,
+      "source_records": true,
+      "correct_aggregate": true,
+      "matching_file": true,
+      "single_commit": true,
+      "matching_receipt": false,
+      "completion_checkpoint": false,
+      "persisted_graph_checkpoint": true,
+      "graph_finished": true,
+      "graph_receipt_matches": true
+    },
+    "receipt": {
+      "status": "complete",
+      "sha256": "incorrect"
+    },
+    "measurement": "LangGraph + deterministic nodes; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [
+      "matching_receipt",
+      "completion_checkpoint"
+    ],
+    "faults": [],
+    "fault_events": [],
+    "fault_coverage": true,
+    "duration_ms": 15.814,
     "usage": null,
     "cost_usd": null
   }

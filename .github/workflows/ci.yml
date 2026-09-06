@@ -13,9 +13,9 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install uv
-      - run: uv sync --locked --extra adk --extra dev
+      - run: uv sync --locked --extra adk --extra langgraph --extra dev
       - run: uv pip install --python .venv/bin/python -r integration/creatorpal-requirements.txt
-      - run: uv run --no-sync python -c 'import creatorpal_agent'
+      - run: uv run --no-sync python -c 'import creatorpal_agent, langgraph.graph, langgraph.checkpoint.sqlite'
       - run: uv run --no-sync ruff check . && uv run --no-sync ruff format --check .
       - run: uv run --no-sync pytest -q
       - run: uv run --no-sync python -m build

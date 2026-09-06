@@ -41,7 +41,7 @@ def main():
     for name in ("run", "serve"):
         sub = commands.add_parser(name, help="Run a reusable application reliability suite")
         selection = sub.add_mutually_exclusive_group()
-        selection.add_argument("--profile", choices=["core", "full"], default="core")
+        selection.add_argument("--profile", choices=["core", "full", "langgraph"], default="core")
         selection.add_argument("--suite", type=Path, help="Versioned JSON suite configuration")
         sub.add_argument(
             "--plugin",
@@ -61,6 +61,11 @@ def main():
     )
     artifact_worker.add_argument("--directory", type=Path, required=True)
     artifact_worker.add_argument("--case-id", default="artifact-restart-after-commit")
+    graph_worker = commands.add_parser(
+        "langgraph-worker", help="One resumable LangGraph invocation"
+    )
+    graph_worker.add_argument("--directory", type=Path, required=True)
+    graph_worker.add_argument("--case-id", default="langgraph-restart-after-commit")
     for name in ("demo", "evaluate"):
         sub = commands.add_parser(name)
         sub.add_argument("--output", type=Path, default=Path("runs"))
@@ -100,6 +105,33 @@ def main():
                 print(f"Serving offline report on port {args.port}", flush=True)
                 httpd.serve_forever()
         return 0 if passed == len(results) else 1
+    if args.command == "langgraph-worker":
+        from .catalog import langgraph_suite
+        from .faults import FaultEngine, InterruptedFault
+        from .langgraph_adapter import LangGraphAdapter, run_graph_once
+
+        case = next((c for c in langgraph_suite() if c.id == args.case_id), None)
+        if case is None:
+            parser.error("Unknown LangGraph case ID; see examples/suites/langgraph.json")
+        adapter = LangGraphAdapter()
+        try:
+            adapter.validate(case)
+        except ValueError as exc:
+            parser.error(str(exc))
+        args.directory.mkdir(parents=True, exist_ok=True)
+        provider = provider_for(args.directory / "traces.jsonl")
+        try:
+            tracer = provider.get_tracer("langgraph-worker")
+            faults = FaultEngine(args.directory / "faults.sqlite", case.faults, tracer)
+            execution = run_graph_once(case, args.directory, faults, tracer)
+            print(json.dumps(execution.receipt))
+            assessment = adapter.assess(case, execution)
+            return 0 if assessment.completed and faults.covered() else 1
+        except InterruptedFault:
+            print(json.dumps({"status": "interrupted", "resume": "Run the same command again"}))
+            return 75
+        finally:
+            provider.shutdown()
     if args.command == "artifact-worker":
         from .artifacts import ArtifactStore, assess_artifacts, run_workflow
         from .catalog import builtin_suite

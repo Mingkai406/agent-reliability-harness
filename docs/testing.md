@@ -5,9 +5,9 @@ Run from the repository root. The engineering checks below need no model credent
 ## Full checks
 
 ```sh
-uv sync --locked --extra adk --extra dev
+uv sync --locked --extra adk --extra langgraph --extra dev
 uv pip install --python .venv/bin/python -r integration/creatorpal-requirements.txt
-uv run --no-sync python -c 'import creatorpal_agent'
+uv run --no-sync python -c 'import creatorpal_agent, langgraph.graph, langgraph.checkpoint.sqlite'
 uv run --no-sync ruff check .
 uv run --no-sync ruff format --check .
 uv run --no-sync pytest -q
@@ -15,11 +15,12 @@ uv run --no-sync python -m build
 uv run --no-sync agent-reliability run --profile full --output runs
 ```
 
-The explicit import prevents optional integration tests from silently skipping. Use `--no-sync`
+The explicit imports prevent optional integration tests from silently skipping. Use `--no-sync`
 after installing the separately pinned application, or reinstall it after a dependency sync.
 
-The full profile has 32 cases: **24 completed tasks, 4 safe rejections and 4 detected negative
-controls**. All 32 match expectations in the committed example. The core profile has 24 cases:
+The full profile has 42 cases: **31 completed tasks, 6 safe rejections and 5 detected negative
+controls**. All 42 match expectations in the committed example. The LangGraph-only profile
+has 10 cases: 7 completions, 2 safe rejections and 1 detected control. The core profile has 24 cases:
 18 completions, 3 safe rejections and 3 detected controls.
 
 ## Regression coverage
@@ -31,9 +32,12 @@ controls**. All 32 match expectations in the committed example. The core profile
 - Invalid configuration, missed/partial schedules, exact negative controls and plugin loading.
 - Real artifact files, independent numeric/content/receipt checks and corrupted outputs.
 - Separate-process resume before/after commit and after export, with one committed result.
+- LangGraph disk checkpoints, node retries, exact receipt controls and optional-dependency isolation.
+- A real LangGraph child-process SIGKILL after a business commit but before its graph checkpoint.
 - A real child-process SIGKILL between database commit and file export, then reconciliation.
 
-Use `pytest -q tests/test_framework.py` for the reusable framework. The original
+Use `pytest -q tests/test_langgraph.py` for the LangGraph integration and
+`pytest -q tests/test_framework.py` for the reusable framework. The original
 `test_reliability.py`, `test_adk.py` and `test_creatorpal.py` retain compatibility coverage.
 ADK dependency deprecation/experimental-feature warnings can appear; they do not replace checks.
 
@@ -69,6 +73,8 @@ package works independently, including its packaged HTML template.
 | Command | Scope |
 |---|---|
 | `run` / `run --profile full` | Shared framework; core/full offline profiles |
+| `run --profile langgraph` | Ten LangGraph controls, no ADK dependency or model credentials |
+| `langgraph-worker` | One disk-checkpointed LangGraph invocation; interruption exits 75 |
 | `run --suite FILE --plugin NAME=MODULE:FACTORY` | Explicit local integration |
 | `serve` | Generate and serve a framework report |
 | `artifact-worker` | One resumable invocation; controlled interruption exits 75 |

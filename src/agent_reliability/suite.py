@@ -67,6 +67,8 @@ async def run_matrix(output, cases, registry=None):
         "agent-reliability-harness",
         "creatorpal-agent",
         "google-adk",
+        "langgraph",
+        "langgraph-checkpoint-sqlite",
         "opentelemetry-sdk",
     ):
         try:
@@ -170,7 +172,11 @@ async def run_matrix(output, cases, registry=None):
         dump(directory / "result.json", row)
         results.append(row)
     measurements = sorted({r["measurement"] for r in results if r["measurement"]})
-    offline = {"scripted tools", "ADK Runner + offline model double"}
+    offline = {
+        "scripted tools",
+        "ADK Runner + offline model double",
+        "LangGraph + deterministic nodes; no model calls",
+    }
     manifest["measurement"] = (
         "Deterministic offline controls; no live model inference"
         if measurements and set(measurements) <= offline

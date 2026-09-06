@@ -1,7 +1,7 @@
 # CreatorPal reliability adapter
 
 For the reusable framework, run `agent-reliability run --profile full` after installation.
-It uses the shared fault engine and unified HTML report across three applications. The
+It uses the shared fault engine and unified HTML report across four integrations. The
 CreatorPal cases produce six completed tasks, one safe rejection and one detected
 false-completion control. See [adapter authoring](adapters.md) for the actual plugin contract.
 The original `creatorpal` command and its application-specific report are documented below.

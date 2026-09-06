@@ -160,7 +160,7 @@ def test_fault_schema_rejects_invalid_values(kwargs):
 
 
 def test_suite_roundtrip_and_path_traversal_rejection():
-    for profile in ("core", "full"):
+    for profile in ("core", "full", "langgraph"):
         assert load_suite(REPO / "examples" / "suites" / f"{profile}.json") == builtin_suite(
             profile
         )

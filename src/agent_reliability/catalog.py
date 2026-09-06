@@ -5,8 +5,10 @@ from .faults import FaultRule
 
 
 def builtin_suite(profile="core"):
-    if profile not in {"core", "full"}:
+    if profile not in {"core", "full", "langgraph"}:
         raise ValueError("Unknown suite profile")
+    if profile == "langgraph":
+        return langgraph_suite()
     cases = []
     refund_faults = [
         ("clean", None),
@@ -90,4 +92,36 @@ def builtin_suite(profile="core"):
                     ("one_report",) if name == "false-completion" else (),
                 )
             )
+    if profile == "full":
+        cases.extend(langgraph_suite())
     return cases
+
+
+def langgraph_suite():
+    faults = [
+        ("clean", None),
+        ("retrieval-timeout", FaultRule("retrieve_records", "before", "timeout")),
+        ("malformed-build", FaultRule("build_artifact", "after", "malformed")),
+        ("lost-ack", FaultRule("commit_artifact", "after", "lost_ack")),
+        ("restart-before-commit", FaultRule("commit_artifact", "before", "interrupt")),
+        ("restart-after-commit", FaultRule("commit_artifact", "after", "interrupt")),
+        ("restart-after-export", FaultRule("export_artifact", "after", "interrupt")),
+        ("retry-exhaustion", FaultRule("retrieve_records", "before", "timeout", repeat=3)),
+        ("permanent-failure", FaultRule("retrieve_records", "before", "permanent_error")),
+        ("invalid-receipt", None),
+    ]
+    return [
+        Case(
+            "langgraph-" + name,
+            "langgraph",
+            {"mode": "invalid_receipt" if name == "invalid-receipt" else "normal"},
+            (fault,) if fault else (),
+            "violation"
+            if name == "invalid-receipt"
+            else "rejected"
+            if name in {"retry-exhaustion", "permanent-failure"}
+            else "completed",
+            ("matching_receipt", "completion_checkpoint") if name == "invalid-receipt" else (),
+        )
+        for name, fault in faults
+    ]

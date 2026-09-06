@@ -69,6 +69,7 @@ def write_suite_report(root, results, manifest):
         "refund": ("Refund service", "Transactions · tenant scope · idempotency"),
         "artifact": ("Artifact workflow", "Durable steps · file reconciliation · recovery"),
         "creatorpal": ("CreatorPal agent", "ADK tools · evidence · report integrity"),
+        "langgraph": ("LangGraph workflow", "Disk checkpoints · node retries · restart recovery"),
     }
     coverage = ""
     for name in sorted({r["adapter"] for r in results}):
