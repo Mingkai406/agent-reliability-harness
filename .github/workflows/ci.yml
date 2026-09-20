@@ -22,6 +22,10 @@ jobs:
       - run: uv run --no-sync agent-reliability demo --output runs
       - run: uv run --no-sync agent-reliability creatorpal --output runs
       - run: uv run --no-sync agent-reliability run --profile full --output runs
+      - name: Build isolated code validator
+        run: docker build -f Dockerfile.validator -t harness-code-validator:local .
+      - name: Verify candidate patches against independent gates
+        run: uv run --no-sync python -m agent_reliability.code_demo --output runs/code-validation
       - uses: actions/upload-artifact@v4
         with:
           name: synthetic-experiment-report
