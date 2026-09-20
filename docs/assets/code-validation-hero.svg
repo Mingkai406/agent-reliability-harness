@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="title desc">
+<title id="title">Agent Reliability Harness: from candidate patch to verified outcome</title>
+<desc id="desc">Protected patch policy, five isolated Docker checks, and a state-based verdict with evidence.</desc>
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#0b1528"/><stop offset="1" stop-color="#172e42"/></linearGradient><linearGradient id="accent"><stop stop-color="#5eead4"/><stop offset="1" stop-color="#60a5fa"/></linearGradient></defs>
+<rect width="1200" height="420" rx="22" fill="url(#bg)"/>
+<path d="M0 350H1200M900 0V420M1020 0V420" stroke="#254254" stroke-width="1" opacity=".5"/>
+<g font-family="Arial, Helvetica, sans-serif">
+<text x="52" y="56" fill="#5eead4" font-size="14" letter-spacing="3">AGENT RELIABILITY / CODE VALIDATION</text>
+<text x="52" y="118" fill="#f8fafc" font-size="43" font-weight="700">Every patch earns its acceptance.</text>
+<text x="52" y="157" fill="#a9bdcf" font-size="19">Independent checks. Isolated execution. Inspectable evidence.</text>
+<rect x="52" y="201" width="244" height="107" rx="12" fill="#172b40" stroke="#31526b"/>
+<text x="72" y="233" fill="#7dd3fc" font-size="12" letter-spacing="2">01 / PATCH POLICY</text>
+<text x="72" y="268" fill="#f1f5f9" font-size="20" font-weight="700">Trusted source + diff</text>
+<text x="72" y="291" fill="#a9bdcf" font-size="13">Protect tests and evaluator policy</text>
+<path d="M306 254H348" stroke="url(#accent)" stroke-width="3"/><path d="m340 247 8 7-8 7" fill="none" stroke="#5eead4" stroke-width="2"/>
+<rect x="360" y="201" width="442" height="107" rx="12" fill="#172b40" stroke="#4f8596"/>
+<text x="380" y="233" fill="#5eead4" font-size="12" letter-spacing="2">02 / FIVE FRESH DOCKER CONTAINERS</text>
+<text x="380" y="267" fill="#f1f5f9" font-size="18" font-weight="700">Build · Types · Unit · Integration · Static</text>
+<text x="380" y="291" fill="#a9bdcf" font-size="13">No network · Read-only source · Bounded resources</text>
+<path d="M813 254H855" stroke="url(#accent)" stroke-width="3"/><path d="m847 247 8 7-8 7" fill="none" stroke="#5eead4" stroke-width="2"/>
+<rect x="866" y="201" width="280" height="107" rx="12" fill="#153b3c" stroke="#357c72"/>
+<text x="886" y="233" fill="#5eead4" font-size="12" letter-spacing="2">03 / VERIFIABLE VERDICT</text>
+<text x="886" y="268" fill="#f1f5f9" font-size="20" font-weight="700">Accept or reject</text>
+<text x="886" y="291" fill="#a9bdcf" font-size="13">Exit codes · Hashes · Logs · OTel spans</text>
+<text x="52" y="386" fill="#cbd5e1" font-size="15">Python + Docker + OpenTelemetry</text>
+<text x="1148" y="386" fill="#5eead4" font-size="14" text-anchor="end">REPRODUCIBLE WITHOUT MODEL CREDENTIALS</text>
+</g></svg>

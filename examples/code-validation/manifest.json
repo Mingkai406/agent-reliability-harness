@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "configuration": {
+    "schema_version": 1,
+    "cases": [
+      {
+        "id": "code-valid",
+        "adapter": "code-validation",
+        "config": {
+          "candidate": "valid"
+        },
+        "faults": [],
+        "expected": "completed",
+        "expected_failed_checks": []
+      },
+      {
+        "id": "code-syntax",
+        "adapter": "code-validation",
+        "config": {
+          "candidate": "syntax"
+        },
+        "faults": [],
+        "expected": "rejected",
+        "expected_failed_checks": []
+      },
+      {
+        "id": "code-type",
+        "adapter": "code-validation",
+        "config": {
+          "candidate": "type"
+        },
+        "faults": [],
+        "expected": "rejected",
+        "expected_failed_checks": []
+      },
+      {
+        "id": "code-unit",
+        "adapter": "code-validation",
+        "config": {
+          "candidate": "unit"
+        },
+        "faults": [],
+        "expected": "rejected",
+        "expected_failed_checks": []
+      },
+      {
+        "id": "code-integration",
+        "adapter": "code-validation",
+        "config": {
+          "candidate": "integration"
+        },
+        "faults": [],
+        "expected": "rejected",
+        "expected_failed_checks": []
+      },
+      {
+        "id": "code-static",
+        "adapter": "code-validation",
+        "config": {
+          "candidate": "static"
+        },
+        "faults": [],
+        "expected": "rejected",
+        "expected_failed_checks": []
+      },
+      {
+        "id": "code-timeout",
+        "adapter": "code-validation",
+        "config": {
+          "candidate": "timeout"
+        },
+        "faults": [],
+        "expected": "rejected",
+        "expected_failed_checks": []
+      },
+      {
+        "id": "code-protected",
+        "adapter": "code-validation",
+        "config": {
+          "candidate": "protected"
+        },
+        "faults": [],
+        "expected": "rejected",
+        "expected_failed_checks": []
+      }
+    ]
+  },
+  "configuration_sha256": "05e6434576e696181f150a12e6f28501504993701a3aac8f6083aedcc9256859",
+  "harness_source_sha256": "b7bcc6e784506c84d20bd97dbcbab473e25bd0fdc4cb2e67bf89f0a3c46d1f19",
+  "python": "3.12.13",
+  "packages": {
+    "agent-reliability-harness": "0.4.0",
+    "creatorpal-agent": "0.2.0",
+    "google-adk": "2.8.0",
+    "langgraph": "1.2.11",
+    "langgraph-checkpoint-sqlite": "3.1.1",
+    "opentelemetry-sdk": "1.42.1"
+  },
+  "adapters": {
+    "code-validation": {
+      "class": "agent_reliability.code_validation.CodeValidationAdapter",
+      "source_sha256": "7f1defd1f30bfa8a3226a54b5f4849ec90aab6f5461f5f7685c8001048209c16"
+    }
+  },
+  "measurement": "Adapter-declared execution: Git patch policy validation; Real Docker execution; evaluator-owned checks; no model calls",
+  "execution": "Sequential cases, fresh state, adapter-owned bounded retries and recovery",
+  "case_timeout_seconds": 120
+}

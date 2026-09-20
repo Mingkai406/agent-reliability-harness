@@ -1,0 +1,44 @@
+{
+  "patch_sha256": "4bcd607b4ee0413428f49759970a0c746af49f5aeeb458fef358e50a85747945",
+  "gates": {},
+  "policy_passed": false,
+  "image": "harness-code-validator:local",
+  "commands": {
+    "build": [
+      "python",
+      "-c",
+      "import pathlib; [compile(p.read_text(),str(p),'exec') for p in pathlib.Path('src').glob('*.py')]"
+    ],
+    "types": [
+      "mypy",
+      "--cache-dir",
+      "/tmp/mypy",
+      "--strict",
+      "src"
+    ],
+    "unit": [
+      "python",
+      "-m",
+      "unittest",
+      "tests.test_unit"
+    ],
+    "integration": [
+      "python",
+      "-m",
+      "unittest",
+      "tests.test_integration"
+    ],
+    "static": [
+      "ruff",
+      "check",
+      "--no-cache",
+      "src"
+    ]
+  },
+  "allowed_prefixes": [
+    "src/"
+  ],
+  "timeout_seconds": 5,
+  "base_commit": "7090205dd35b88ace633eb76f5c8079684e64ca7",
+  "rejection": "Candidate changes a protected or unknown path"
+}

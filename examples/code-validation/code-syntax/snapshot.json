@@ -1,0 +1,80 @@
+{
+  "patch_sha256": "eadeecbab03f4d06077a2324d28aa7049a51190270de1cf4225049977568aae6",
+  "gates": {
+    "build": {
+      "returncode": 1,
+      "output": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"src/calc.py\", line 1\n    def add(:\n            ^\nSyntaxError: invalid syntax\n",
+      "timed_out": false,
+      "passed": false,
+      "container_exit_code": 1
+    },
+    "types": {
+      "returncode": 2,
+      "output": "src/calc.py:1: error: invalid syntax  [syntax]\nFound 1 error in 1 file (errors prevented further checking)\n",
+      "timed_out": false,
+      "passed": false,
+      "container_exit_code": 2
+    },
+    "unit": {
+      "returncode": 1,
+      "output": "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/usr/local/lib/python3.12/unittest/__main__.py\", line 18, in <module>\n    main(module=None)\n  File \"/usr/local/lib/python3.12/unittest/main.py\", line 104, in __init__\n    self.parseArgs(argv)\n  File \"/usr/local/lib/python3.12/unittest/main.py\", line 153, in parseArgs\n    self.createTests()\n  File \"/usr/local/lib/python3.12/unittest/main.py\", line 164, in createTests\n    self.test = self.testLoader.loadTestsFromNames(self.testNames,\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/unittest/loader.py\", line 207, in loadTestsFromNames\n    suites = [self.loadTestsFromName(name, module) for name in names]\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/unittest/loader.py\", line 137, in loadTestsFromName\n    module = __import__(module_name)\n             ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/tests/test_unit.py\", line 2, in <module>\n    from src.calc import add\n  File \"/workspace/src/calc.py\", line 1\n    def add(:\n            ^\nSyntaxError: invalid syntax\n",
+      "timed_out": false,
+      "passed": false,
+      "container_exit_code": 1
+    },
+    "integration": {
+      "returncode": 1,
+      "output": "E\n======================================================================\nERROR: test_json_contract (tests.test_integration.TestCLI.test_json_contract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/tests/test_integration.py\", line 8, in test_json_contract\n    result = subprocess.run([sys.executable, \"-m\", \"src.cli\", \"8\", \"4\"],\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/subprocess.py\", line 571, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command '['/usr/local/bin/python', '-m', 'src.cli', '8', '4']' returned non-zero exit status 1.\n\n----------------------------------------------------------------------\nRan 1 test in 0.010s\n\nFAILED (errors=1)\n",
+      "timed_out": false,
+      "passed": false,
+      "container_exit_code": 1
+    },
+    "static": {
+      "returncode": 1,
+      "output": "invalid-syntax: Expected a parameter or the end of the parameter list\n --> src/calc.py:1:9\n  |\n1 | def add(:\n  |         ^\n2 |     pass\n  |\n\ninvalid-syntax: Expected ')', found newline\n --> src/calc.py:1:10\n  |\n1 | def add(:\n  |          ^\n2 |     pass\n  |\n\nFound 2 errors.\n",
+      "timed_out": false,
+      "passed": false,
+      "container_exit_code": 1
+    }
+  },
+  "policy_passed": true,
+  "image": "harness-code-validator:local",
+  "commands": {
+    "build": [
+      "python",
+      "-c",
+      "import pathlib; [compile(p.read_text(),str(p),'exec') for p in pathlib.Path('src').glob('*.py')]"
+    ],
+    "types": [
+      "mypy",
+      "--cache-dir",
+      "/tmp/mypy",
+      "--strict",
+      "src"
+    ],
+    "unit": [
+      "python",
+      "-m",
+      "unittest",
+      "tests.test_unit"
+    ],
+    "integration": [
+      "python",
+      "-m",
+      "unittest",
+      "tests.test_integration"
+    ],
+    "static": [
+      "ruff",
+      "check",
+      "--no-cache",
+      "src"
+    ]
+  },
+  "allowed_prefixes": [
+    "src/"
+  ],
+  "timeout_seconds": 5,
+  "base_commit": "7090205dd35b88ace633eb76f5c8079684e64ca7",
+  "image_id": "sha256:5d51a8edfdbb3ae66fc9431337f7b5c0a999ab2d6d8f6435d32cc652e6a6b326"
+}

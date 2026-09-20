@@ -1,0 +1,80 @@
+{
+  "patch_sha256": "2992ee5bffa947a30513239ae7fad243d6c5c63e7193217c021f4c7e61b001dd",
+  "gates": {
+    "build": {
+      "returncode": 0,
+      "output": "",
+      "timed_out": false,
+      "passed": true,
+      "container_exit_code": 0
+    },
+    "types": {
+      "returncode": 0,
+      "output": "Success: no issues found in 3 source files\n",
+      "timed_out": false,
+      "passed": true,
+      "container_exit_code": 0
+    },
+    "unit": {
+      "returncode": 0,
+      "output": "..\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n",
+      "timed_out": false,
+      "passed": true,
+      "container_exit_code": 0
+    },
+    "integration": {
+      "returncode": 0,
+      "output": ".\n----------------------------------------------------------------------\nRan 1 test in 0.009s\n\nOK\n",
+      "timed_out": false,
+      "passed": true,
+      "container_exit_code": 0
+    },
+    "static": {
+      "returncode": 0,
+      "output": "All checks passed!\n",
+      "timed_out": false,
+      "passed": true,
+      "container_exit_code": 0
+    }
+  },
+  "policy_passed": true,
+  "image": "harness-code-validator:local",
+  "commands": {
+    "build": [
+      "python",
+      "-c",
+      "import pathlib; [compile(p.read_text(),str(p),'exec') for p in pathlib.Path('src').glob('*.py')]"
+    ],
+    "types": [
+      "mypy",
+      "--cache-dir",
+      "/tmp/mypy",
+      "--strict",
+      "src"
+    ],
+    "unit": [
+      "python",
+      "-m",
+      "unittest",
+      "tests.test_unit"
+    ],
+    "integration": [
+      "python",
+      "-m",
+      "unittest",
+      "tests.test_integration"
+    ],
+    "static": [
+      "ruff",
+      "check",
+      "--no-cache",
+      "src"
+    ]
+  },
+  "allowed_prefixes": [
+    "src/"
+  ],
+  "timeout_seconds": 5,
+  "base_commit": "7090205dd35b88ace633eb76f5c8079684e64ca7",
+  "image_id": "sha256:5d51a8edfdbb3ae66fc9431337f7b5c0a999ab2d6d8f6435d32cc652e6a6b326"
+}

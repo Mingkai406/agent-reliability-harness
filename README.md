@@ -1,10 +1,20 @@
 # Agent Reliability Harness
 
-**Verify the outcome. Not just the answer.**
+**Reliability tests for agent actions and AI-generated code changes.**
 
 [![CI](https://github.com/Mingkai406/agent-reliability-harness/actions/workflows/ci.yml/badge.svg)](https://github.com/Mingkai406/agent-reliability-harness/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.11%2B-3776AB)](pyproject.toml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+![Code validation architecture](docs/assets/code-validation-hero.svg)
+
+**New: candidate patch validation.** Apply a diff to a committed repository snapshot,
+protect evaluator-owned tests, and run compilation, types, unit tests, integration tests
+and static analysis in five fresh Docker containers. Every verdict includes its evidence.
+
+[Run the code showcase](docs/code-validation.md#run-the-showcase) ·
+[Inspect code-validation results](examples/code-validation/report.md) ·
+[Integrate your repository](docs/code-validation.md#integrate-your-repository)
 
 A reusable reliability testing framework for **Google ADK, LangGraph, and custom tool-using
 applications**. Inject failures at real tool boundaries, resume interrupted execution, and
@@ -35,10 +45,11 @@ that explain each verdict.
 - **Connect another application.** Implement three adapter methods and register a local plugin.
   The runner and fault engine remain unchanged.
 
-## Four integrations, one experiment contract
+## Five integrations, one experiment contract
 
 | Application | Real execution boundary | Independently verified outcome |
 |---|---|---|
+| **Code validation** | Candidate diff → protected-path policy → five isolated Docker checks | Acceptance requires all gate results; failed checks reject, infrastructure errors remain errors |
 | **Refund service** | Authorized writes to a transactional SQLite service | One refund, correct amount, tenant scope and a receipt matching committed state |
 | **CreatorPal research agent** | Real ADK Runner, retrieval, rules lookup, restricted Python analytics and report submission | One committed report, valid evidence references, required sources, analysis and matching receipt |
 | **LangGraph workflow** | Real `StateGraph`, node retry policies and disk-backed `SqliteSaver` checkpoints | Resume without repeating completed nodes; one committed artifact, matching file and valid receipt |
@@ -115,7 +126,7 @@ pass the oracle. See the [integration guide](docs/langgraph.md) and
 
 ## Read the results correctly
 
-The regression suite passes **94 tests**, including separate-process checkpoint recovery and
+The regression suite passes **103 tests**, including separate-process checkpoint recovery and
 forced termination after a business commit. The scenario counts below describe controlled
 experiments, separately from the unit and integration test count.
 
