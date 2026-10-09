@@ -6,6 +6,7 @@ from .artifacts import ArtifactStore, assess_artifacts, run_workflow
 from .contracts import Assessment, Execution
 from .creatorpal import false_completion_model, grade_snapshot
 from .faults import InterruptedFault, PermanentFault, RetryableFault
+from .http_adapter import HttpChargeAdapter
 from .langgraph_adapter import LangGraphAdapter
 from .runtime import Gateway, InterruptedRun, run_scripted
 from .scenarios import Scenario
@@ -180,6 +181,7 @@ class CreatorPalAdapter:
 
 
 BUILTINS = {
+    "http-charge": HttpChargeAdapter,
     "refund": RefundAdapter,
     "artifact": ArtifactAdapter,
     "creatorpal": CreatorPalAdapter,

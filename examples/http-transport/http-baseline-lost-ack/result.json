@@ -1,0 +1,55 @@
+{
+  "id": "http-baseline-lost-ack",
+  "adapter": "http-charge",
+  "expected": "violation",
+  "observed": "violation",
+  "scenario_passed": true,
+  "task_completed": false,
+  "checks": {
+    "one_effect": false,
+    "authorized_amount": true,
+    "response_statuses": true,
+    "receipt_matches_state": true
+  },
+  "receipt": {
+    "responses": [
+      {
+        "status": 200,
+        "id": 2,
+        "amount": 25,
+        "attempts": [
+          "transport_failure",
+          "acknowledged"
+        ]
+      }
+    ]
+  },
+  "measurement": "Local HTTP subprocess + SQLite; controlled connection loss; no model calls",
+  "error_type": null,
+  "expected_failed_checks": [
+    "one_effect"
+  ],
+  "faults": [
+    {
+      "tool": "http_charge",
+      "phase": "after",
+      "kind": "lost_ack",
+      "occurrence": 1,
+      "repeat": 1
+    }
+  ],
+  "fault_events": [
+    {
+      "tool": "http_charge",
+      "phase": "after",
+      "kind": "lost_ack",
+      "occurrence": 1,
+      "repeat": 1,
+      "rule": 0
+    }
+  ],
+  "fault_coverage": true,
+  "duration_ms": 69.466,
+  "usage": null,
+  "cost_usd": null
+}
