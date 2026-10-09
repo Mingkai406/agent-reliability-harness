@@ -1,0 +1,47 @@
+{
+  "id": "http-baseline-conflict",
+  "adapter": "http-charge",
+  "expected": "violation",
+  "observed": "violation",
+  "scenario_passed": true,
+  "task_completed": false,
+  "checks": {
+    "one_effect": false,
+    "authorized_amount": false,
+    "response_statuses": false,
+    "receipt_matches_state": true
+  },
+  "receipt": {
+    "responses": [
+      {
+        "status": 200,
+        "id": 1,
+        "amount": 25,
+        "attempts": [
+          "acknowledged"
+        ]
+      },
+      {
+        "status": 200,
+        "id": 2,
+        "amount": 99,
+        "attempts": [
+          "acknowledged"
+        ]
+      }
+    ]
+  },
+  "measurement": "Local HTTP subprocess + SQLite; controlled connection loss; no model calls",
+  "error_type": null,
+  "expected_failed_checks": [
+    "one_effect",
+    "authorized_amount",
+    "response_statuses"
+  ],
+  "faults": [],
+  "fault_events": [],
+  "fault_coverage": true,
+  "duration_ms": 68.111,
+  "usage": null,
+  "cost_usd": null
+}

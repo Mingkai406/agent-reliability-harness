@@ -5,8 +5,10 @@ from .faults import FaultRule
 
 
 def builtin_suite(profile="core"):
-    if profile not in {"core", "full", "langgraph"}:
+    if profile not in {"core", "full", "langgraph", "http"}:
         raise ValueError("Unknown suite profile")
+    if profile == "http":
+        return http_suite()
     if profile == "langgraph":
         return langgraph_suite()
     cases = []
@@ -125,3 +127,28 @@ def langgraph_suite():
         )
         for name, fault in faults
     ]
+
+
+def http_suite():
+    cases = []
+    for mode in ("baseline", "guarded"):
+        for scenario in ("clean", "lost-ack", "concurrent", "conflict"):
+            violation = mode == "baseline" and scenario != "clean"
+            failed = (
+                ("one_effect", "authorized_amount", "response_statuses")
+                if scenario == "conflict"
+                else ("one_effect",)
+            )
+            cases.append(
+                Case(
+                    f"http-{mode}-{scenario}",
+                    "http-charge",
+                    {"mode": mode, "scenario": scenario},
+                    (FaultRule("http_charge", "after", "lost_ack"),)
+                    if scenario == "lost-ack"
+                    else (),
+                    "violation" if violation else "completed",
+                    failed if violation else (),
+                )
+            )
+    return cases

@@ -41,7 +41,9 @@ def main():
     for name in ("run", "serve"):
         sub = commands.add_parser(name, help="Run a reusable application reliability suite")
         selection = sub.add_mutually_exclusive_group()
-        selection.add_argument("--profile", choices=["core", "full", "langgraph"], default="core")
+        selection.add_argument(
+            "--profile", choices=["core", "full", "langgraph", "http"], default="core"
+        )
         selection.add_argument("--suite", type=Path, help="Versioned JSON suite configuration")
         sub.add_argument(
             "--plugin",

@@ -1,0 +1,388 @@
+[
+  {
+    "id": "http-baseline-clean",
+    "adapter": "http-charge",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "one_effect": true,
+      "authorized_amount": true,
+      "response_statuses": true,
+      "receipt_matches_state": true
+    },
+    "receipt": {
+      "responses": [
+        {
+          "status": 200,
+          "id": 1,
+          "amount": 25,
+          "attempts": [
+            "acknowledged"
+          ]
+        }
+      ]
+    },
+    "measurement": "Local HTTP subprocess + SQLite; controlled connection loss; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [],
+    "fault_events": [],
+    "fault_coverage": true,
+    "duration_ms": 89.087,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "http-baseline-lost-ack",
+    "adapter": "http-charge",
+    "expected": "violation",
+    "observed": "violation",
+    "scenario_passed": true,
+    "task_completed": false,
+    "checks": {
+      "one_effect": false,
+      "authorized_amount": true,
+      "response_statuses": true,
+      "receipt_matches_state": true
+    },
+    "receipt": {
+      "responses": [
+        {
+          "status": 200,
+          "id": 2,
+          "amount": 25,
+          "attempts": [
+            "transport_failure",
+            "acknowledged"
+          ]
+        }
+      ]
+    },
+    "measurement": "Local HTTP subprocess + SQLite; controlled connection loss; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [
+      "one_effect"
+    ],
+    "faults": [
+      {
+        "tool": "http_charge",
+        "phase": "after",
+        "kind": "lost_ack",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "http_charge",
+        "phase": "after",
+        "kind": "lost_ack",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 69.466,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "http-baseline-concurrent",
+    "adapter": "http-charge",
+    "expected": "violation",
+    "observed": "violation",
+    "scenario_passed": true,
+    "task_completed": false,
+    "checks": {
+      "one_effect": false,
+      "authorized_amount": true,
+      "response_statuses": true,
+      "receipt_matches_state": true
+    },
+    "receipt": {
+      "responses": [
+        {
+          "status": 200,
+          "id": 1,
+          "amount": 25,
+          "attempts": [
+            "acknowledged"
+          ]
+        },
+        {
+          "status": 200,
+          "id": 3,
+          "amount": 25,
+          "attempts": [
+            "acknowledged"
+          ]
+        },
+        {
+          "status": 200,
+          "id": 2,
+          "amount": 25,
+          "attempts": [
+            "acknowledged"
+          ]
+        },
+        {
+          "status": 200,
+          "id": 4,
+          "amount": 25,
+          "attempts": [
+            "acknowledged"
+          ]
+        }
+      ]
+    },
+    "measurement": "Local HTTP subprocess + SQLite; controlled connection loss; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [
+      "one_effect"
+    ],
+    "faults": [],
+    "fault_events": [],
+    "fault_coverage": true,
+    "duration_ms": 86.177,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "http-baseline-conflict",
+    "adapter": "http-charge",
+    "expected": "violation",
+    "observed": "violation",
+    "scenario_passed": true,
+    "task_completed": false,
+    "checks": {
+      "one_effect": false,
+      "authorized_amount": false,
+      "response_statuses": false,
+      "receipt_matches_state": true
+    },
+    "receipt": {
+      "responses": [
+        {
+          "status": 200,
+          "id": 1,
+          "amount": 25,
+          "attempts": [
+            "acknowledged"
+          ]
+        },
+        {
+          "status": 200,
+          "id": 2,
+          "amount": 99,
+          "attempts": [
+            "acknowledged"
+          ]
+        }
+      ]
+    },
+    "measurement": "Local HTTP subprocess + SQLite; controlled connection loss; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [
+      "one_effect",
+      "authorized_amount",
+      "response_statuses"
+    ],
+    "faults": [],
+    "fault_events": [],
+    "fault_coverage": true,
+    "duration_ms": 68.111,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "http-guarded-clean",
+    "adapter": "http-charge",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "one_effect": true,
+      "authorized_amount": true,
+      "response_statuses": true,
+      "receipt_matches_state": true
+    },
+    "receipt": {
+      "responses": [
+        {
+          "status": 200,
+          "id": 1,
+          "amount": 25,
+          "attempts": [
+            "acknowledged"
+          ]
+        }
+      ]
+    },
+    "measurement": "Local HTTP subprocess + SQLite; controlled connection loss; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [],
+    "fault_events": [],
+    "fault_coverage": true,
+    "duration_ms": 68.655,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "http-guarded-lost-ack",
+    "adapter": "http-charge",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "one_effect": true,
+      "authorized_amount": true,
+      "response_statuses": true,
+      "receipt_matches_state": true
+    },
+    "receipt": {
+      "responses": [
+        {
+          "status": 200,
+          "id": 1,
+          "amount": 25,
+          "attempts": [
+            "transport_failure",
+            "acknowledged"
+          ]
+        }
+      ]
+    },
+    "measurement": "Local HTTP subprocess + SQLite; controlled connection loss; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [
+      {
+        "tool": "http_charge",
+        "phase": "after",
+        "kind": "lost_ack",
+        "occurrence": 1,
+        "repeat": 1
+      }
+    ],
+    "fault_events": [
+      {
+        "tool": "http_charge",
+        "phase": "after",
+        "kind": "lost_ack",
+        "occurrence": 1,
+        "repeat": 1,
+        "rule": 0
+      }
+    ],
+    "fault_coverage": true,
+    "duration_ms": 69.248,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "http-guarded-concurrent",
+    "adapter": "http-charge",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "one_effect": true,
+      "authorized_amount": true,
+      "response_statuses": true,
+      "receipt_matches_state": true
+    },
+    "receipt": {
+      "responses": [
+        {
+          "status": 200,
+          "id": 1,
+          "amount": 25,
+          "attempts": [
+            "acknowledged"
+          ]
+        },
+        {
+          "status": 200,
+          "id": 1,
+          "amount": 25,
+          "attempts": [
+            "acknowledged"
+          ]
+        },
+        {
+          "status": 200,
+          "id": 1,
+          "amount": 25,
+          "attempts": [
+            "acknowledged"
+          ]
+        },
+        {
+          "status": 200,
+          "id": 1,
+          "amount": 25,
+          "attempts": [
+            "acknowledged"
+          ]
+        }
+      ]
+    },
+    "measurement": "Local HTTP subprocess + SQLite; controlled connection loss; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [],
+    "fault_events": [],
+    "fault_coverage": true,
+    "duration_ms": 72.571,
+    "usage": null,
+    "cost_usd": null
+  },
+  {
+    "id": "http-guarded-conflict",
+    "adapter": "http-charge",
+    "expected": "completed",
+    "observed": "completed",
+    "scenario_passed": true,
+    "task_completed": true,
+    "checks": {
+      "one_effect": true,
+      "authorized_amount": true,
+      "response_statuses": true,
+      "receipt_matches_state": true
+    },
+    "receipt": {
+      "responses": [
+        {
+          "status": 200,
+          "id": 1,
+          "amount": 25,
+          "attempts": [
+            "acknowledged"
+          ]
+        },
+        {
+          "status": 409,
+          "attempts": [
+            "http_error"
+          ]
+        }
+      ]
+    },
+    "measurement": "Local HTTP subprocess + SQLite; controlled connection loss; no model calls",
+    "error_type": null,
+    "expected_failed_checks": [],
+    "faults": [],
+    "fault_events": [],
+    "fault_coverage": true,
+    "duration_ms": 82.099,
+    "usage": null,
+    "cost_usd": null
+  }
+]

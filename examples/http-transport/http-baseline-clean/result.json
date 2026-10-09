@@ -1,0 +1,35 @@
+{
+  "id": "http-baseline-clean",
+  "adapter": "http-charge",
+  "expected": "completed",
+  "observed": "completed",
+  "scenario_passed": true,
+  "task_completed": true,
+  "checks": {
+    "one_effect": true,
+    "authorized_amount": true,
+    "response_statuses": true,
+    "receipt_matches_state": true
+  },
+  "receipt": {
+    "responses": [
+      {
+        "status": 200,
+        "id": 1,
+        "amount": 25,
+        "attempts": [
+          "acknowledged"
+        ]
+      }
+    ]
+  },
+  "measurement": "Local HTTP subprocess + SQLite; controlled connection loss; no model calls",
+  "error_type": null,
+  "expected_failed_checks": [],
+  "faults": [],
+  "fault_events": [],
+  "fault_coverage": true,
+  "duration_ms": 89.087,
+  "usage": null,
+  "cost_usd": null
+}

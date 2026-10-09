@@ -45,11 +45,12 @@ that explain each verdict.
 - **Connect another application.** Implement three adapter methods and register a local plugin.
   The runner and fault engine remain unchanged.
 
-## Five integrations, one experiment contract
+## Six integrations, one experiment contract
 
 | Application | Real execution boundary | Independently verified outcome |
 |---|---|---|
 | **Code validation** | Candidate diff → protected-path policy → five isolated Docker checks | Acceptance requires all gate results; failed checks reject, infrastructure errors remain errors |
+| **HTTP charge service** | Separate HTTP process; connection loss after commit and concurrent retries | One effect, bound amount, conflict rejection and receipt-to-ledger match; [8 transport controls](docs/http-transport.md) |
 | **Refund service** | Authorized writes to a transactional SQLite service | One refund, correct amount, tenant scope and a receipt matching committed state |
 | **CreatorPal research agent** | Real ADK Runner, retrieval, rules lookup, restricted Python analytics and report submission | One committed report, valid evidence references, required sources, analysis and matching receipt |
 | **LangGraph workflow** | Real `StateGraph`, node retry policies and disk-backed `SqliteSaver` checkpoints | Resume without repeating completed nodes; one committed artifact, matching file and valid receipt |
