@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 510" role="img" aria-labelledby="title desc">
+<title id="title">Candidate patch validation matrix</title>
+<desc id="desc">Eight candidates checked against policy and five Docker gates. Pass, fail, timeout and not-run states are labeled in every cell.</desc>
+<rect width="1000" height="510" fill="#ffffff"/>
+<g font-family="Arial, Helvetica, sans-serif">
+<text x="24" y="34" font-size="23" fill="#263238" text-anchor="start" font-weight="600">Where each candidate is rejected</text>
+<text x="24" y="61" font-size="14" fill="#59656b" text-anchor="start" font-weight="400">Recorded Docker checks · one valid patch and seven rejection controls</text>
+<text x="256" y="108" font-size="14" fill="#263238" text-anchor="middle" font-weight="600">Policy</text>
+<text x="358" y="108" font-size="14" fill="#263238" text-anchor="middle" font-weight="600">Build</text>
+<text x="460" y="108" font-size="14" fill="#263238" text-anchor="middle" font-weight="600">Types</text>
+<text x="562" y="108" font-size="14" fill="#263238" text-anchor="middle" font-weight="600">Unit</text>
+<text x="664" y="108" font-size="14" fill="#263238" text-anchor="middle" font-weight="600">Integration</text>
+<text x="766" y="108" font-size="14" fill="#263238" text-anchor="middle" font-weight="600">Static</text>
+<text x="950" y="108" font-size="14" fill="#263238" text-anchor="end" font-weight="600">Verdict</text>
+<text x="24" y="149" font-size="15" fill="#263238" text-anchor="start" font-weight="400">Valid patch</text>
+<rect x="211" y="128" width="90" height="30" fill="#edf3f6"/>
+<text x="256" y="149" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<rect x="313" y="128" width="90" height="30" fill="#edf3f6"/>
+<text x="358" y="149" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<rect x="415" y="128" width="90" height="30" fill="#edf3f6"/>
+<text x="460" y="149" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<rect x="517" y="128" width="90" height="30" fill="#edf3f6"/>
+<text x="562" y="149" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<rect x="619" y="128" width="90" height="30" fill="#edf3f6"/>
+<text x="664" y="149" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<rect x="721" y="128" width="90" height="30" fill="#edf3f6"/>
+<text x="766" y="149" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<text x="950" y="149" font-size="14" fill="#263238" text-anchor="end" font-weight="400">Accepted</text>
+<text x="24" y="188" font-size="15" fill="#263238" text-anchor="start" font-weight="400">Syntax error</text>
+<rect x="211" y="167" width="90" height="30" fill="#edf3f6"/>
+<text x="256" y="188" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<rect x="313" y="167" width="90" height="30" fill="#f3e5e0"/>
+<text x="358" y="188" font-size="13" fill="#9b4934" text-anchor="middle" font-weight="400">Fail</text>
+<rect x="415" y="167" width="90" height="30" fill="#f3e5e0"/>
+<text x="460" y="188" font-size="13" fill="#9b4934" text-anchor="middle" font-weight="400">Fail</text>
+<rect x="517" y="167" width="90" height="30" fill="#f3e5e0"/>
+<text x="562" y="188" font-size="13" fill="#9b4934" text-anchor="middle" font-weight="400">Fail</text>
+<rect x="619" y="167" width="90" height="30" fill="#f3e5e0"/>
+<text x="664" y="188" font-size="13" fill="#9b4934" text-anchor="middle" font-weight="400">Fail</text>
+<rect x="721" y="167" width="90" height="30" fill="#f3e5e0"/>
+<text x="766" y="188" font-size="13" fill="#9b4934" text-anchor="middle" font-weight="400">Fail</text>
+<text x="950" y="188" font-size="14" fill="#263238" text-anchor="end" font-weight="400">Rejected</text>
+<text x="24" y="227" font-size="15" fill="#263238" text-anchor="start" font-weight="400">Type error</text>
+<rect x="211" y="206" width="90" height="30" fill="#edf3f6"/>
+<text x="256" y="227" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<rect x="313" y="206" width="90" height="30" fill="#edf3f6"/>
+<text x="358" y="227" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<rect x="415" y="206" width="90" height="30" fill="#f3e5e0"/>
+<text x="460" y="227" font-size="13" fill="#9b4934" text-anchor="middle" font-weight="400">Fail</text>
+<rect x="517" y="206" width="90" height="30" fill="#f3e5e0"/>
+<text x="562" y="227" font-size="13" fill="#9b4934" text-anchor="middle" font-weight="400">Fail</text>
+<rect x="619" y="206" width="90" height="30" fill="#f3e5e0"/>
+<text x="664" y="227" font-size="13" fill="#9b4934" text-anchor="middle" font-weight="400">Fail</text>
+<rect x="721" y="206" width="90" height="30" fill="#edf3f6"/>
+<text x="766" y="227" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<text x="950" y="227" font-size="14" fill="#263238" text-anchor="end" font-weight="400">Rejected</text>
+<text x="24" y="266" font-size="15" fill="#263238" text-anchor="start" font-weight="400">Wrong result</text>
+<rect x="211" y="245" width="90" height="30" fill="#edf3f6"/>
+<text x="256" y="266" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<rect x="313" y="245" width="90" height="30" fill="#edf3f6"/>
+<text x="358" y="266" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<rect x="415" y="245" width="90" height="30" fill="#edf3f6"/>
+<text x="460" y="266" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<rect x="517" y="245" width="90" height="30" fill="#f3e5e0"/>
+<text x="562" y="266" font-size="13" fill="#9b4934" text-anchor="middle" font-weight="400">Fail</text>
+<rect x="619" y="245" width="90" height="30" fill="#f3e5e0"/>
+<text x="664" y="266" font-size="13" fill="#9b4934" text-anchor="middle" font-weight="400">Fail</text>
+<rect x="721" y="245" width="90" height="30" fill="#edf3f6"/>
+<text x="766" y="266" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<text x="950" y="266" font-size="14" fill="#263238" text-anchor="end" font-weight="400">Rejected</text>
+<text x="24" y="305" font-size="15" fill="#263238" text-anchor="start" font-weight="400">CLI contract</text>
+<rect x="211" y="284" width="90" height="30" fill="#edf3f6"/>
+<text x="256" y="305" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<rect x="313" y="284" width="90" height="30" fill="#edf3f6"/>
+<text x="358" y="305" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<rect x="415" y="284" width="90" height="30" fill="#edf3f6"/>
+<text x="460" y="305" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<rect x="517" y="284" width="90" height="30" fill="#edf3f6"/>
+<text x="562" y="305" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<rect x="619" y="284" width="90" height="30" fill="#f3e5e0"/>
+<text x="664" y="305" font-size="13" fill="#9b4934" text-anchor="middle" font-weight="400">Fail</text>
+<rect x="721" y="284" width="90" height="30" fill="#edf3f6"/>
+<text x="766" y="305" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<text x="950" y="305" font-size="14" fill="#263238" text-anchor="end" font-weight="400">Rejected</text>
+<text x="24" y="344" font-size="15" fill="#263238" text-anchor="start" font-weight="400">Unused import</text>
+<rect x="211" y="323" width="90" height="30" fill="#edf3f6"/>
+<text x="256" y="344" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<rect x="313" y="323" width="90" height="30" fill="#edf3f6"/>
+<text x="358" y="344" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<rect x="415" y="323" width="90" height="30" fill="#edf3f6"/>
+<text x="460" y="344" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<rect x="517" y="323" width="90" height="30" fill="#edf3f6"/>
+<text x="562" y="344" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<rect x="619" y="323" width="90" height="30" fill="#edf3f6"/>
+<text x="664" y="344" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<rect x="721" y="323" width="90" height="30" fill="#f3e5e0"/>
+<text x="766" y="344" font-size="13" fill="#9b4934" text-anchor="middle" font-weight="400">Fail</text>
+<text x="950" y="344" font-size="14" fill="#263238" text-anchor="end" font-weight="400">Rejected</text>
+<text x="24" y="383" font-size="15" fill="#263238" text-anchor="start" font-weight="400">Infinite loop</text>
+<rect x="211" y="362" width="90" height="30" fill="#edf3f6"/>
+<text x="256" y="383" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<rect x="313" y="362" width="90" height="30" fill="#edf3f6"/>
+<text x="358" y="383" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<rect x="415" y="362" width="90" height="30" fill="#edf3f6"/>
+<text x="460" y="383" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<rect x="517" y="362" width="90" height="30" fill="#f6eddc"/>
+<text x="562" y="383" font-size="13" fill="#876019" text-anchor="middle" font-weight="400">Timeout</text>
+<rect x="619" y="362" width="90" height="30" fill="#f6eddc"/>
+<text x="664" y="383" font-size="13" fill="#876019" text-anchor="middle" font-weight="400">Timeout</text>
+<rect x="721" y="362" width="90" height="30" fill="#edf3f6"/>
+<text x="766" y="383" font-size="13" fill="#356b8c" text-anchor="middle" font-weight="400">Pass</text>
+<text x="950" y="383" font-size="14" fill="#263238" text-anchor="end" font-weight="400">Rejected</text>
+<text x="24" y="422" font-size="15" fill="#263238" text-anchor="start" font-weight="400">Protected test edit</text>
+<rect x="211" y="401" width="90" height="30" fill="#f3e5e0"/>
+<text x="256" y="422" font-size="13" fill="#9b4934" text-anchor="middle" font-weight="400">Fail</text>
+<rect x="313" y="401" width="90" height="30" fill="#f4f5f5"/>
+<text x="358" y="422" font-size="13" fill="#69757c" text-anchor="middle" font-weight="400">—</text>
+<rect x="415" y="401" width="90" height="30" fill="#f4f5f5"/>
+<text x="460" y="422" font-size="13" fill="#69757c" text-anchor="middle" font-weight="400">—</text>
+<rect x="517" y="401" width="90" height="30" fill="#f4f5f5"/>
+<text x="562" y="422" font-size="13" fill="#69757c" text-anchor="middle" font-weight="400">—</text>
+<rect x="619" y="401" width="90" height="30" fill="#f4f5f5"/>
+<text x="664" y="422" font-size="13" fill="#69757c" text-anchor="middle" font-weight="400">—</text>
+<rect x="721" y="401" width="90" height="30" fill="#f4f5f5"/>
+<text x="766" y="422" font-size="13" fill="#69757c" text-anchor="middle" font-weight="400">—</text>
+<text x="950" y="422" font-size="14" fill="#263238" text-anchor="end" font-weight="400">Rejected</text>
+<text x="24" y="470" font-size="13" fill="#59656b" text-anchor="start" font-weight="400">—  Not run: protected-path policy rejected the patch before execution.</text>
+<text x="24" y="494" font-size="13" fill="#59656b" text-anchor="start" font-weight="400">A candidate can fail multiple gates. Each executed gate runs in a fresh container.</text>
+</g></svg>

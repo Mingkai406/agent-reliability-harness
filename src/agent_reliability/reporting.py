@@ -1,7 +1,10 @@
 """Self-contained, filterable HTML and portable Markdown over normalized results."""
 
 import html
+import re
 from pathlib import Path
+
+from .report_charts import outcome_svg
 
 
 def write_suite_report(root, results, manifest):
@@ -41,15 +44,23 @@ def write_suite_report(root, results, manifest):
             )
             or "No injected fault"
         )
-        label = "EXPECTED" if row["scenario_passed"] else "UNEXPECTED"
+        links = []
+        for filename, title in [
+            ("result.json", "Case JSON"),
+            ("traces.jsonl", "Trace"),
+            ("snapshot.json", "Snapshot"),
+        ]:
+            if (root / row["id"] / filename).is_file():
+                links.append(f"<a href='{e(row['id'])}/{filename}'>{title}</a>")
+        evidence = " · ".join(links) or "Case records are included in Results JSON below."
+        label = "Matched" if row["scenario_passed"] else "Unexpected"
         state = "ok" if row["scenario_passed"] else "bad"
         table.append(
             f"<tr data-app='{e(row['adapter'])}' data-result='{state}'><td><details>"
             f"<summary>{e(row['id'])}</summary><p>{e(faults)}</p><ul>{details}</ul>"
             f"<p>Fault schedule covered: {row['fault_coverage']}. "
             f"Error: {e(row['error_type'] or 'none')}.</p>"
-            f"<a href='{e(row['id'])}/result.json'>Case JSON</a> · "
-            f"<a href='{e(row['id'])}/traces.jsonl'>Trace</a></details></td>"
+            f"<p class='case-evidence'>{evidence}</p></details></td>"
             f"<td>{e(row['adapter'])}</td><td>{e(row['expected'])}</td>"
             f"<td>{e(row['observed'])}</td><td class='{state}'>{label}</td></tr>"
         )
@@ -65,34 +76,23 @@ def write_suite_report(root, results, manifest):
     apps = "".join(
         f"<option>{html.escape(name)}</option>" for name in sorted({r["adapter"] for r in results})
     )
-    descriptions = {
-        "refund": ("Refund service", "Transactions · tenant scope · idempotency"),
-        "artifact": ("Artifact workflow", "Durable steps · file reconciliation · recovery"),
-        "creatorpal": ("CreatorPal agent", "ADK tools · evidence · report integrity"),
-        "langgraph": ("LangGraph workflow", "Disk checkpoints · node retries · restart recovery"),
-    }
-    coverage = ""
-    for name in sorted({r["adapter"] for r in results}):
-        title, description = descriptions.get(name, (name, "Custom application adapter"))
-        selected = [r for r in results if r["adapter"] == name]
-        coverage += (
-            f"<div><strong>{html.escape(title)}</strong><span>{len(selected)} cases · "
-            f"{sum(r['scenario_passed'] for r in selected)} expected outcomes</span>"
-            f"<small>{html.escape(description)}</small></div>"
-        )
     page = Path(__file__).with_name("report_template.html").read_text()
-    cards = "".join(
-        f"<div class='card'><strong>{value}</strong><span>{label}</span></div>"
+    summary = "".join(
+        f"<span><strong>{value}</strong> {label}</span>"
         for value, label in [
-            (f"{passed}/{len(results)}", "Expected outcomes"),
-            (completed, "Completed tasks"),
-            (rejected, "Safe rejections"),
-            (detected, "Detected negative controls"),
+            (f"{passed}/{len(results)}", "matched expectation"),
+            (completed, "completed tasks"),
+            (rejected, "rejections"),
+            (detected, "detected controls"),
         ]
     )
+    replacements = {
+        "SUMMARY": summary,
+        "MEASUREMENT": html.escape(manifest["measurement"]),
+        "CHART": outcome_svg(results),
+        "APPS": apps,
+        "ROWS": "".join(table),
+    }
     (root / "index.html").write_text(
-        page.replace("CARDS", cards)
-        .replace("APPS", apps)
-        .replace("COVERAGE", coverage)
-        .replace("ROWS", "".join(table))
+        re.sub(r"\{\{(\w+)\}\}", lambda match: replacements[match[1]], page)
     )

@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 412" role="img" aria-labelledby="title desc">
+<title id="title">Recorded outcomes by application</title>
+<desc id="desc">Artifact workflow: 9 completed, 1 rejected, 0 detected controls; CreatorPal: 6 completed, 1 rejected, 1 detected controls; LangGraph workflow: 7 completed, 2 rejected, 1 detected controls; Refund service: 9 completed, 2 rejected, 3 detected controls</desc>
+<rect width="1000" height="412" fill="#ffffff"/>
+<g font-family="Arial, Helvetica, sans-serif">
+<text x="24" y="34" font-size="23" fill="#263238" text-anchor="start" font-weight="600">Recorded outcomes by application</text>
+<text x="24" y="61" font-size="14" fill="#59656b" text-anchor="start" font-weight="400">Case counts · each panel uses the same scale</text>
+<text x="948" y="34" font-size="23" fill="#263238" text-anchor="end" font-weight="600">42/42</text>
+<text x="948" y="61" font-size="13" fill="#59656b" text-anchor="end" font-weight="400">matched expectation</text>
+<text x="245" y="109" font-size="15" fill="#263238" text-anchor="start" font-weight="600">Completed tasks</text>
+<path d="M245.0 137V342" stroke="#e3e7e9"/>
+<text x="245.0" y="366" font-size="13" fill="#59656b" text-anchor="middle" font-weight="400">0</text>
+<path d="M322.5 137V342" stroke="#e3e7e9"/>
+<text x="322.5" y="366" font-size="13" fill="#59656b" text-anchor="middle" font-weight="400">5</text>
+<path d="M400.0 137V342" stroke="#e3e7e9"/>
+<text x="400.0" y="366" font-size="13" fill="#59656b" text-anchor="middle" font-weight="400">10</text>
+<path d="M245 157H384.5" stroke="#356b8c" stroke-width="2"/>
+<circle cx="384.5" cy="157" r="5" fill="#356b8c"/>
+<text x="396.5" y="162" font-size="15" fill="#356b8c" text-anchor="start" font-weight="400">9</text>
+<path d="M245 203H338.0" stroke="#356b8c" stroke-width="2"/>
+<circle cx="338.0" cy="203" r="5" fill="#356b8c"/>
+<text x="350.0" y="208" font-size="15" fill="#356b8c" text-anchor="start" font-weight="400">6</text>
+<path d="M245 249H353.5" stroke="#356b8c" stroke-width="2"/>
+<circle cx="353.5" cy="249" r="5" fill="#356b8c"/>
+<text x="365.5" y="254" font-size="15" fill="#356b8c" text-anchor="start" font-weight="400">7</text>
+<path d="M245 295H384.5" stroke="#356b8c" stroke-width="2"/>
+<circle cx="384.5" cy="295" r="5" fill="#356b8c"/>
+<text x="396.5" y="300" font-size="15" fill="#356b8c" text-anchor="start" font-weight="400">9</text>
+<text x="465" y="109" font-size="15" fill="#263238" text-anchor="start" font-weight="600">Rejections</text>
+<path d="M465.0 137V342" stroke="#e3e7e9"/>
+<text x="465.0" y="366" font-size="13" fill="#59656b" text-anchor="middle" font-weight="400">0</text>
+<path d="M542.5 137V342" stroke="#e3e7e9"/>
+<text x="542.5" y="366" font-size="13" fill="#59656b" text-anchor="middle" font-weight="400">5</text>
+<path d="M620.0 137V342" stroke="#e3e7e9"/>
+<text x="620.0" y="366" font-size="13" fill="#59656b" text-anchor="middle" font-weight="400">10</text>
+<path d="M465 157H480.5" stroke="#9c6b28" stroke-width="2"/>
+<circle cx="480.5" cy="157" r="5" fill="#9c6b28"/>
+<text x="492.5" y="162" font-size="15" fill="#9c6b28" text-anchor="start" font-weight="400">1</text>
+<path d="M465 203H480.5" stroke="#9c6b28" stroke-width="2"/>
+<circle cx="480.5" cy="203" r="5" fill="#9c6b28"/>
+<text x="492.5" y="208" font-size="15" fill="#9c6b28" text-anchor="start" font-weight="400">1</text>
+<path d="M465 249H496.0" stroke="#9c6b28" stroke-width="2"/>
+<circle cx="496.0" cy="249" r="5" fill="#9c6b28"/>
+<text x="508.0" y="254" font-size="15" fill="#9c6b28" text-anchor="start" font-weight="400">2</text>
+<path d="M465 295H496.0" stroke="#9c6b28" stroke-width="2"/>
+<circle cx="496.0" cy="295" r="5" fill="#9c6b28"/>
+<text x="508.0" y="300" font-size="15" fill="#9c6b28" text-anchor="start" font-weight="400">2</text>
+<text x="685" y="109" font-size="15" fill="#263238" text-anchor="start" font-weight="600">Detected controls</text>
+<path d="M685.0 137V342" stroke="#e3e7e9"/>
+<text x="685.0" y="366" font-size="13" fill="#59656b" text-anchor="middle" font-weight="400">0</text>
+<path d="M762.5 137V342" stroke="#e3e7e9"/>
+<text x="762.5" y="366" font-size="13" fill="#59656b" text-anchor="middle" font-weight="400">5</text>
+<path d="M840.0 137V342" stroke="#e3e7e9"/>
+<text x="840.0" y="366" font-size="13" fill="#59656b" text-anchor="middle" font-weight="400">10</text>
+<path d="M685 157H685.0" stroke="#936075" stroke-width="2"/>
+<circle cx="685.0" cy="157" r="5" fill="#936075"/>
+<text x="697.0" y="162" font-size="15" fill="#936075" text-anchor="start" font-weight="400">0</text>
+<path d="M685 203H700.5" stroke="#936075" stroke-width="2"/>
+<circle cx="700.5" cy="203" r="5" fill="#936075"/>
+<text x="712.5" y="208" font-size="15" fill="#936075" text-anchor="start" font-weight="400">1</text>
+<path d="M685 249H700.5" stroke="#936075" stroke-width="2"/>
+<circle cx="700.5" cy="249" r="5" fill="#936075"/>
+<text x="712.5" y="254" font-size="15" fill="#936075" text-anchor="start" font-weight="400">1</text>
+<path d="M685 295H731.5" stroke="#936075" stroke-width="2"/>
+<circle cx="731.5" cy="295" r="5" fill="#936075"/>
+<text x="743.5" y="300" font-size="15" fill="#936075" text-anchor="start" font-weight="400">3</text>
+<text x="952" y="109" font-size="15" fill="#263238" text-anchor="end" font-weight="600">Matched</text>
+<text x="24" y="162" font-size="15" fill="#263238" text-anchor="start" font-weight="400">Artifact workflow</text>
+<text x="952" y="162" font-size="15" fill="#263238" text-anchor="end" font-weight="400">10/10</text>
+<text x="24" y="208" font-size="15" fill="#263238" text-anchor="start" font-weight="400">CreatorPal</text>
+<text x="952" y="208" font-size="15" fill="#263238" text-anchor="end" font-weight="400">8/8</text>
+<text x="24" y="254" font-size="15" fill="#263238" text-anchor="start" font-weight="400">LangGraph workflow</text>
+<text x="952" y="254" font-size="15" fill="#263238" text-anchor="end" font-weight="400">10/10</text>
+<text x="24" y="300" font-size="15" fill="#263238" text-anchor="start" font-weight="400">Refund service</text>
+<text x="952" y="300" font-size="15" fill="#263238" text-anchor="end" font-weight="400">14/14</text>
+<text x="24" y="400" font-size="13" fill="#59656b" text-anchor="start" font-weight="400">Detected controls are expected violations, not completed tasks.</text>
+</g></svg>
