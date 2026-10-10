@@ -23,6 +23,7 @@ jobs:
       - run: uv run --no-sync agent-reliability creatorpal --output runs
       - run: uv run --no-sync agent-reliability run --profile full --output runs
       - run: uv run --no-sync agent-reliability run --profile http --output runs
+      - run: uv run --no-sync python -m agent_reliability.triage_eval --output runs/triage-evaluation
       - name: Build isolated code validator
         run: docker build -f Dockerfile.validator -t harness-code-validator:local .
       - name: Verify candidate patches against independent gates

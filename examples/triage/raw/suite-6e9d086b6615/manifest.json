@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "configuration": {
+    "schema_version": 1,
+    "cases": [
+      {
+        "id": "http-baseline-clean",
+        "adapter": "http-charge",
+        "config": {
+          "mode": "baseline",
+          "scenario": "clean"
+        },
+        "faults": [],
+        "expected": "completed",
+        "expected_failed_checks": []
+      },
+      {
+        "id": "http-baseline-lost-ack",
+        "adapter": "http-charge",
+        "config": {
+          "mode": "baseline",
+          "scenario": "lost-ack"
+        },
+        "faults": [
+          {
+            "tool": "http_charge",
+            "phase": "after",
+            "kind": "lost_ack",
+            "occurrence": 1,
+            "repeat": 1
+          }
+        ],
+        "expected": "violation",
+        "expected_failed_checks": [
+          "one_effect"
+        ]
+      },
+      {
+        "id": "http-baseline-concurrent",
+        "adapter": "http-charge",
+        "config": {
+          "mode": "baseline",
+          "scenario": "concurrent"
+        },
+        "faults": [],
+        "expected": "violation",
+        "expected_failed_checks": [
+          "one_effect"
+        ]
+      },
+      {
+        "id": "http-baseline-conflict",
+        "adapter": "http-charge",
+        "config": {
+          "mode": "baseline",
+          "scenario": "conflict"
+        },
+        "faults": [],
+        "expected": "violation",
+        "expected_failed_checks": [
+          "one_effect",
+          "authorized_amount",
+          "response_statuses"
+        ]
+      },
+      {
+        "id": "http-guarded-clean",
+        "adapter": "http-charge",
+        "config": {
+          "mode": "guarded",
+          "scenario": "clean"
+        },
+        "faults": [],
+        "expected": "completed",
+        "expected_failed_checks": []
+      },
+      {
+        "id": "http-guarded-lost-ack",
+        "adapter": "http-charge",
+        "config": {
+          "mode": "guarded",
+          "scenario": "lost-ack"
+        },
+        "faults": [
+          {
+            "tool": "http_charge",
+            "phase": "after",
+            "kind": "lost_ack",
+            "occurrence": 1,
+            "repeat": 1
+          }
+        ],
+        "expected": "completed",
+        "expected_failed_checks": []
+      },
+      {
+        "id": "http-guarded-concurrent",
+        "adapter": "http-charge",
+        "config": {
+          "mode": "guarded",
+          "scenario": "concurrent"
+        },
+        "faults": [],
+        "expected": "completed",
+        "expected_failed_checks": []
+      },
+      {
+        "id": "http-guarded-conflict",
+        "adapter": "http-charge",
+        "config": {
+          "mode": "guarded",
+          "scenario": "conflict"
+        },
+        "faults": [],
+        "expected": "completed",
+        "expected_failed_checks": []
+      }
+    ]
+  },
+  "configuration_sha256": "41d3bda0651093664d6c7f724d5ebb2c4943809701857420b75df2807753563d",
+  "harness_source_sha256": "b81165dbfb56a2e68da685e2052f9352bb9a1cc13367e68acbfcaaa31659b073",
+  "python": "3.12.13",
+  "packages": {
+    "agent-reliability-harness": "0.3.0",
+    "creatorpal-agent": "0.2.0",
+    "google-adk": "2.8.0",
+    "opentelemetry-sdk": "1.42.1"
+  },
+  "adapters": {
+    "http-charge": {
+      "class": "agent_reliability.http_adapter.HttpChargeAdapter",
+      "source_sha256": "eb35f7224a8a5f8293f0893ef006d41485159489be3950eb9a3c12febba882c8"
+    }
+  },
+  "measurement": "Adapter-declared execution: Local HTTP subprocess + SQLite; controlled connection loss; no model calls",
+  "execution": "Sequential cases, fresh state, adapter-owned bounded retries and recovery",
+  "case_timeout_seconds": 120
+}

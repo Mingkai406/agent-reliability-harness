@@ -7,7 +7,9 @@ import socket
 import sqlite3
 import subprocess
 import sys
+import threading
 import time
+import uuid
 from concurrent.futures import ThreadPoolExecutor
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -25,6 +27,13 @@ def serve(directory):
     database = directory / "ledger.sqlite"
     with sqlite3.connect(database) as db:
         db.execute("CREATE TABLE ledger (id INTEGER PRIMARY KEY, key TEXT, amount INTEGER)")
+
+    log_lock = threading.Lock()
+
+    def audit(**record):
+        # Only observed service facts; never record the injected schedule or expected outcome.
+        with log_lock, (directory / "service-events.jsonl").open("a") as stream:
+            stream.write(json.dumps(record) + "\n")
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, *args):
@@ -46,7 +55,9 @@ def serve(directory):
             except (ValueError, KeyError, TypeError):
                 self.send_error(400)
                 return
+            attempt = uuid.uuid4().hex
             status = 200
+            inserted = False
             db = sqlite3.connect(database, timeout=5)
             try:
                 with db:
@@ -59,15 +70,27 @@ def serve(directory):
                         if prior[1] != amount:
                             status = 409
                     else:
+                        inserted = True
                         identity = db.execute(
                             "INSERT INTO ledger(key,amount) VALUES (?,?)", (key, amount)
                         ).lastrowid
             finally:
                 db.close()
+            audit(
+                kind="transaction",
+                attempt=attempt,
+                id=identity,
+                key=key,
+                requested_amount=amount,
+                stored_amount=amount if inserted else prior[1],
+                inserted=inserted,
+                status=status,
+            )
             # This is after the real database commit and before HTTP response headers.
             try:
                 faults.apply("http_charge", "after")
             except RetryableFault:
+                audit(kind="response_not_sent", attempt=attempt, id=identity, key=key)
                 self.close_connection = True
                 self.connection.shutdown(socket.SHUT_RDWR)
                 self.connection.close()
@@ -96,12 +119,23 @@ def request_charge(port, amount=25):
             with urlopen(request, timeout=2) as response:
                 result = json.loads(response.read())
                 attempts.append("acknowledged")
-                return {"status": response.status, **result, "attempts": attempts}
+                return {
+                    "status": response.status,
+                    **result,
+                    "attempts": attempts,
+                    "key": "charge-1",
+                    "requested_amount": amount,
+                }
         except HTTPError as error:
-            return {"status": error.code, "attempts": attempts + ["http_error"]}
+            return {
+                "status": error.code,
+                "attempts": attempts + ["http_error"],
+                "key": "charge-1",
+                "requested_amount": amount,
+            }
         except (URLError, http.client.RemoteDisconnected, ConnectionError, TimeoutError):
             attempts.append("transport_failure")
-    return {"status": 0, "attempts": attempts}
+    return {"status": 0, "attempts": attempts, "key": "charge-1", "requested_amount": amount}
 
 
 class HttpChargeAdapter:
