@@ -1,0 +1,4 @@
+{"kind": "transaction", "attempt": "95854c1a041a4317aca67e8a30f4052a", "id": 1, "key": "charge-1", "requested_amount": 25, "stored_amount": 25, "inserted": true, "status": 200}
+{"kind": "transaction", "attempt": "0135a6f3e7864176aaf3413f37599ca0", "id": 2, "key": "charge-1", "requested_amount": 25, "stored_amount": 25, "inserted": true, "status": 200}
+{"kind": "transaction", "attempt": "93f926cc3c7f439491dde520237ef4bf", "id": 3, "key": "charge-1", "requested_amount": 25, "stored_amount": 25, "inserted": true, "status": 200}
+{"kind": "transaction", "attempt": "b0d948c942584efba6034010127afd98", "id": 4, "key": "charge-1", "requested_amount": 25, "stored_amount": 25, "inserted": true, "status": 200}

@@ -1,5 +1,8 @@
 # Agent Reliability Harness
 
+**Incident triage:** [Diagnose HTTP failures from receipts, service events, and durable state](docs/incident-triage.md), with cited evidence, explicit abstention, and an optional rules-gated model adapter.
+
+
 **Reliability tests for agent actions and AI-generated code changes.**
 
 [![CI](https://github.com/Mingkai406/agent-reliability-harness/actions/workflows/ci.yml/badge.svg)](https://github.com/Mingkai406/agent-reliability-harness/actions/workflows/ci.yml)

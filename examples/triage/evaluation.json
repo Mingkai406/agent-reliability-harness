@@ -1,0 +1,1167 @@
+{
+  "schema_version": 1,
+  "measurement": "8 real local HTTP/SQLite cases + 4 evidence ablations",
+  "model": null,
+  "model_result": "not measured",
+  "limitations": "Development fixtures, not held-out incidents. Rules define the model citation gate. No MTTR or production accuracy claim.",
+  "summary": {
+    "receipt_baseline": {
+      "total": 12,
+      "correct_labels": 3,
+      "duplicate_effect_detected": 0,
+      "duplicate_effect_total": 3,
+      "false_duplicate_alarms_on_healthy": 0,
+      "healthy_total": 5,
+      "correct_abstentions": 0,
+      "incomplete_total": 4,
+      "answered": 11,
+      "correct_when_answered": 3
+    },
+    "evidence_rules": {
+      "total": 12,
+      "correct_labels": 12,
+      "duplicate_effect_detected": 3,
+      "duplicate_effect_total": 3,
+      "false_duplicate_alarms_on_healthy": 0,
+      "healthy_total": 5,
+      "correct_abstentions": 4,
+      "incomplete_total": 4,
+      "answered": 8,
+      "correct_when_answered": 8
+    }
+  },
+  "samples": [
+    {
+      "sample": "sample-01",
+      "expected": "clean",
+      "bundle": {
+        "schema_version": 1,
+        "evidence": [
+          {
+            "source": "snapshot.json",
+            "kind": "ledger",
+            "value": [
+              {
+                "id": 1,
+                "key": "charge-1",
+                "amount": 25
+              }
+            ],
+            "evidence_id": "E001"
+          },
+          {
+            "source": "result.json#/receipt/responses/0",
+            "kind": "response",
+            "value": {
+              "status": 200,
+              "id": 1,
+              "amount": 25,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "attempts": [
+                "acknowledged"
+              ]
+            },
+            "evidence_id": "E002"
+          },
+          {
+            "source": "service-events.jsonl:1",
+            "kind": "transaction",
+            "value": {
+              "attempt": "61f90829181e48c3ad78d20bc58c2a6c",
+              "id": 1,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "stored_amount": 25,
+              "inserted": true,
+              "status": 200
+            },
+            "evidence_id": "E003"
+          }
+        ]
+      },
+      "receipt_baseline": {
+        "label": "clean",
+        "abstained": false,
+        "citations": [
+          "E002"
+        ],
+        "reason": "Receipt-only baseline: all requests returned HTTP 200.",
+        "next_step": "No violation found in these observations; retain the evidence for regression checks."
+      },
+      "evidence_rules": {
+        "label": "clean",
+        "abstained": false,
+        "citations": [
+          "E001",
+          "E002",
+          "E003"
+        ],
+        "reason": "Receipts agree with one entry per key; no observed conflict or response loss.",
+        "next_step": "No violation found in these observations; retain the evidence for regression checks."
+      }
+    },
+    {
+      "sample": "sample-02",
+      "expected": "duplicate_effect",
+      "bundle": {
+        "schema_version": 1,
+        "evidence": [
+          {
+            "source": "snapshot.json",
+            "kind": "ledger",
+            "value": [
+              {
+                "id": 1,
+                "key": "charge-1",
+                "amount": 25
+              },
+              {
+                "id": 2,
+                "key": "charge-1",
+                "amount": 25
+              }
+            ],
+            "evidence_id": "E001"
+          },
+          {
+            "source": "result.json#/receipt/responses/0",
+            "kind": "response",
+            "value": {
+              "status": 200,
+              "id": 2,
+              "amount": 25,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "attempts": [
+                "transport_failure",
+                "acknowledged"
+              ]
+            },
+            "evidence_id": "E002"
+          },
+          {
+            "source": "service-events.jsonl:1",
+            "kind": "transaction",
+            "value": {
+              "attempt": "ddd1092a8aff47bb93222b1ca99ae346",
+              "id": 1,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "stored_amount": 25,
+              "inserted": true,
+              "status": 200
+            },
+            "evidence_id": "E003"
+          },
+          {
+            "source": "service-events.jsonl:2",
+            "kind": "response_not_sent",
+            "value": {
+              "attempt": "ddd1092a8aff47bb93222b1ca99ae346",
+              "id": 1,
+              "key": "charge-1"
+            },
+            "evidence_id": "E004"
+          },
+          {
+            "source": "service-events.jsonl:3",
+            "kind": "transaction",
+            "value": {
+              "attempt": "0b80e24a3abd4d77a1c98712cfe1820e",
+              "id": 2,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "stored_amount": 25,
+              "inserted": true,
+              "status": 200
+            },
+            "evidence_id": "E005"
+          }
+        ]
+      },
+      "receipt_baseline": {
+        "label": "clean",
+        "abstained": false,
+        "citations": [
+          "E002"
+        ],
+        "reason": "Receipt-only baseline: all requests returned HTTP 200.",
+        "next_step": "No violation found in these observations; retain the evidence for regression checks."
+      },
+      "evidence_rules": {
+        "label": "duplicate_effect",
+        "abstained": false,
+        "citations": [
+          "E001"
+        ],
+        "reason": "One idempotency key has multiple durable ledger entries.",
+        "next_step": "Enforce unique keys inside the write transaction; replay retries."
+      }
+    },
+    {
+      "sample": "sample-03",
+      "expected": "duplicate_effect",
+      "bundle": {
+        "schema_version": 1,
+        "evidence": [
+          {
+            "source": "snapshot.json",
+            "kind": "ledger",
+            "value": [
+              {
+                "id": 1,
+                "key": "charge-1",
+                "amount": 25
+              },
+              {
+                "id": 2,
+                "key": "charge-1",
+                "amount": 25
+              },
+              {
+                "id": 3,
+                "key": "charge-1",
+                "amount": 25
+              },
+              {
+                "id": 4,
+                "key": "charge-1",
+                "amount": 25
+              }
+            ],
+            "evidence_id": "E001"
+          },
+          {
+            "source": "result.json#/receipt/responses/0",
+            "kind": "response",
+            "value": {
+              "status": 200,
+              "id": 4,
+              "amount": 25,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "attempts": [
+                "acknowledged"
+              ]
+            },
+            "evidence_id": "E002"
+          },
+          {
+            "source": "result.json#/receipt/responses/1",
+            "kind": "response",
+            "value": {
+              "status": 200,
+              "id": 1,
+              "amount": 25,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "attempts": [
+                "acknowledged"
+              ]
+            },
+            "evidence_id": "E003"
+          },
+          {
+            "source": "result.json#/receipt/responses/2",
+            "kind": "response",
+            "value": {
+              "status": 200,
+              "id": 3,
+              "amount": 25,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "attempts": [
+                "acknowledged"
+              ]
+            },
+            "evidence_id": "E004"
+          },
+          {
+            "source": "result.json#/receipt/responses/3",
+            "kind": "response",
+            "value": {
+              "status": 200,
+              "id": 2,
+              "amount": 25,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "attempts": [
+                "acknowledged"
+              ]
+            },
+            "evidence_id": "E005"
+          },
+          {
+            "source": "service-events.jsonl:1",
+            "kind": "transaction",
+            "value": {
+              "attempt": "95854c1a041a4317aca67e8a30f4052a",
+              "id": 1,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "stored_amount": 25,
+              "inserted": true,
+              "status": 200
+            },
+            "evidence_id": "E006"
+          },
+          {
+            "source": "service-events.jsonl:2",
+            "kind": "transaction",
+            "value": {
+              "attempt": "0135a6f3e7864176aaf3413f37599ca0",
+              "id": 2,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "stored_amount": 25,
+              "inserted": true,
+              "status": 200
+            },
+            "evidence_id": "E007"
+          },
+          {
+            "source": "service-events.jsonl:3",
+            "kind": "transaction",
+            "value": {
+              "attempt": "93f926cc3c7f439491dde520237ef4bf",
+              "id": 3,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "stored_amount": 25,
+              "inserted": true,
+              "status": 200
+            },
+            "evidence_id": "E008"
+          },
+          {
+            "source": "service-events.jsonl:4",
+            "kind": "transaction",
+            "value": {
+              "attempt": "b0d948c942584efba6034010127afd98",
+              "id": 4,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "stored_amount": 25,
+              "inserted": true,
+              "status": 200
+            },
+            "evidence_id": "E009"
+          }
+        ]
+      },
+      "receipt_baseline": {
+        "label": "clean",
+        "abstained": false,
+        "citations": [
+          "E002",
+          "E003",
+          "E004",
+          "E005"
+        ],
+        "reason": "Receipt-only baseline: all requests returned HTTP 200.",
+        "next_step": "No violation found in these observations; retain the evidence for regression checks."
+      },
+      "evidence_rules": {
+        "label": "duplicate_effect",
+        "abstained": false,
+        "citations": [
+          "E001"
+        ],
+        "reason": "One idempotency key has multiple durable ledger entries.",
+        "next_step": "Enforce unique keys inside the write transaction; replay retries."
+      }
+    },
+    {
+      "sample": "sample-04",
+      "expected": "duplicate_effect",
+      "bundle": {
+        "schema_version": 1,
+        "evidence": [
+          {
+            "source": "snapshot.json",
+            "kind": "ledger",
+            "value": [
+              {
+                "id": 1,
+                "key": "charge-1",
+                "amount": 25
+              },
+              {
+                "id": 2,
+                "key": "charge-1",
+                "amount": 99
+              }
+            ],
+            "evidence_id": "E001"
+          },
+          {
+            "source": "result.json#/receipt/responses/0",
+            "kind": "response",
+            "value": {
+              "status": 200,
+              "id": 1,
+              "amount": 25,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "attempts": [
+                "acknowledged"
+              ]
+            },
+            "evidence_id": "E002"
+          },
+          {
+            "source": "result.json#/receipt/responses/1",
+            "kind": "response",
+            "value": {
+              "status": 200,
+              "id": 2,
+              "amount": 99,
+              "key": "charge-1",
+              "requested_amount": 99,
+              "attempts": [
+                "acknowledged"
+              ]
+            },
+            "evidence_id": "E003"
+          },
+          {
+            "source": "service-events.jsonl:1",
+            "kind": "transaction",
+            "value": {
+              "attempt": "33427236d45a49ad8b39a56380c1d99a",
+              "id": 1,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "stored_amount": 25,
+              "inserted": true,
+              "status": 200
+            },
+            "evidence_id": "E004"
+          },
+          {
+            "source": "service-events.jsonl:2",
+            "kind": "transaction",
+            "value": {
+              "attempt": "6b2de25165b24ee1b71018f82f616c96",
+              "id": 2,
+              "key": "charge-1",
+              "requested_amount": 99,
+              "stored_amount": 99,
+              "inserted": true,
+              "status": 200
+            },
+            "evidence_id": "E005"
+          }
+        ]
+      },
+      "receipt_baseline": {
+        "label": "clean",
+        "abstained": false,
+        "citations": [
+          "E002",
+          "E003"
+        ],
+        "reason": "Receipt-only baseline: all requests returned HTTP 200.",
+        "next_step": "No violation found in these observations; retain the evidence for regression checks."
+      },
+      "evidence_rules": {
+        "label": "duplicate_effect",
+        "abstained": false,
+        "citations": [
+          "E001"
+        ],
+        "reason": "One idempotency key has multiple durable ledger entries.",
+        "next_step": "Enforce unique keys inside the write transaction; replay retries."
+      }
+    },
+    {
+      "sample": "sample-05",
+      "expected": "clean",
+      "bundle": {
+        "schema_version": 1,
+        "evidence": [
+          {
+            "source": "snapshot.json",
+            "kind": "ledger",
+            "value": [
+              {
+                "id": 1,
+                "key": "charge-1",
+                "amount": 25
+              }
+            ],
+            "evidence_id": "E001"
+          },
+          {
+            "source": "result.json#/receipt/responses/0",
+            "kind": "response",
+            "value": {
+              "status": 200,
+              "id": 1,
+              "amount": 25,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "attempts": [
+                "acknowledged"
+              ]
+            },
+            "evidence_id": "E002"
+          },
+          {
+            "source": "service-events.jsonl:1",
+            "kind": "transaction",
+            "value": {
+              "attempt": "1f22ad2687414eba9a2517199faa4dc3",
+              "id": 1,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "stored_amount": 25,
+              "inserted": true,
+              "status": 200
+            },
+            "evidence_id": "E003"
+          }
+        ]
+      },
+      "receipt_baseline": {
+        "label": "clean",
+        "abstained": false,
+        "citations": [
+          "E002"
+        ],
+        "reason": "Receipt-only baseline: all requests returned HTTP 200.",
+        "next_step": "No violation found in these observations; retain the evidence for regression checks."
+      },
+      "evidence_rules": {
+        "label": "clean",
+        "abstained": false,
+        "citations": [
+          "E001",
+          "E002",
+          "E003"
+        ],
+        "reason": "Receipts agree with one entry per key; no observed conflict or response loss.",
+        "next_step": "No violation found in these observations; retain the evidence for regression checks."
+      }
+    },
+    {
+      "sample": "sample-06",
+      "expected": "acknowledgement_lost_recovered",
+      "bundle": {
+        "schema_version": 1,
+        "evidence": [
+          {
+            "source": "snapshot.json",
+            "kind": "ledger",
+            "value": [
+              {
+                "id": 1,
+                "key": "charge-1",
+                "amount": 25
+              }
+            ],
+            "evidence_id": "E001"
+          },
+          {
+            "source": "result.json#/receipt/responses/0",
+            "kind": "response",
+            "value": {
+              "status": 200,
+              "id": 1,
+              "amount": 25,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "attempts": [
+                "transport_failure",
+                "acknowledged"
+              ]
+            },
+            "evidence_id": "E002"
+          },
+          {
+            "source": "service-events.jsonl:1",
+            "kind": "transaction",
+            "value": {
+              "attempt": "1bdb3f7ef87f4f1d9bc1545cbebe97c1",
+              "id": 1,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "stored_amount": 25,
+              "inserted": true,
+              "status": 200
+            },
+            "evidence_id": "E003"
+          },
+          {
+            "source": "service-events.jsonl:2",
+            "kind": "response_not_sent",
+            "value": {
+              "attempt": "1bdb3f7ef87f4f1d9bc1545cbebe97c1",
+              "id": 1,
+              "key": "charge-1"
+            },
+            "evidence_id": "E004"
+          },
+          {
+            "source": "service-events.jsonl:3",
+            "kind": "transaction",
+            "value": {
+              "attempt": "7ca772973d814a45805f6ab5d34fcd6e",
+              "id": 1,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "stored_amount": 25,
+              "inserted": false,
+              "status": 200
+            },
+            "evidence_id": "E005"
+          }
+        ]
+      },
+      "receipt_baseline": {
+        "label": "clean",
+        "abstained": false,
+        "citations": [
+          "E002"
+        ],
+        "reason": "Receipt-only baseline: all requests returned HTTP 200.",
+        "next_step": "No violation found in these observations; retain the evidence for regression checks."
+      },
+      "evidence_rules": {
+        "label": "acknowledgement_lost_recovered",
+        "abstained": false,
+        "citations": [
+          "E001",
+          "E003",
+          "E004",
+          "E002"
+        ],
+        "reason": "A response was lost after commit; a retry returned the same durable entry.",
+        "next_step": "Keep safe retries; inspect responses after commit."
+      }
+    },
+    {
+      "sample": "sample-07",
+      "expected": "clean",
+      "bundle": {
+        "schema_version": 1,
+        "evidence": [
+          {
+            "source": "snapshot.json",
+            "kind": "ledger",
+            "value": [
+              {
+                "id": 1,
+                "key": "charge-1",
+                "amount": 25
+              }
+            ],
+            "evidence_id": "E001"
+          },
+          {
+            "source": "result.json#/receipt/responses/0",
+            "kind": "response",
+            "value": {
+              "status": 200,
+              "id": 1,
+              "amount": 25,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "attempts": [
+                "acknowledged"
+              ]
+            },
+            "evidence_id": "E002"
+          },
+          {
+            "source": "result.json#/receipt/responses/1",
+            "kind": "response",
+            "value": {
+              "status": 200,
+              "id": 1,
+              "amount": 25,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "attempts": [
+                "acknowledged"
+              ]
+            },
+            "evidence_id": "E003"
+          },
+          {
+            "source": "result.json#/receipt/responses/2",
+            "kind": "response",
+            "value": {
+              "status": 200,
+              "id": 1,
+              "amount": 25,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "attempts": [
+                "acknowledged"
+              ]
+            },
+            "evidence_id": "E004"
+          },
+          {
+            "source": "result.json#/receipt/responses/3",
+            "kind": "response",
+            "value": {
+              "status": 200,
+              "id": 1,
+              "amount": 25,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "attempts": [
+                "acknowledged"
+              ]
+            },
+            "evidence_id": "E005"
+          },
+          {
+            "source": "service-events.jsonl:1",
+            "kind": "transaction",
+            "value": {
+              "attempt": "52a22fe30c3d479aad799d3b053a6ad7",
+              "id": 1,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "stored_amount": 25,
+              "inserted": true,
+              "status": 200
+            },
+            "evidence_id": "E006"
+          },
+          {
+            "source": "service-events.jsonl:2",
+            "kind": "transaction",
+            "value": {
+              "attempt": "2d152d976ec1437fa7b4ecb6ac949d76",
+              "id": 1,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "stored_amount": 25,
+              "inserted": false,
+              "status": 200
+            },
+            "evidence_id": "E007"
+          },
+          {
+            "source": "service-events.jsonl:3",
+            "kind": "transaction",
+            "value": {
+              "attempt": "a28a4a13570544ccafd9f73509aedc8f",
+              "id": 1,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "stored_amount": 25,
+              "inserted": false,
+              "status": 200
+            },
+            "evidence_id": "E008"
+          },
+          {
+            "source": "service-events.jsonl:4",
+            "kind": "transaction",
+            "value": {
+              "attempt": "562ed9a7d5184aa8961fa59e13fcaffb",
+              "id": 1,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "stored_amount": 25,
+              "inserted": false,
+              "status": 200
+            },
+            "evidence_id": "E009"
+          }
+        ]
+      },
+      "receipt_baseline": {
+        "label": "clean",
+        "abstained": false,
+        "citations": [
+          "E002",
+          "E003",
+          "E004",
+          "E005"
+        ],
+        "reason": "Receipt-only baseline: all requests returned HTTP 200.",
+        "next_step": "No violation found in these observations; retain the evidence for regression checks."
+      },
+      "evidence_rules": {
+        "label": "clean",
+        "abstained": false,
+        "citations": [
+          "E001",
+          "E002",
+          "E003",
+          "E004",
+          "E005",
+          "E006",
+          "E007",
+          "E008",
+          "E009"
+        ],
+        "reason": "Receipts agree with one entry per key; no observed conflict or response loss.",
+        "next_step": "No violation found in these observations; retain the evidence for regression checks."
+      }
+    },
+    {
+      "sample": "sample-08",
+      "expected": "conflicting_payload_rejected",
+      "bundle": {
+        "schema_version": 1,
+        "evidence": [
+          {
+            "source": "snapshot.json",
+            "kind": "ledger",
+            "value": [
+              {
+                "id": 1,
+                "key": "charge-1",
+                "amount": 25
+              }
+            ],
+            "evidence_id": "E001"
+          },
+          {
+            "source": "result.json#/receipt/responses/0",
+            "kind": "response",
+            "value": {
+              "status": 200,
+              "id": 1,
+              "amount": 25,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "attempts": [
+                "acknowledged"
+              ]
+            },
+            "evidence_id": "E002"
+          },
+          {
+            "source": "result.json#/receipt/responses/1",
+            "kind": "response",
+            "value": {
+              "status": 409,
+              "key": "charge-1",
+              "requested_amount": 99,
+              "attempts": [
+                "http_error"
+              ]
+            },
+            "evidence_id": "E003"
+          },
+          {
+            "source": "service-events.jsonl:1",
+            "kind": "transaction",
+            "value": {
+              "attempt": "4645e07f524f4c0195aec117a5dd5b97",
+              "id": 1,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "stored_amount": 25,
+              "inserted": true,
+              "status": 200
+            },
+            "evidence_id": "E004"
+          },
+          {
+            "source": "service-events.jsonl:2",
+            "kind": "transaction",
+            "value": {
+              "attempt": "3d4327013a13442a9a2416dee34ca005",
+              "id": 1,
+              "key": "charge-1",
+              "requested_amount": 99,
+              "stored_amount": 25,
+              "inserted": false,
+              "status": 409
+            },
+            "evidence_id": "E005"
+          }
+        ]
+      },
+      "receipt_baseline": {
+        "label": "insufficient_evidence",
+        "abstained": true,
+        "citations": [],
+        "reason": "Receipt-only baseline cannot explain the outcome.",
+        "next_step": "Collect ledger, receipts, and service events first."
+      },
+      "evidence_rules": {
+        "label": "conflicting_payload_rejected",
+        "abstained": false,
+        "citations": [
+          "E001",
+          "E003",
+          "E005"
+        ],
+        "reason": "A changed payload reused a key; it was rejected without another durable entry.",
+        "next_step": "Keep rejection; use a new key for a new payload."
+      }
+    },
+    {
+      "sample": "missing-ledger",
+      "expected": "insufficient_evidence",
+      "bundle": {
+        "schema_version": 1,
+        "evidence": [
+          {
+            "source": "result.json#/receipt/responses/0",
+            "kind": "response",
+            "value": {
+              "status": 200,
+              "id": 1,
+              "amount": 25,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "attempts": [
+                "acknowledged"
+              ]
+            },
+            "evidence_id": "E002"
+          },
+          {
+            "source": "service-events.jsonl:1",
+            "kind": "transaction",
+            "value": {
+              "attempt": "1f22ad2687414eba9a2517199faa4dc3",
+              "id": 1,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "stored_amount": 25,
+              "inserted": true,
+              "status": 200
+            },
+            "evidence_id": "E003"
+          }
+        ]
+      },
+      "receipt_baseline": {
+        "label": "clean",
+        "abstained": false,
+        "citations": [
+          "E002"
+        ],
+        "reason": "Receipt-only baseline: all requests returned HTTP 200.",
+        "next_step": "No violation found in these observations; retain the evidence for regression checks."
+      },
+      "evidence_rules": {
+        "label": "insufficient_evidence",
+        "abstained": true,
+        "citations": [],
+        "reason": "A single ledger snapshot and client receipts are required.",
+        "next_step": "Collect ledger, receipts, and service events first."
+      }
+    },
+    {
+      "sample": "missing-service-log",
+      "expected": "insufficient_evidence",
+      "bundle": {
+        "schema_version": 1,
+        "evidence": [
+          {
+            "source": "snapshot.json",
+            "kind": "ledger",
+            "value": [
+              {
+                "id": 1,
+                "key": "charge-1",
+                "amount": 25
+              }
+            ],
+            "evidence_id": "E001"
+          },
+          {
+            "source": "result.json#/receipt/responses/0",
+            "kind": "response",
+            "value": {
+              "status": 200,
+              "id": 1,
+              "amount": 25,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "attempts": [
+                "transport_failure",
+                "acknowledged"
+              ]
+            },
+            "evidence_id": "E002"
+          }
+        ]
+      },
+      "receipt_baseline": {
+        "label": "clean",
+        "abstained": false,
+        "citations": [
+          "E002"
+        ],
+        "reason": "Receipt-only baseline: all requests returned HTTP 200.",
+        "next_step": "No violation found in these observations; retain the evidence for regression checks."
+      },
+      "evidence_rules": {
+        "label": "insufficient_evidence",
+        "abstained": true,
+        "citations": [
+          "E001"
+        ],
+        "reason": "Service transaction evidence is missing.",
+        "next_step": "Collect ledger, receipts, and service events first."
+      }
+    },
+    {
+      "sample": "contradictory-receipt",
+      "expected": "insufficient_evidence",
+      "bundle": {
+        "schema_version": 1,
+        "evidence": [
+          {
+            "source": "snapshot.json",
+            "kind": "ledger",
+            "value": [
+              {
+                "id": 1,
+                "key": "charge-1",
+                "amount": 25
+              }
+            ],
+            "evidence_id": "E001"
+          },
+          {
+            "source": "result.json#/receipt/responses/0",
+            "kind": "response",
+            "value": {
+              "status": 200,
+              "id": 999,
+              "amount": 25,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "attempts": [
+                "acknowledged"
+              ]
+            },
+            "evidence_id": "E002"
+          },
+          {
+            "source": "service-events.jsonl:1",
+            "kind": "transaction",
+            "value": {
+              "attempt": "1f22ad2687414eba9a2517199faa4dc3",
+              "id": 1,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "stored_amount": 25,
+              "inserted": true,
+              "status": 200
+            },
+            "evidence_id": "E003"
+          }
+        ]
+      },
+      "receipt_baseline": {
+        "label": "clean",
+        "abstained": false,
+        "citations": [
+          "E002"
+        ],
+        "reason": "Receipt-only baseline: all requests returned HTTP 200.",
+        "next_step": "No violation found in these observations; retain the evidence for regression checks."
+      },
+      "evidence_rules": {
+        "label": "insufficient_evidence",
+        "abstained": true,
+        "citations": [
+          "E001",
+          "E002"
+        ],
+        "reason": "A successful receipt contradicts durable state; reconcile observations first.",
+        "next_step": "Collect ledger, receipts, and service events first."
+      }
+    },
+    {
+      "sample": "unexplained-transport-failure",
+      "expected": "insufficient_evidence",
+      "bundle": {
+        "schema_version": 1,
+        "evidence": [
+          {
+            "source": "snapshot.json",
+            "kind": "ledger",
+            "value": [
+              {
+                "id": 1,
+                "key": "charge-1",
+                "amount": 25
+              }
+            ],
+            "evidence_id": "E001"
+          },
+          {
+            "source": "result.json#/receipt/responses/0",
+            "kind": "response",
+            "value": {
+              "status": 200,
+              "id": 1,
+              "amount": 25,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "attempts": [
+                "transport_failure",
+                "acknowledged"
+              ]
+            },
+            "evidence_id": "E002"
+          },
+          {
+            "source": "service-events.jsonl:1",
+            "kind": "transaction",
+            "value": {
+              "attempt": "1bdb3f7ef87f4f1d9bc1545cbebe97c1",
+              "id": 1,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "stored_amount": 25,
+              "inserted": true,
+              "status": 200
+            },
+            "evidence_id": "E003"
+          },
+          {
+            "source": "service-events.jsonl:3",
+            "kind": "transaction",
+            "value": {
+              "attempt": "7ca772973d814a45805f6ab5d34fcd6e",
+              "id": 1,
+              "key": "charge-1",
+              "requested_amount": 25,
+              "stored_amount": 25,
+              "inserted": false,
+              "status": 200
+            },
+            "evidence_id": "E005"
+          }
+        ]
+      },
+      "receipt_baseline": {
+        "label": "clean",
+        "abstained": false,
+        "citations": [
+          "E002"
+        ],
+        "reason": "Receipt-only baseline: all requests returned HTTP 200.",
+        "next_step": "No violation found in these observations; retain the evidence for regression checks."
+      },
+      "evidence_rules": {
+        "label": "insufficient_evidence",
+        "abstained": true,
+        "citations": [
+          "E002"
+        ],
+        "reason": "Transport failure alone cannot establish commit-before-response loss.",
+        "next_step": "Collect ledger, receipts, and service events first."
+      }
+    }
+  ]
+}

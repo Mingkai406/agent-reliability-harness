@@ -58,6 +58,11 @@ def main():
         )
         if name == "serve":
             sub.add_argument("--port", type=int, default=int(os.environ.get("PORT", "8080")))
+    triage = commands.add_parser("triage", help="Diagnose HTTP incidents from observed evidence")
+    triage.add_argument("--run", type=Path, required=True)
+    triage.add_argument("--output", type=Path, required=True, help="New output directory")
+    triage.add_argument("--model-url", help="Explicit opt-in chat-completions endpoint")
+    triage.add_argument("--model", help="Model identifier; required with --model-url")
     artifact_worker = commands.add_parser(
         "artifact-worker", help="One resumable artifact worker invocation"
     )
@@ -84,6 +89,15 @@ def main():
     server.add_argument("--output", type=Path, default=Path("/tmp/harness-demo"))
     server.add_argument("--port", type=int, default=int(os.environ.get("PORT", "8080")))
     args = parser.parse_args()
+    if args.command == "triage":
+        from .triage import triage_run
+
+        try:
+            rows = triage_run(args.run, args.output, args.model_url, args.model)
+        except (ValueError, OSError, KeyError, TypeError) as exc:
+            parser.error(str(exc))
+        print(f"Diagnosed {len(rows)} cases: {args.output / 'report.md'}")
+        return 0
     if args.command in {"run", "serve"}:
         from .catalog import builtin_suite
         from .suite import load_suite, registry_with_plugins, run_matrix

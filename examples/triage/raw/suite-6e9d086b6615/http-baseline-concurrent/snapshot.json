@@ -1,0 +1,24 @@
+{
+  "ledger": [
+    {
+      "id": 1,
+      "key": "charge-1",
+      "amount": 25
+    },
+    {
+      "id": 2,
+      "key": "charge-1",
+      "amount": 25
+    },
+    {
+      "id": 3,
+      "key": "charge-1",
+      "amount": 25
+    },
+    {
+      "id": 4,
+      "key": "charge-1",
+      "amount": 25
+    }
+  ]
+}

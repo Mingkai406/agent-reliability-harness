@@ -1,0 +1,3 @@
+{"kind": "transaction", "attempt": "ddd1092a8aff47bb93222b1ca99ae346", "id": 1, "key": "charge-1", "requested_amount": 25, "stored_amount": 25, "inserted": true, "status": 200}
+{"kind": "response_not_sent", "attempt": "ddd1092a8aff47bb93222b1ca99ae346", "id": 1, "key": "charge-1"}
+{"kind": "transaction", "attempt": "0b80e24a3abd4d77a1c98712cfe1820e", "id": 2, "key": "charge-1", "requested_amount": 25, "stored_amount": 25, "inserted": true, "status": 200}

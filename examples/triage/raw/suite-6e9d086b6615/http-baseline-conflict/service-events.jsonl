@@ -1,0 +1,2 @@
+{"kind": "transaction", "attempt": "33427236d45a49ad8b39a56380c1d99a", "id": 1, "key": "charge-1", "requested_amount": 25, "stored_amount": 25, "inserted": true, "status": 200}
+{"kind": "transaction", "attempt": "6b2de25165b24ee1b71018f82f616c96", "id": 2, "key": "charge-1", "requested_amount": 99, "stored_amount": 99, "inserted": true, "status": 200}
