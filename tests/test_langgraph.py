@@ -55,12 +55,15 @@ async def test_langgraph_matrix_real_checkpoints_and_traces(tmp_path):
 @pytest.mark.parametrize(
     "name", ["restart-before-commit", "restart-after-commit", "restart-after-export"]
 )
-def test_new_process_resumes_and_completed_replay_is_noop(tmp_path, name):
+@pytest.mark.parametrize("layout", ["inline", "compact"])
+def test_new_process_resumes_and_completed_replay_is_noop(tmp_path, name, layout):
     command = [
         sys.executable,
         "-m",
         "agent_reliability",
         "langgraph-worker",
+        "--state-layout",
+        layout,
         "--directory",
         str(tmp_path),
         "--case-id",
@@ -82,7 +85,8 @@ def test_new_process_resumes_and_completed_replay_is_noop(tmp_path, name):
     assert wrong.returncode != 0 and "different" in wrong.stderr
 
 
-def test_sigkill_after_commit_before_graph_checkpoint(tmp_path):
+@pytest.mark.parametrize("layout", ["inline", "compact"])
+def test_sigkill_after_commit_before_graph_checkpoint(tmp_path, layout):
     # Stop inside the node AFTER its real DB commit but BEFORE it returns to LangGraph.
     script = """
 import sys, time
@@ -98,7 +102,15 @@ FaultEngine.apply = pause
 sys.argv = ["agent-reliability"] + sys.argv[1:]
 main()
 """
-    args = ["langgraph-worker", "--directory", str(tmp_path), "--case-id", "langgraph-clean"]
+    args = [
+        "langgraph-worker",
+        "--state-layout",
+        layout,
+        "--directory",
+        str(tmp_path),
+        "--case-id",
+        "langgraph-clean",
+    ]
     child = subprocess.Popen(
         [sys.executable, "-c", script] + args, stdout=subprocess.PIPE, stderr=subprocess.PIPE
     )

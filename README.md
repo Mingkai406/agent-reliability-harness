@@ -212,3 +212,11 @@ Only `evaluate --model ...` deliberately runs live inference. Fixtures are synth
 no V.O.I.C.E. participant data or payment-provider integration.
 
 [MIT License](LICENSE)
+
+## State optimization and recovery observability
+
+The optional compact LangGraph state layout avoids duplicating retrieved records in
+checkpoints. Checkpoint I/O, per-tool attempts, state completion and cross-process
+invocation links provide more detailed recovery traces. A paired benchmark compares
+actual storage and recovery costs while independently checking business invariants.
+See [design, commands and measurement limits](docs/state-optimization.md).

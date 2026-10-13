@@ -4,7 +4,7 @@ import functools
 import http.server
 import json
 import os
-from dataclasses import asdict
+from dataclasses import asdict, replace
 from pathlib import Path
 
 from .experiment import run_suite
@@ -73,6 +73,7 @@ def main():
     )
     graph_worker.add_argument("--directory", type=Path, required=True)
     graph_worker.add_argument("--case-id", default="langgraph-restart-after-commit")
+    graph_worker.add_argument("--state-layout", choices=("inline", "compact"), default="inline")
     for name in ("demo", "evaluate"):
         sub = commands.add_parser(name)
         sub.add_argument("--output", type=Path, default=Path("runs"))
@@ -129,6 +130,8 @@ def main():
         case = next((c for c in langgraph_suite() if c.id == args.case_id), None)
         if case is None:
             parser.error("Unknown LangGraph case ID; see examples/suites/langgraph.json")
+        if args.state_layout != "inline":
+            case = replace(case, config={**case.config, "state_layout": args.state_layout})
         adapter = LangGraphAdapter()
         try:
             adapter.validate(case)
