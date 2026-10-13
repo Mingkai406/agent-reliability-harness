@@ -7,6 +7,7 @@ deliberately use separate databases: recovery must tolerate replay of a committe
 import asyncio
 import hashlib
 import json
+from collections import Counter
 from typing import TypedDict
 
 from .artifacts import RECORDS, ArtifactStore, assess_artifacts
@@ -15,19 +16,32 @@ from .faults import InterruptedFault, PermanentFault, RetryableFault
 
 
 class WorkflowState(TypedDict, total=False):
-    records: list[dict]
+    records: list[dict] | None
     content: str
     receipt: dict
 
 
-def build_graph(store, faults, tracer, checkpointer, *, invalid_receipt=False):
+def build_graph(
+    store, faults, tracer, checkpointer, *, invalid_receipt=False, state_layout="inline"
+):
+    if state_layout not in {"inline", "compact"}:
+        raise ValueError("Unknown state layout")
+    attempts = Counter()
     from langgraph.graph import END, START, StateGraph
     from langgraph.types import RetryPolicy
 
     def tool(name, action, validate):
         # Retries belong to LangGraph's node policy, not to a hidden outer tool loop.
         store.event("node_attempt:" + name)
-        with tracer.start_as_current_span("tool." + name):
+        attempts[name] += 1
+        with tracer.start_as_current_span(
+            "tool." + name,
+            attributes={
+                "tool.name": name,
+                "tool.attempt": attempts[name],
+                "state.layout": state_layout,
+            },
+        ):
             faults.apply(name, "before")
             result = faults.apply(name, "after", action())
             if not validate(result):
@@ -37,14 +51,15 @@ def build_graph(store, faults, tracer, checkpointer, *, invalid_receipt=False):
     def retrieve(state):
         records = tool("retrieve_records", lambda: RECORDS, lambda r: r == RECORDS)
         store.put("records", records)
-        return {"records": records}
+        return {"records": records if state_layout == "inline" else None}
 
     def build(state):
+        records = state["records"] if state_layout == "inline" else store.get("records")
+        if records != RECORDS:
+            raise ValueError("Persisted source records changed or disappeared")
         content = tool(
             "build_artifact",
-            lambda: json.dumps(
-                {"total_tasks": sum(r["tasks"] for r in state["records"])}, sort_keys=True
-            ),
+            lambda: json.dumps({"total_tasks": sum(r["tasks"] for r in records)}, sort_keys=True),
             lambda r: isinstance(r, str) and r == '{"total_tasks": 20}',
         )
         return {"content": content}
@@ -66,7 +81,8 @@ def build_graph(store, faults, tracer, checkpointer, *, invalid_receipt=False):
         return {"receipt": receipt}
 
     def finish(state):
-        store.put("complete", state["receipt"])
+        with tracer.start_as_current_span("state.finish"):
+            store.put("complete", state["receipt"])
         # Deliberately broken control: the graph completes with an ungrounded receipt.
         return {
             "receipt": {"status": "complete", "sha256": "incorrect"}
@@ -94,22 +110,29 @@ def build_graph(store, faults, tracer, checkpointer, *, invalid_receipt=False):
     return graph.compile(checkpointer=checkpointer)
 
 
-def run_graph_once(case, directory, faults, tracer):
+def _run_graph_once(case, directory, faults, tracer):
     """One invocation; a fresh process can resume it using the same directory and case."""
-    from langgraph.checkpoint.sqlite import SqliteSaver
+    from .state_telemetry import TracedSqliteSaver
 
     store = ArtifactStore(directory)
     store.bind({"adapter_version": 1, "case": case.to_dict()})
     config = {"configurable": {"thread_id": case.id}}
-    with SqliteSaver.from_conn_string(str(directory / "checkpoints.sqlite")) as saver:
+    with TracedSqliteSaver.from_conn_string(str(directory / "checkpoints.sqlite")) as saver:
+        saver.tracer = tracer
         graph = build_graph(
             store,
             faults,
             tracer,
             saver,
             invalid_receipt=case.config.get("mode") == "invalid_receipt",
+            state_layout=case.config.get("state_layout", "inline"),
         )
         prior = graph.get_state(config)
+        from opentelemetry import trace
+
+        span = trace.get_current_span()
+        span.set_attribute("workflow.resumed", bool(prior.values or prior.next))
+        span.set_attribute("workflow.pending_nodes", list(prior.next))
         receipt = store.get("rejected")
         if receipt is None:
             try:
@@ -137,6 +160,14 @@ def run_graph_once(case, directory, faults, tracer):
     return Execution(receipt, snapshot, "LangGraph + deterministic nodes; no model calls")
 
 
+def run_graph_once(case, directory, faults, tracer):
+    """Trace each invocation and link a resumed process to its prior invocation."""
+    from .state_telemetry import invocation_span
+
+    with invocation_span(directory, tracer, case.id, case.config.get("state_layout", "inline")):
+        return _run_graph_once(case, directory, faults, tracer)
+
+
 class LangGraphAdapter:
     def validate(self, case):
         # Import here keeps the core installation free of LangGraph dependencies.
@@ -144,7 +175,7 @@ class LangGraphAdapter:
 
         validate_options(
             case,
-            {"mode": ("normal", "invalid_receipt")},
+            {"mode": ("normal", "invalid_receipt"), "state_layout": ("inline", "compact")},
             {"retrieve_records", "build_artifact", "commit_artifact", "export_artifact"},
         )
         try:
